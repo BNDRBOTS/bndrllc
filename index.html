@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BNDR LLC | Custom Web Design</title>
+    <meta name="description" content="Custom web design that pulls its own weight. We bring 20 years of retail and applied sales psychology to every build.">
+    <!-- Critical CSS inlined -->
+    <style>
+        /* --- RESET & TOKENS --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        :root {
+            --bone: #E8E4DF;       
+            --void: #020202;       
+            --charcoal: #0A0A0B;   
+            --plasma: #CCFF00;     
+            --magenta: #ff0055;    
+        }
+
+        body {
+            background-color: var(--bone);
+            color: var(--void);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+
+        /* --- 3D BACKGROUND LAYER --- */
+        #webgl-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* --- DOM SCROLL LAYER --- */
+        #ui-layer {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+        }
+
+        /* --- GLOBAL NAV & BACK BUTTON --- */
+        .nav-pill {
+            position: fixed;
+            top: 64px; 
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10, 10, 11, 0.75);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(204, 255, 0, 0.2);
+            border-radius: 99px;
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            z-index: 100;
+            box-shadow: 0 10px 40px rgba(2, 2, 2, 0.15);
+            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            max-width: calc(100vw - 32px);
+            overflow-x: auto;
+            white-space: nowrap;
+            -ms-overflow-style: none;  
+            scrollbar-width: none;  
+        }
+        .nav-pill::-webkit-scrollbar { display: none; }
+
+        .nav-pill a, .nav-pill button {
+            color: var(--bone);
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 8px 12px;
+            border-radius: 99px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .nav-pill a:hover, .nav-pill button:hover, .nav-pill button:focus-visible, .nav-pill a:focus-visible {
+            background: var(--plasma);
+            color: var(--void);
+            box-shadow: 0 0 15px rgba(204, 255, 0, 0.4);
+            outline: none;
+        }
+
+        @media (max-width: 539px) {
+            .nav-pill { gap: 2px; }
+            .nav-pill a,
+            .nav-pill button { letter-spacing: 0.06em; }
+        }
+
+        .back-btn {
+            position: fixed; 
+            top: 16px; 
+            left: 16px;
+            background: rgba(10, 10, 11, 0.75); 
+            backdrop-filter: blur(24px); 
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            border-radius: 99px;
+            display: flex; 
+            align-items: center; 
+            padding: 8px 16px; 
+            color: var(--bone);
+            text-decoration: none; 
+            font-size: 10px; 
+            font-weight: 700; 
+            letter-spacing: 0.15em; 
+            text-transform: uppercase;
+            z-index: 1600; 
+            transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+            cursor: pointer;
+        }
+        .back-btn:hover, .back-btn:focus-visible { 
+            background: var(--bone); 
+            color: var(--void); 
+            transform: translateX(-4px); 
+            outline: none;
+        }
+
+        @media (max-width: 539px) {
+            .back-btn {
+                top: auto;
+                bottom: 24px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .nav-pill { top: 24px; max-width: none; overflow-x: visible; padding: 6px; }
+            .nav-pill a, .nav-pill button { font-size: 11px; padding: 10px 20px; }
+            .back-btn { top: 24px; left: 24px; padding: 10px 20px; font-size: 11px; }
+        }
+
+        /* --- LAYOUT GRIDS --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr; gap: 48px; }
+        @media (min-width: 800px) { .grid-2 { grid-template-columns: 1fr 1fr; gap: 80px; } }
+
+        /* --- HERO --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding-bottom: 80px;
+            pointer-events: none; 
+        }
+        .hero-content { pointer-events: auto; max-width: 600px; }
+        .hero h1 { font-size: clamp(40px, 12vw, 88px); font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin-bottom: 24px; position: relative; }
+        .hero h1::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+            pointer-events: none; mix-blend-mode: overlay; border-radius: 4px;
+        }
+        .hero h1 span { color: var(--magenta); position: relative; display: inline-block; }
+        .hero h1 span::before {
+            content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 120%; height: 120%; background: radial-gradient(circle, rgba(255,0,85,0.15) 0%, transparent 70%);
+            z-index: -1; filter: blur(10px);
+        }
+        .hero p { font-size: clamp(16px, 4vw, 20px); line-height: 1.5; color: rgba(2, 2, 2, 0.7); font-weight: 500; }
+
+        /* --- SECTIONS --- */
+        section { padding: 64px 0; position: relative; }
+        @media (min-width: 768px) { section { padding: 120px 0; } }
+
+        .section-header { display: flex; align-items: center; margin-bottom: 32px; width: 100%; }
+        .section-header::after { content: ''; flex-grow: 1; height: 1px; background: linear-gradient(90deg, rgba(2,2,2,0.15) 0%, transparent 100%); margin-left: 20px; }
+        .drawer .section-header::after, .pricing-card .section-header::after, .archive-category .section-header::after, footer .section-header::after { background: linear-gradient(90deg, rgba(232, 228, 223, 0.15) 0%, transparent 100%); }
+
+        .section-badge {
+            position: relative; display: inline-flex; align-items: center; gap: 12px; padding: 8px 20px 8px 16px;
+            font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bone); z-index: 1;
+        }
+        .section-badge::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--void); transform: skewX(-15deg); z-index: -1; border-radius: 2px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        @keyframes plasma-pulse { 0%, 100% { box-shadow: 0 0 8px rgba(204, 255, 0, 0.4); opacity: 1; } 50% { box-shadow: 0 0 16px rgba(204, 255, 0, 0.8); opacity: 0.6; } }
+        .section-badge::after {
+            content: ''; width: 8px; height: 8px; background: var(--plasma); border-radius: 50%;
+            box-shadow: 0 0 8px rgba(204, 255, 0, 0.4); order: -1; animation: plasma-pulse 3s infinite ease-in-out;
+        }
+
+        button.section-badge { background: none; border: none; font: inherit; color: inherit; cursor: pointer; }
+        button.section-badge:focus-visible { outline: 2px solid var(--plasma); outline-offset: 4px; }
+
+        .glass-panel {
+            background: rgba(232, 228, 223, 0.5);
+            backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+            border-top: 1px solid rgba(255, 255, 255, 0.5); border-bottom: 1px solid rgba(2, 2, 2, 0.05);
+        }
+
+        /* --- COPY BLOCK --- */
+        .lead-text { font-size: clamp(24px, 6vw, 36px); font-weight: 700; line-height: 1.2; margin-bottom: 24px; letter-spacing: -0.01em; color: var(--void); }
+        .body-text { font-size: 16px; line-height: 1.6; color: rgba(2, 2, 2, 0.7); margin-bottom: 24px; }
+
+        /* --- BUTTONS --- */
+        .btn-primary {
+            display: block; width: 100%; background: var(--plasma); color: var(--void); text-align: center;
+            padding: 18px 32px; font-size: 12px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase;
+            text-decoration: none; border: none; border-radius: 4px; cursor: pointer; transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1); position: relative; z-index: 1;
+        }
+        .btn-primary:hover, .btn-primary:focus-visible { background: #e5ff66; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(204, 255, 0, 0.2); outline: none; }
+
+        /* --- FAQ ACCORDION --- */
+        .faq-columns { display: grid; grid-template-columns: 1fr; gap: 0 48px; align-items: start; }
+        @media (min-width: 800px) { .faq-columns { grid-template-columns: 1fr 1fr; } }
+        
+        .faq-item { border-bottom: 1px solid rgba(2, 2, 2, 0.1); padding: 24px 0; }
+        .faq-item summary {
+            font-size: 20px; font-weight: 700; cursor: pointer; list-style: none; display: flex;
+            justify-content: space-between; align-items: center; color: var(--void); transition: color 0.2s;
+        }
+        .faq-item summary:hover, .faq-item summary:focus-visible { color: var(--magenta); outline: none; }
+        .faq-item summary::-webkit-details-marker { display: none; }
+        .faq-item summary::after { content: '+'; font-size: 24px; font-weight: 400; transition: transform 0.3s; color: var(--void); }
+        .faq-item[open] summary::after { transform: rotate(45deg); color: var(--magenta); }
+        .faq-item p { margin-top: 16px; font-size: 16px; line-height: 1.6; color: rgba(2, 2, 2, 0.7); padding-right: 16px; }
+        @media (min-width: 768px) { .faq-item p { padding-right: 40px; } }
+
+        /* --- DRAWERS (SIDE PANELS) --- */
+        .drawer-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.4);
+            z-index: 1400; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+        }
+        .drawer-overlay.active { opacity: 1; pointer-events: auto; }
+
+        .drawer {
+            position: fixed; top: 0; right: -100%; width: 100%; max-width: 480px; height: 100vh;
+            background: rgba(10, 10, 11, 0.5); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            z-index: 1500; overflow-y: auto; transition: right 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1); padding: 80px 24px 40px; color: var(--bone);
+        }
+        .drawer.active { right: 0; }
+        @media (max-width: 539px) { .drawer { max-width: 100%; } }
+
+        .drawer-close {
+            position: absolute; top: 24px; right: 24px; background: none; border: none; font-size: 32px;
+            color: var(--bone); cursor: pointer; opacity: 0.6; transition: opacity 0.2s;
+        }
+        .drawer-close:hover, .drawer-close:focus-visible { opacity: 1; outline: none; color: var(--plasma); }
+
+        /* --- PRICING MINI CARDS --- */
+        .pricing-drawer-grid { display: grid; gap: 16px; }
+        .pricing-card-mini {
+            background: var(--charcoal); color: var(--bone); padding: 24px; border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .pricing-card-mini:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.15); }
+        .pricing-card-mini.tier-special { border-color: rgba(255, 0, 85, 0.5); box-shadow: 0 10px 30px rgba(255, 0, 85, 0.05); }
+        .pricing-card-mini.tier-sub { border-color: rgba(204, 255, 0, 0.3); }
+        
+        .pricing-card-mini h3 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+        .pricing-card-mini .price-tag { font-size: 36px; font-weight: 800; line-height: 1; margin-bottom: 20px; color: var(--plasma); text-shadow: 0 0 12px rgba(204, 255, 0, 0.15); }
+        .pricing-card-mini.tier-special .price-tag { color: var(--magenta); text-shadow: 0 0 12px rgba(255, 0, 85, 0.2); }
+        .pricing-card-mini .price-tag span { font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.5); text-shadow: none; }
+        
+        .pricing-card-mini .feature-list { list-style: none; margin-bottom: 24px; }
+        .pricing-card-mini .feature-list li { font-size: 14px; margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px; color: rgba(232, 228, 223, 0.8); line-height: 1.4; }
+        .pricing-card-mini .feature-list li::before { content: '✓'; color: var(--plasma); font-weight: bold; }
+        .pricing-card-mini.tier-special .feature-list li::before { color: var(--magenta); }
+        
+        .pricing-card-mini .btn-primary { padding: 14px 24px; font-size: 11px; }
+
+        /* --- ARCHIVE MINI CARDS --- */
+        .archive-drawer-grid { display: grid; gap: 16px; }
+        .archive-category {
+            background: var(--charcoal); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 24px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .archive-category:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.15); }
+        .archive-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .archive-list li a {
+            display: flex; justify-content: space-between; align-items: center; color: rgba(232, 228, 223, 0.7);
+            text-decoration: none; font-size: 14px; font-weight: 500; padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05); transition: all 0.3s ease; position: relative;
+        }
+        .archive-list li a::after { content: '↗'; font-size: 12px; color: var(--plasma); opacity: 0; transform: translateX(-10px); transition: all 0.3s ease; }
+        .archive-list li a:hover, .archive-list li a:focus-visible { color: var(--plasma); padding-left: 8px; border-bottom-color: var(--plasma); outline: none; }
+        .archive-list li a:hover::after, .archive-list li a:focus-visible::after { opacity: 1; transform: translateX(0); }
+
+        /* --- FOOTER & CONTACT --- */
+        footer { background: var(--charcoal); color: var(--bone); padding: 32px 0 16px; margin-top: auto; position: relative; z-index: 10; }
+        .footer-grid { display: grid; grid-template-columns: 1fr; gap: 32px; margin-bottom: 24px; }
+        @media (min-width: 800px) { .footer-grid { grid-template-columns: 1fr 2fr 1fr; gap: 24px; } }
+
+        .footer-brand .footer-logo { max-width: 100px; display: block; margin-bottom: 8px; filter: brightness(0) invert(1); }
+        .footer-address { font-size: 11px; font-weight: 500; letter-spacing: 0.02em; line-height: 1.4; color: rgba(255,255,255,0.6); font-style: normal; }
+        .footer-links a:not(.connect-btn) { display: block; color: var(--bone); text-decoration: none; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; margin-bottom: 6px; transition: color 0.2s; opacity: 0.8; }
+        .footer-links a:not(.connect-btn):hover, .footer-links a:not(.connect-btn):focus-visible { color: var(--plasma); opacity: 1; outline: none; }
+
+        .connect-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+        .connect-btn {
+            position: relative; display: inline-flex; align-items: center; justify-content: center; padding: 6px 10px;
+            font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--void);
+            text-decoration: none; z-index: 1; transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .connect-btn::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--plasma); transform: skewX(-15deg); z-index: -1; border-radius: 2px; transition: background 0.2s, box-shadow 0.2s;
+        }
+        .connect-btn:hover, .connect-btn:focus-visible { transform: translateY(-2px); outline: none; }
+        .connect-btn:hover::before, .connect-btn:focus-visible::before { background: #e5ff66; box-shadow: 0 4px 12px rgba(204, 255, 0, 0.2); }
+
+        @media (max-width: 539px) {
+            .footer-policy-links a { min-height: 44px; display: inline-flex; align-items: center; }
+            .connect-btn { min-height: 44px; }
+            .connect-btn::before { top: 8px; bottom: 8px; }
+        }
+
+        /* --- LEGAL LINKS --- */
+        .footer-policy-links { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; }
+        .footer-policy-links a { color: var(--bone); text-decoration: none; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.2s; }
+        .footer-policy-links a:hover, .footer-policy-links a:focus-visible { color: var(--plasma); outline: none; }
+        .legal-notice { font-size: 9px; font-weight: 500; letter-spacing: 0.02em; line-height: 1.4; color: rgba(255,255,255,0.35); border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; }
+
+        /* --- MODALS --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 10, 11, 0.85);
+            backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); z-index: 2000;
+            display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 24px 16px;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        @media (min-width: 768px) { .modal-overlay { align-items: center; padding: 0; } }
+        
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-content {
+            background: var(--bone); padding: 32px 24px; width: 100%; max-width: 480px; border-radius: 4px;
+            position: relative; transform: translateY(20px); transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); margin: auto;
+        }
+        @media (min-width: 768px) { .modal-content { padding: 56px 48px; } }
+        
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .modal-close { position: absolute; top: 24px; right: 24px; background: none; border: none; font-size: 28px; color: var(--void); cursor: pointer; opacity: 0.5; transition: opacity 0.2s; }
+        .modal-close:hover, .modal-close:focus-visible { opacity: 1; outline: none; }
+        .modal-content h2 { color: var(--void); font-size: 28px; font-weight: 800; margin-bottom: 32px; letter-spacing: -0.02em; }
+        
+        .form-group input, .form-group textarea { width: 100%; background: transparent; border: none; border-bottom: 2px solid rgba(2, 2, 2, 0.1); padding: 16px 0; margin-bottom: 24px; font-size: 16px; font-family: inherit; color: var(--void); outline: none; transition: border-color 0.3s; }
+        .form-group input:focus, .form-group textarea:focus { border-bottom-color: var(--magenta); }
+
+        #preview-modal .modal-content { max-width: 1000px; height: 85vh; padding: 16px; display: flex; flex-direction: column; gap: 16px; background: var(--charcoal); border: 1px solid rgba(255,255,255,0.05); }
+        @media (min-width: 768px) { #preview-modal .modal-content { padding: 32px; } }
+        #preview-modal h2 { color: var(--bone); margin: 0; font-size: 20px; }
+        #preview-modal .modal-close { color: var(--bone); top: 16px; right: 16px; }
+        @media (min-width: 768px) { #preview-modal .modal-close { top: 32px; right: 32px; } }
+        
+        .preview-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px; }
+        .preview-actions { display: flex; gap: 16px; align-items: center; margin-right: 40px; }
+        .preview-iframe-container { flex-grow: 1; background: #ffffff; border-radius: 4px; overflow: hidden; position: relative; }
+        .preview-iframe-container iframe { width: 100%; height: 100%; border: none; background: transparent; }
+
+        .hud-desktop {
+            position: absolute; bottom: 24px; left: 24px; font-size: 9px; font-family: monospace;
+            text-transform: uppercase; letter-spacing: 0.1em; color: rgba(2,2,2,0.5); pointer-events: none;
+            max-width: calc(100% - 48px); line-height: 1.4;
+        }
+        @media (min-width: 768px) { .hud-desktop { bottom: 40px; font-size: 10px; } }
+    </style>
+    <!-- Non-critical libraries deferred -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+</head>
+<body>
+
+    <div id="webgl-container"></div>
+    <button id="global-back-btn" class="back-btn" aria-label="Go Back">← Back</button>
+
+    <nav class="nav-pill" id="main-nav" aria-label="Main Navigation">
+        <a href="#ui-layer">Home</a>
+        <button id="nav-archive-btn" aria-expanded="false" aria-controls="archive-drawer">Archive</button>
+        <button id="nav-pricing-btn" aria-expanded="false" aria-controls="pricing-drawer">Pricing</button>
+        <a href="#faq">FAQ</a>
+        <button id="nav-contact-btn" aria-haspopup="dialog">Contact</button>
+    </nav>
+    
+    <main id="ui-layer">
+        
+        <section class="hero container">
+            <div class="hero-content">
+                <h1>BNDR<span>.</span></h1>
+                <p>Custom web design that pulls its own weight. We bring 20 years of retail and applied sales psychology to every build.</p>
+            </div>
+            <div class="hud-desktop" aria-hidden="true">Desktop: Drag + Drift Physics | Mobile: Gyro + Unfold Active</div>
+        </section>
+
+        <section id="work" class="glass-panel">
+            <div class="container grid-2">
+                <div>
+                    <div class="section-header">
+                        <div class="section-badge">The Foundation</div>
+                    </div>
+                    <p class="lead-text">Most 'Devs' building websites are using drag & drop editors that come with unspoken attachements and significant limitations.</p>
+                </div>
+                <div>
+                    <p class="body-text">We solve this by actually coding; allowing virtually limitless options for customization. We custom code the math, we weave your specific brand's best psychology, and we build each site on its own, as its own.</p>
+                    <p class="body-text">We help to separate your brand from the rest of your industry pack, and express what you want others to feel about your work, and do it securely making sure what we build is stable and works as hard as you do.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="glass-panel" style="border-top: none;">
+            <div class="container">
+                <div class="section-header" style="margin-bottom: 24px;">
+                    <div class="section-badge">F.A.Q.</div>
+                </div>
+                <p class="lead-text" style="margin-bottom: 48px;">Correct ≠ Complex.</p>
+                
+                <div class="faq-columns">
+                    <div class="faq-col">
+                        <details class="faq-item">
+                            <summary>What’s the difference between the services?</summary>
+                            <p>→ <strong>One-Page Lander™</strong> is a custom one-page site with 1 light revision.<br>
+                            → <strong>Three-Page Custom™</strong> is a custom three-page site with 2 light revisions.<br>
+                            → <strong>30-Day BNDR Unlimited™</strong> is 30 calendar days of direct work for one business.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>What can be requested?</summary>
+                            <p>30-Day Unlimited includes unlimited requests including: Websites, Refinements on Existing Content, AI agents, Integrations, Branding, Data Analysis, Bottleneck Breakouts, Marketing Materials, Services, Graphic design, Dashboards, Web applications, and more.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>How fast is delivery?</summary>
+                            <p>When a request goes active, it gets a stated delivery window. Larger requests ship in checkpoints until complete.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>How do requests work?</summary>
+                            <p>For 30-Day BNDR Unlimited™, unlimited requests can be queued. One request is active at a time, if it’s something smaller, at times I may have the room to double-up, but not always.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>How do revisions work?</summary>
+                            <p>One-Page Lander™ includes 1 light revision. Three-Page Custom™ includes 2 light revisions. 30-Day BNDR Unlimited™ includes unlimited revisions during the active month.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>What is a light revision?</summary>
+                            <p>One consolidated round submitted within 7 calendar days of delivery.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>How does onboarding work?</summary>
+                            <p>A short alignment exchange by email: goals, priority, links/assets, and what “done” means to you for any given request. Then I get to work, and send you the results, and we go from there.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>How fast do you start?</summary>
+                            <p>All payments are taken upfront. Work begins the same day payment clears.</p>
+                        </details>
+                    </div>
+                    <div class="faq-col">
+                        <details class="faq-item">
+                            <summary>How do we communicate?</summary>
+                            <p>Call, Email, Text, whatever is easiest for you. A shared board can be added. Something like private ChatGPT space can be included.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>Do you use AI?</summary>
+                            <p>Yes. AI is part of my workflow across web services, with a heavy human hand & eye in the loop.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>Do you build in Webflow?</summary>
+                            <p>No. You're getting the real deal in coded form. Ready to launch, or launched (Hosted) for you.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>How many people from my team can be involved?</summary>
+                            <p>Unlimited participants. Only those who you assign as 'designated approvers' sign off on final decisions.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>What about images and visual assets?</summary>
+                            <p>Brand-matched visuals can be created and tailored to your style. Third-party assets can be licensed for your use, with the license details passed through.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>How does hosting work?</summary>
+                            <p>Hosting is included with 30-Day BNDR Unlimited™ while active, upon request. Hosting is available separately for One-Page Lander™ and Three-Page Custom™ at $60/mo per site.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>What happens outside the selected package?</summary>
+                            <p>Additional work beyond the selected package is billed at $75/hr.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>What’s the refund policy?</summary>
+                            <p>30-Day BNDR Unlimited™ is month-to-month. Cancel anytime. It includes a 1-week 75% money-back guarantee. After the first week, the month remains active through day 30 and is non-refundable. All other work is non-refundable. While this is true, it's important to remember that client satisfaction is a primary driving force behind my work.</p>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer id="contact">
+            <div class="container">
+                <div class="footer-grid">
+                    
+                    <div class="footer-brand">
+                        <img src="https://www.dropbox.com/scl/fi/t1zxkjm4lq4sfveedn119/bndr26.png?rlkey=mc6decn5olct67crw7zmqp89g&st=cj5uqif6&raw=1" alt="BNDR LLC Logo" class="footer-logo" onerror="this.style.display='none';">
+                        <address class="footer-address">
+                            1896 East Innovation Park Drive, STE 100<br>
+                            Oro Valley, AZ 85755<br>
+                            bndrllc.com<br>
+                        </address>
+                    </div>
+
+                    <div class="footer-links">
+                        <div class="section-header" style="margin-bottom: 8px;">
+                            <button type="button" class="section-badge connect-section-trigger" id="footer-connect-btn">Connect</button>
+                        </div>
+                        <div class="connect-grid">
+                            <a href="https://www.linkedin.com/in/bndrtech/" target="_blank" rel="noopener noreferrer" class="connect-btn">LinkedIn</a>
+                            <a href="https://github.com/BNDRBOTS" target="_blank" rel="noopener noreferrer" class="connect-btn">GitHub</a>
+                            <a href="https://substack.com/@bndrllc" target="_blank" rel="noopener noreferrer" class="connect-btn">Substack</a>
+                            <a href="https://www.instagram.com/bndrllc" target="_blank" rel="noopener noreferrer" class="connect-btn">Instagram</a>
+                            <a href="https://www.facebook.com/BNDRLLC" target="_blank" rel="noopener noreferrer" class="connect-btn">Facebook</a>
+                            <a href="https://bndrllc.gumroad.com/" target="_blank" rel="noopener noreferrer" class="connect-btn">Gumroad Store</a>
+                            <a href="https://promptbase.com/profile/bndrllc" target="_blank" rel="noopener noreferrer" class="connect-btn">PromptBase</a>
+                            <a href="https://buymeacoffee.com/bndr" target="_blank" rel="noopener noreferrer" class="connect-btn">Buy Me a Coffee</a>
+                            <a href="https://propps.me/bndrllc" target="_blank" rel="noopener noreferrer" class="connect-btn">Propps Card</a>
+                            <a href="https://www.youtube.com/@bndrllc" target="_blank" rel="noopener noreferrer" class="connect-btn">YouTube</a>
+                        </div>
+                    </div>
+
+                    <div class="footer-links">
+                        <div class="section-header" style="margin-bottom: 8px;">
+                            <div class="section-badge">Direct</div>
+                        </div>
+                        <a href="mailto:bndr.labs@gmail.com">bndr.labs@gmail.com</a>
+                        <a href="tel:7179197731">717-919-7731</a>
+                    </div>
+
+                </div>
+                <div class="legal-notice">
+                    <div class="footer-policy-links">
+                        <a href="https://www.dropbox.com/scl/fi/um6xi0vfzj0w03kgxtrq2/privacy.html?rlkey=6ylhioa276mrynqylvxc19u7v&st=iakils4n&raw=1" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+                        <a href="https://www.dropbox.com/scl/fi/um6xi0vfzj0w03kgxtrq2/privacy.html?rlkey=6ylhioa276mrynqylvxc19u7v&st=28ft9zz3&raw=1" target="_blank" rel="noopener noreferrer">Terms of Service</a>
+                    </div>
+                    <strong>Notice at Collection:</strong> BNDR LLC collects the personal information you submit here — such as your name, business name, email address, phone number, billing details, message content, IP address, browser/device information, and related usage data — to respond to your inquiry, provide requested services, process payments, calculate taxes, maintain security, and comply with legal obligations. We retain contact inquiries for up to 1 year, IP addresses and server logs for up to 90 days, client project communications for the duration of the engagement plus 3 years, and payment and billing records for 7 years, unless a longer retention period is required by law. We do not sell or share personal information for cross-context behavioral advertising.<br><br>
+                    © 2026 BNDR LLC. All rights reserved.
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- DRAWERS -->
+    <div id="drawer-overlay" class="drawer-overlay" aria-hidden="true"></div>
+
+    <!-- Pricing Drawer -->
+    <aside id="pricing-drawer" class="drawer" aria-labelledby="pricing-title">
+        <button class="drawer-close" aria-label="Close Pricing">&times;</button>
+        <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">The Offer</div></div>
+        <h2 id="pricing-title" class="lead-text" style="color: var(--bone); font-size: clamp(24px, 6vw, 32px); margin-bottom: 40px;">One partner.<br>Unlimited builds.</h2>
+        
+        <div class="pricing-drawer-grid">
+            <div class="pricing-card-mini tier-special">
+                <div class="section-header" style="margin-bottom: 12px;"><div class="section-badge" style="background: var(--magenta);">First 3 Clients</div></div>
+                <h3>Three-Page Cut™</h3>
+                <div class="price-tag">$599</div>
+                <ul class="feature-list">
+                    <li>Custom three-page site</li>
+                    <li>2 light revisions</li>
+                    <li>Applied sales psychology</li>
+                </ul>
+                <a href="https://buy.stripe.com/eVq6oH3RVdAKckk82I0oM0f" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background: var(--magenta); color: var(--bone);">Secure Offer</a>
+            </div>
+
+            <div class="pricing-card-mini">
+                <div class="section-header" style="margin-bottom: 12px;"><div class="section-badge">Standard</div></div>
+                <h3>One-Page Lander™</h3>
+                <div class="price-tag">$750</div>
+                <ul class="feature-list">
+                    <li>Custom one-page site</li>
+                    <li>1 light revision</li>
+                    <li>Applied sales psychology</li>
+                </ul>
+                <a href="https://buy.stripe.com/7sY28r88b9kudoobeU0oM0c" target="_blank" rel="noopener noreferrer" class="btn-primary">Start Project</a>
+            </div>
+
+            <div class="pricing-card-mini">
+                <div class="section-header" style="margin-bottom: 12px;"><div class="section-badge">Expanded</div></div>
+                <h3>Three-Page Custom™</h3>
+                <div class="price-tag">$1,500<span>.00</span></div>
+                <ul class="feature-list">
+                    <li>Custom three-page site</li>
+                    <li>2 light revisions</li>
+                    <li>Applied sales psychology</li>
+                </ul>
+                <a href="https://buy.stripe.com/8x2cN5fADeEOfww0Ag0oM0d" target="_blank" rel="noopener noreferrer" class="btn-primary">Start Project</a>
+            </div>
+
+            <div class="pricing-card-mini tier-sub">
+                <div class="section-header" style="margin-bottom: 12px;"><div class="section-badge">Subscription</div></div>
+                <h3>30-Day BNDR Unlimited™</h3>
+                <div class="price-tag">$3,500<span>/mo</span></div>
+                <ul class="feature-list">
+                    <li>Unlimited requests (1 active)</li>
+                    <li>Unlimited revisions</li>
+                    <li>Pause or cancel anytime</li>
+                </ul>
+                <a href="https://buy.stripe.com/eVq28r0FJ2W6988aaQ0oM0e" target="_blank" rel="noopener noreferrer" class="btn-primary">Start Project</a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Archive Drawer -->
+    <aside id="archive-drawer" class="drawer" aria-labelledby="archive-title">
+        <button class="drawer-close" aria-label="Close Archive">&times;</button>
+        <div class="section-header" style="margin-bottom: 40px;"><div id="archive-title" class="section-badge">The Archive</div></div>
+        
+        <div class="archive-drawer-grid">
+            <div class="archive-category">
+                <div class="section-header" style="margin-bottom: 20px;"><div class="section-badge">Core Implementations</div></div>
+                <ul class="archive-list">
+                    <li><a href="https://bndrbots.github.io/BNDR_LifeMatrix/">LifeMatrix</a></li>
+                    <li><a href="https://bndrbots.github.io/Studio/">Studio</a></li>
+                    <li><a href="https://bndrbots.github.io/Voss/">Voss</a></li>
+                    <li><a href="https://bndrbots.github.io/SaguaroIronline/">Saguaro Ironline</a></li>
+                    <li><a href="https://bndrbots.github.io/auto_logistics/">Auto Logistics</a></li>
+                    <li><a href="https://bndrbots.github.io/particularlygreen/">Particularly Green</a></li>
+                </ul>
+            </div>
+            
+            <div class="archive-category">
+                <div class="section-header" style="margin-bottom: 20px;"><div class="section-badge">Tactile WebApps</div></div>
+                <ul class="archive-list">
+                    <li><a href="https://bndrbots.github.io/breather">Breather</a></li>
+                    <li><a href="https://bndrbots.github.io/morph_black/">Morph Black</a></li>
+                    <li><a href="https://bndrbots.github.io/somaflux/">Somaflux</a></li>
+                    <li><a href="https://bndrbots.github.io/volumetric/">Volumetric</a></li>
+                    <li><a href="https://bndrbots.github.io/distortion/">Distortion</a></li>
+                    <li><a href="https://bndrbots.github.io/CRYSTAL-GATE/">Crystal Gate</a></li>
+                </ul>
+            </div>
+            
+            <div class="archive-category">
+                <div class="section-header" style="margin-bottom: 20px;"><div class="section-badge">Interactive Games</div></div>
+                <ul class="archive-list">
+                    <li><a href="https://bndrbots.github.io/RogueRitaV3/">Rogue Rita V3</a></li>
+                    <li><a href="https://bndrbots.github.io/RogueRitaV2/">Rogue Rita V2</a></li>
+                    <li><a href="https://bndrbots.github.io/RogueRitaV1/">Rogue Rita V1</a></li>
+                    <li><a href="https://bndrbots.github.io/endlessfocus/">Endless Focus</a></li>
+                    <li><a href="https://bndrbots.github.io/Graffiti-Generator/">Graffiti Generator</a></li>
+                </ul>
+            </div>
+            
+            <div class="archive-category">
+                <div class="section-header" style="margin-bottom: 20px;"><div class="section-badge">Tools & Utilities</div></div>
+                <ul class="archive-list">
+                    <li><a href="https://v0-image-analysis-three-chi-68.vercel.app/">Image Analysis Array</a></li>
+                    <li><a href="https://bndrbots.github.io/cyber_playground/">Cyber Playground</a></li>
+                    <li><a href="https://bndrbots.github.io/rosefieldvip/">Rosefield VIP</a></li>
+                    <li><a href="https://bndrbots.github.io/crystal_love/">Crystal Love</a></li>
+                    <li><a href="https://bndrbots.github.io/TheFeedUpraded/">The Feed</a></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <!-- CONTACT MODAL -->
+    <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contact-title">
+        <div class="modal-content">
+            <button class="modal-close" id="close-modal-btn" aria-label="Close Contact Modal">&times;</button>
+            <h2 id="contact-title">Initialize Project</h2>
+            <form onsubmit="event.preventDefault(); alert('Transmission sequence initiated.'); document.getElementById('contact-modal').classList.remove('active'); document.body.style.overflow = '';">
+                <div class="form-group">
+                    <input type="text" placeholder="Your Name" required aria-label="Your Name">
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Email Address" required aria-label="Email Address">
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Briefly describe your objective..." rows="4" required aria-label="Briefly describe your objective"></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Send Transmission</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PREVIEW MODAL -->
+    <div id="preview-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="preview-title">
+        <div class="modal-content">
+            <div class="preview-header">
+                <h2 id="preview-title">Project Preview</h2>
+                <div class="preview-actions">
+                    <a href="#" id="preview-external-link" target="_blank" rel="noopener noreferrer" class="btn-primary" style="padding: 10px 24px; margin: 0; width: auto;">Open in New Tab ↗</a>
+                </div>
+            </div>
+            <button class="modal-close" id="close-preview-btn" aria-label="Close Preview">&times;</button>
+            <div class="preview-iframe-container">
+                <iframe id="preview-frame" src="" title="Live Project Preview"></iframe>
+            </div>
+        </div>
+    </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        
+        // --- SPA NAVIGATION & DRAWER LOGIC ---
+        const pricingDrawer = document.getElementById('pricing-drawer');
+        const archiveDrawer = document.getElementById('archive-drawer');
+        const drawerOverlay = document.getElementById('drawer-overlay');
+        const globalBackBtn = document.getElementById('global-back-btn');
+
+        function openDrawer(drawerElement) {
+            closeAllDrawers(); // Ensure only one is open
+            drawerElement.classList.add('active');
+            drawerOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Re-purpose back btn logic if needed visually, but it sits permanently 
+            // per exact requirement. We'll ensure it acts as a closer.
+        }
+
+        function closeAllDrawers() {
+            pricingDrawer.classList.remove('active');
+            archiveDrawer.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+            if(!document.getElementById('contact-modal').classList.contains('active') && 
+               !document.getElementById('preview-modal').classList.contains('active')) {
+                document.body.style.overflow = '';
+            }
+        }
+
+        document.getElementById('nav-pricing-btn').addEventListener('click', () => openDrawer(pricingDrawer));
+        document.getElementById('nav-archive-btn').addEventListener('click', () => openDrawer(archiveDrawer));
+        
+        document.querySelectorAll('.drawer-close').forEach(btn => btn.addEventListener('click', closeAllDrawers));
+        drawerOverlay.addEventListener('click', closeAllDrawers);
+
+        globalBackBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (pricingDrawer.classList.contains('active') || archiveDrawer.classList.contains('active')) {
+                closeAllDrawers();
+            } else if (document.getElementById('contact-modal').classList.contains('active') || document.getElementById('preview-modal').classList.contains('active')) {
+                document.getElementById('contact-modal').classList.remove('active');
+                document.getElementById('preview-modal').classList.remove('active');
+                document.body.style.overflow = '';
+                document.getElementById('preview-frame').src = '';
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+
+        // --- MODAL LOGIC (Contact) ---
+        const contactModal = document.getElementById('contact-modal');
+        function openModal() {
+            contactModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal() {
+            contactModal.classList.remove('active');
+            if(!pricingDrawer.classList.contains('active') && !archiveDrawer.classList.contains('active')) {
+                document.body.style.overflow = '';
+            }
+        }
+        
+        document.getElementById('nav-contact-btn').addEventListener('click', openModal);
+        
+        // Cleaned up double binding for footer contact trigger
+        document.querySelectorAll('.open-modal-btn, .connect-section-trigger').forEach(btn => btn.addEventListener('click', openModal));
+        
+        document.getElementById('close-modal-btn').addEventListener('click', closeModal);
+        contactModal.addEventListener('click', (e) => { if(e.target === contactModal) closeModal(); });
+
+
+        // --- PREVIEW MODAL LOGIC (Archive Links & Connect Modals) ---
+        const previewModal = document.getElementById('preview-modal');
+        const previewFrame = document.getElementById('preview-frame');
+        const previewTitle = document.getElementById('preview-title');
+        const previewLink = document.getElementById('preview-external-link');
+
+        document.querySelectorAll('.archive-list a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                previewTitle.textContent = link.textContent.replace('↗', '').trim();
+                previewFrame.src = link.href;
+                previewLink.href = link.href;
+                
+                previewFrame.style.display = 'block';
+                const smv = document.getElementById('social-modal-view');
+                if (smv) smv.style.display = 'none';
+                
+                previewModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // Restored Visually Congruent Modal Popups for footer links under "Connect"
+        document.querySelectorAll('.connect-btn').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                previewTitle.textContent = link.textContent.trim();
+                previewLink.href = link.href;
+                
+                // Hide iframe to prevent X-Frame-Options blocking external social sites
+                previewFrame.style.display = 'none';
+                
+                let smv = document.getElementById('social-modal-view');
+                if (!smv) {
+                    smv = document.createElement('div');
+                    smv.id = 'social-modal-view';
+                    smv.style.display = 'flex';
+                    smv.style.flexDirection = 'column';
+                    smv.style.alignItems = 'center';
+                    smv.style.justifyContent = 'center';
+                    smv.style.height = '100%';
+                    smv.style.padding = '32px';
+                    smv.style.textAlign = 'center';
+                    smv.style.background = '#ffffff';
+                    smv.style.color = 'var(--void)';
+                    smv.innerHTML = `
+                        <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.02em;">External Protocol</h3>
+                        <p style="font-size: 16px; color: rgba(2,2,2,0.7); margin-bottom: 32px; max-width: 400px; line-height: 1.6;">You are initiating a connection to an external platform. Confirm coordinates to establish uplink.</p>
+                        <a href="#" id="social-modal-action" target="_blank" rel="noopener noreferrer" class="btn-primary" style="width: auto; padding: 16px 32px; display: inline-block;">Initialize Link ↗</a>
+                    `;
+                    document.querySelector('.preview-iframe-container').appendChild(smv);
+                }
+                smv.style.display = 'flex';
+                document.getElementById('social-modal-action').href = link.href;
+                
+                previewModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closePreviewModal() {
+            previewModal.classList.remove('active');
+            if(!pricingDrawer.classList.contains('active') && !archiveDrawer.classList.contains('active')) {
+                document.body.style.overflow = '';
+            }
+            setTimeout(() => { 
+                previewFrame.src = ''; 
+                previewFrame.style.display = 'block';
+                const smv = document.getElementById('social-modal-view');
+                if (smv) smv.style.display = 'none';
+            }, 400); 
+        }
+        
+        document.getElementById('close-preview-btn').addEventListener('click', closePreviewModal);
+        previewModal.addEventListener('click', (e) => { if(e.target === previewModal) closePreviewModal(); });
+
+
+        // --- NAV HIDE ON SCROLL LOGIC ---
+        const nav = document.getElementById('main-nav');
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.scrollY;
+            if (currentScroll > 100 && currentScroll > lastScroll) {
+                nav.style.transform = 'translate(-50%, -150%)';
+            } else {
+                nav.style.transform = 'translate(-50%, 0)';
+            }
+            lastScroll = currentScroll;
+        }, { passive: true });
+
+        // Ensure robust initialization only after Three.js loads
+        if(typeof THREE !== 'undefined' && typeof gsap !== 'undefined') {
+            initThreeJS();
+        } else {
+            window.onload = initThreeJS;
+        }
+
+        function initThreeJS() {
+            // --- 3D ENVIRONMENT ---
+            const container = document.getElementById('webgl-container');
+            const scene = new THREE.Scene();
+            
+            const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 100);
+            camera.position.z = 16;
+            
+            // Central drift target based on screen size
+            let basePosX = window.innerWidth > 800 ? -2 : 0;
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.2;
+            container.appendChild(renderer.domElement);
+
+            const pmremGenerator = new THREE.PMREMGenerator(renderer);
+            pmremGenerator.compileEquirectangularShader();
+            const envScene = new THREE.Scene();
+            const envLight1 = new THREE.PointLight(0xffffff, 2, 0);
+            const envLight2 = new THREE.PointLight(0xCCFF00, 3, 0); 
+            const envLight3 = new THREE.PointLight(0xff0055, 3, 0); 
+            envLight3.position.set(0, -20, 10);
+            envScene.add(envLight1, envLight2, envLight3);
+            const renderTarget = pmremGenerator.fromScene(envScene, 0.04);
+            scene.environment = renderTarget.texture;
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(ambientLight);
+
+            const pointLight1 = new THREE.PointLight(0xCCFF00, 6, 40);
+            pointLight1.position.set(5, 5, 5);
+            scene.add(pointLight1);
+
+            const pointLight2 = new THREE.PointLight(0xff0055, 8, 40);
+            pointLight2.position.set(-5, -5, -2);
+            scene.add(pointLight2);
+
+            const shadowCanvas = document.createElement('canvas');
+            shadowCanvas.width = 256; shadowCanvas.height = 256;
+            const ctx = shadowCanvas.getContext('2d');
+            const gradient = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+            gradient.addColorStop(0, 'rgba(10, 10, 11, 0.25)'); 
+            gradient.addColorStop(1, 'rgba(10, 10, 11, 0)');    
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 256, 256);
+            const shadowTexture = new THREE.CanvasTexture(shadowCanvas);
+            const shadowMaterial = new THREE.MeshBasicMaterial({ 
+                map: shadowTexture, 
+                transparent: true, 
+                depthWrite: false,
+                opacity: 0.8
+            });
+            const shadowPlane = new THREE.Mesh(new THREE.PlaneGeometry(10, 10), shadowMaterial);
+            shadowPlane.rotation.x = -Math.PI / 2;
+            shadowPlane.position.y = -3.5; 
+            scene.add(shadowPlane);
+
+            const boxGroup = new THREE.Group();
+            scene.add(boxGroup);
+
+            const glassMaterial = new THREE.MeshPhysicalMaterial({
+                color: 0x0A0A0B,
+                metalness: 0.5,
+                roughness: 0.1,        
+                transmission: 0.9,     
+                thickness: 2.5,        
+                ior: 1.8,              
+                clearcoat: 1.0,        
+                clearcoatRoughness: 0.05,
+                envMapIntensity: 1.2,  
+                side: THREE.DoubleSide,
+                transparent: true
+            });
+
+            const innerMaterial = new THREE.MeshStandardMaterial({
+                color: 0x020202,
+                metalness: 0.9,
+                roughness: 0.2,
+                emissive: 0xCCFF00,
+                emissiveIntensity: 0.2 
+            });
+
+            const s = 2.0; 
+            const thickness = 0.15; 
+
+            const faceDefinitions = [
+                { id: 0, p: [0, 0, s], r: [0, 0, 0], pivot: [-s, 0, 0], axis: 'y', dir: 1 }, 
+                { id: 1, p: [0, 0, -s], r: [0, Math.PI, 0], pivot: [s, 0, 0], axis: 'y', dir: 1 }, 
+                { id: 2, p: [s, 0, 0], r: [0, Math.PI/2, 0], pivot: [0, 0, -s], axis: 'y', dir: 1 }, 
+                { id: 3, p: [-s, 0, 0], r: [0, -Math.PI/2, 0], pivot: [0, 0, s], axis: 'y', dir: 1 }, 
+                { id: 4, p: [0, s, 0], r: [-Math.PI/2, 0, 0], pivot: [0, -s, 0], axis: 'x', dir: -1 }, 
+                { id: 5, p: [0, -s, 0], r: [Math.PI/2, 0, 0], pivot: [0, s, 0], axis: 'x', dir: 1 }  
+            ];
+
+            const doors = [];
+            const geometry = new THREE.BoxGeometry(s*2, s*2, thickness, 2, 2, 2);
+            
+            const coreGeo = new THREE.BoxGeometry(s*1.5, s*1.5, s*1.5);
+            const coreMesh = new THREE.Mesh(coreGeo, innerMaterial);
+            boxGroup.add(coreMesh);
+
+            faceDefinitions.forEach(def => {
+                const pivotGroup = new THREE.Group();
+                pivotGroup.position.set(...def.p);
+                pivotGroup.rotation.set(...def.r);
+                
+                const hinge = new THREE.Group();
+                hinge.position.set(...def.pivot);
+                pivotGroup.add(hinge);
+
+                const mesh = new THREE.Mesh(geometry, glassMaterial);
+                mesh.position.set(-def.pivot[0], -def.pivot[1], -def.pivot[2]);
+                mesh.userData = { axis: def.axis, dir: def.dir, parentHinge: hinge };
+                
+                hinge.add(mesh);
+                boxGroup.add(pivotGroup);
+                doors.push(mesh);
+            });
+
+            let spinRate = { x: 0, y: 0 };
+            let currentRotation = { x: 0.5, y: 0.5 };
+            let isDragging = false;
+            let previousMouse = { x: 0, y: 0 };
+            let scrollProgress = 0;
+            
+            let gyroTarget = { x: 0, y: 0 };
+            let currentGyroOffset = { x: 0, y: 0 };
+            let isGyroActive = false;
+            
+            let lastGyroTarget = { x: 0, y: 0 };
+            let gyroVelocity = { x: 0, y: 0 };
+            let isScrolling = false;
+            let scrollEndTimer = null;
+
+            // Physics Variables for Desktop Drift + Soft Bounce
+            let driftPos = new THREE.Vector3(0, 0, 0);
+            let driftVel = new THREE.Vector3(0, 0, 0);
+            let driftAcc = new THREE.Vector3(0, 0, 0);
+            const driftBoundary = 0.8; 
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                basePosX = window.innerWidth > 800 ? -2 : 0;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            window.addEventListener('mousedown', (e) => {
+                if(e.target.closest('a, button, details, form, p, h1, h2, h3, .pricing-card, .glass-panel, .archive-category')) return;
+                isDragging = true;
+                previousMouse = { x: e.clientX, y: e.clientY };
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    const delta = { x: e.clientX - previousMouse.x, y: e.clientY - previousMouse.y };
+                    spinRate.y += delta.x * 0.001;
+                    spinRate.x += delta.y * 0.001;
+                    previousMouse = { x: e.clientX, y: e.clientY };
+                }
+            });
+
+            window.addEventListener('mouseup', () => { isDragging = false; });
+
+            window.addEventListener('touchstart', e => {
+                if(e.target.closest('a, button, details, form, p, h1, h2, h3, .pricing-card, .glass-panel, .archive-category, .modal-overlay, .drawer')) return;
+                if (e.touches.length !== 1) return;
+                isDragging = true;
+                previousMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            }, { passive: true });
+
+            window.addEventListener('touchmove', e => {
+                if (!isDragging || e.touches.length !== 1) return;
+                spinRate.y += (e.touches[0].clientX - previousMouse.x) * 0.001;
+                spinRate.x += (e.touches[0].clientY - previousMouse.y) * 0.001;
+                previousMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            }, { passive: true });
+
+            window.addEventListener('touchend', () => { isDragging = false; });
+
+            window.addEventListener('deviceorientation', (e) => {
+                if (!e.beta || !e.gamma) return;
+                isGyroActive = true;
+                let beta = Math.max(-90, Math.min(90, e.beta));
+                let gamma = Math.max(-90, Math.min(90, e.gamma));
+                gyroTarget.x = THREE.MathUtils.degToRad(beta - 45) * 0.8; 
+                gyroTarget.y = THREE.MathUtils.degToRad(gamma) * 0.8;
+                if (!isScrolling) {
+                    gyroVelocity.x += (gyroTarget.x - lastGyroTarget.x) * 2.5;
+                    gyroVelocity.y += (gyroTarget.y - lastGyroTarget.y) * 2.5;
+                }
+                lastGyroTarget = { x: gyroTarget.x, y: gyroTarget.y };
+            });
+
+            window.addEventListener('scroll', () => {
+                isScrolling = true;
+                clearTimeout(scrollEndTimer);
+                scrollEndTimer = setTimeout(() => { isScrolling = false; }, 150);
+                
+                const scrollY = window.scrollY;
+                const maxScroll = document.body.scrollHeight - window.innerHeight;
+                scrollProgress = Math.min(1, Math.max(0, scrollY / (maxScroll || 1)));
+                
+                doors.forEach(mesh => {
+                    const data = mesh.userData;
+                    gsap.to(data.parentHinge.rotation, {
+                        [data.axis]: (Math.PI / 1.8) * data.dir * scrollProgress,
+                        duration: 0.5,
+                        overwrite: "auto"
+                    });
+                });
+
+                innerMaterial.emissiveIntensity = 0.2 + (scrollProgress * 2.0);
+            }, { passive: true });
+
+            const clock = new THREE.Clock();
+
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                currentRotation.x += spinRate.x;
+                currentRotation.y += spinRate.y;
+
+                const damping = (isGyroActive && !isScrolling && !isDragging) ? 0.992 : 0.95;
+                spinRate.x *= damping;
+                spinRate.y *= damping;
+
+                if (!isDragging && !isGyroActive && Math.abs(spinRate.x) < 0.001 && Math.abs(spinRate.y) < 0.001) {
+                    spinRate.y += 0.0004;
+                    spinRate.x += 0.0002;
+                }
+
+                if (isGyroActive) {
+                    if (!isScrolling) {
+                        spinRate.x += gyroVelocity.x * 0.04;
+                        spinRate.y += gyroVelocity.y * 0.04;
+                        gyroVelocity.x *= 0.92;
+                        gyroVelocity.y *= 0.92;
+                        currentGyroOffset.x *= 0.92;
+                        currentGyroOffset.y *= 0.92;
+                    } else {
+                        currentGyroOffset.x += (gyroTarget.x - currentGyroOffset.x) * 0.08;
+                        currentGyroOffset.y += (gyroTarget.y - currentGyroOffset.y) * 0.08;
+                    }
+                }
+
+                // Apply Spin Rotation
+                boxGroup.rotation.x = currentRotation.x + currentGyroOffset.x;
+                boxGroup.rotation.y = currentRotation.y + currentGyroOffset.y;
+
+                // Apply Physics Drift & Bounce on Desktop
+                if (window.innerWidth >= 800) {
+                    // Inject organic micro-wander
+                    driftAcc.x += (Math.random() - 0.5) * 0.00004;
+                    driftAcc.y += (Math.random() - 0.5) * 0.00004;
+                    
+                    // Soft tether (spring) to origin to create bounce within bounds
+                    const distance = driftPos.length();
+                    if (distance > driftBoundary) {
+                        const springForce = 0.00015 * (distance - driftBoundary);
+                        driftAcc.x -= (driftPos.x / distance) * springForce;
+                        driftAcc.y -= (driftPos.y / distance) * springForce;
+                    } else {
+                        // Light gentle pull to center even inside bounds
+                        driftAcc.x -= driftPos.x * 0.00001;
+                        driftAcc.y -= driftPos.y * 0.00001;
+                    }
+
+                    // Apply acceleration and friction
+                    driftVel.add(driftAcc);
+                    driftVel.multiplyScalar(0.985); 
+                    driftVel.clampLength(0, 0.015); // Velocity cap
+                    
+                    driftPos.add(driftVel);
+                    driftAcc.set(0, 0, 0);
+
+                    boxGroup.position.set(basePosX + driftPos.x, driftPos.y, 0);
+                } else {
+                    // Mobile static centered position
+                    boxGroup.position.set(0, 0, 0);
+                }
+
+                // Ambient Animations
+                const time = clock.getElapsedTime();
+                pointLight1.position.y = 5 + Math.sin(time) * 2;
+                pointLight2.position.x = -5 + Math.cos(time) * 2;
+                
+                shadowPlane.position.x = boxGroup.position.x;
+                shadowPlane.scale.setScalar(1 + Math.sin(time*2)*0.02);
+                shadowPlane.material.opacity = 0.8 - (Math.sin(time*2)*0.05);
+
+                renderer.render(scene, camera);
+            }
+
+            animate();
+        }
+    });
+</script>
+</body>
+</html>
