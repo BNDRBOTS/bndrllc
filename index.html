@@ -96,48 +96,9 @@
             .nav-pill button { letter-spacing: 0.06em; }
         }
 
-        .back-btn {
-            position: fixed; 
-            top: 16px; 
-            left: 16px;
-            background: rgba(10, 10, 11, 0.75); 
-            backdrop-filter: blur(24px); 
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.05); 
-            border-radius: 99px;
-            display: flex; 
-            align-items: center; 
-            padding: 8px 16px; 
-            color: var(--bone);
-            text-decoration: none; 
-            font-size: 10px; 
-            font-weight: 700; 
-            letter-spacing: 0.15em; 
-            text-transform: uppercase;
-            z-index: 1600; 
-            transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
-            cursor: pointer;
-        }
-        .back-btn:hover, .back-btn:focus-visible { 
-            background: var(--bone); 
-            color: var(--void); 
-            transform: translateX(-4px); 
-            outline: none;
-        }
-
-        @media (max-width: 539px) {
-            .back-btn {
-                top: auto;
-                bottom: 24px;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-        }
-
         @media (min-width: 768px) {
             .nav-pill { top: 24px; max-width: none; overflow-x: visible; padding: 6px; }
             .nav-pill a, .nav-pill button { font-size: 11px; padding: 10px 20px; }
-            .back-btn { top: 24px; left: 24px; padding: 10px 20px; font-size: 11px; }
         }
 
         /* --- LAYOUT GRIDS --- */
@@ -377,7 +338,6 @@
 <body>
 
     <div id="webgl-container"></div>
-    <button id="global-back-btn" class="back-btn" aria-label="Go Back">← Back</button>
 
     <nav class="nav-pill" id="main-nav" aria-label="Main Navigation">
         <a href="#ui-layer">Home</a>
@@ -704,16 +664,12 @@
         const pricingDrawer = document.getElementById('pricing-drawer');
         const archiveDrawer = document.getElementById('archive-drawer');
         const drawerOverlay = document.getElementById('drawer-overlay');
-        const globalBackBtn = document.getElementById('global-back-btn');
 
         function openDrawer(drawerElement) {
             closeAllDrawers(); // Ensure only one is open
             drawerElement.classList.add('active');
             drawerOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
-            
-            // Re-purpose back btn logic if needed visually, but it sits permanently 
-            // per exact requirement. We'll ensure it acts as a closer.
         }
 
         function closeAllDrawers() {
@@ -731,21 +687,6 @@
         
         document.querySelectorAll('.drawer-close').forEach(btn => btn.addEventListener('click', closeAllDrawers));
         drawerOverlay.addEventListener('click', closeAllDrawers);
-
-        globalBackBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (pricingDrawer.classList.contains('active') || archiveDrawer.classList.contains('active')) {
-                closeAllDrawers();
-            } else if (document.getElementById('contact-modal').classList.contains('active') || document.getElementById('preview-modal').classList.contains('active')) {
-                document.getElementById('contact-modal').classList.remove('active');
-                document.getElementById('preview-modal').classList.remove('active');
-                document.body.style.overflow = '';
-                document.getElementById('preview-frame').src = '';
-            } else {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        });
-
 
         // --- MODAL LOGIC (Contact) ---
         const contactModal = document.getElementById('contact-modal');
@@ -782,10 +723,6 @@
                 previewFrame.src = link.href;
                 previewLink.href = link.href;
                 
-                previewFrame.style.display = 'block';
-                const smv = document.getElementById('social-modal-view');
-                if (smv) smv.style.display = 'none';
-                
                 previewModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
             });
@@ -796,33 +733,8 @@
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 previewTitle.textContent = link.textContent.trim();
+                previewFrame.src = link.href;
                 previewLink.href = link.href;
-                
-                // Hide iframe to prevent X-Frame-Options blocking external social sites
-                previewFrame.style.display = 'none';
-                
-                let smv = document.getElementById('social-modal-view');
-                if (!smv) {
-                    smv = document.createElement('div');
-                    smv.id = 'social-modal-view';
-                    smv.style.display = 'flex';
-                    smv.style.flexDirection = 'column';
-                    smv.style.alignItems = 'center';
-                    smv.style.justifyContent = 'center';
-                    smv.style.height = '100%';
-                    smv.style.padding = '32px';
-                    smv.style.textAlign = 'center';
-                    smv.style.background = '#ffffff';
-                    smv.style.color = 'var(--void)';
-                    smv.innerHTML = `
-                        <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.02em;">External Protocol</h3>
-                        <p style="font-size: 16px; color: rgba(2,2,2,0.7); margin-bottom: 32px; max-width: 400px; line-height: 1.6;">You are initiating a connection to an external platform. Confirm coordinates to establish uplink.</p>
-                        <a href="#" id="social-modal-action" target="_blank" rel="noopener noreferrer" class="btn-primary" style="width: auto; padding: 16px 32px; display: inline-block;">Initialize Link ↗</a>
-                    `;
-                    document.querySelector('.preview-iframe-container').appendChild(smv);
-                }
-                smv.style.display = 'flex';
-                document.getElementById('social-modal-action').href = link.href;
                 
                 previewModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
@@ -836,9 +748,6 @@
             }
             setTimeout(() => { 
                 previewFrame.src = ''; 
-                previewFrame.style.display = 'block';
-                const smv = document.getElementById('social-modal-view');
-                if (smv) smv.style.display = 'none';
             }, 400); 
         }
         
