@@ -823,7 +823,8 @@
     const AppState = {
         init: false,
         targetScrollProgress: 0,
-        currentScrollProgress: 0
+        currentScrollProgress: 0,
+        isScrolling: false
     };
 
     // DOM & System Init Sync Loop
@@ -980,8 +981,13 @@
         // --- DECOUPLED NAV & SCROLL PROGRESS TRACKING ---
         const nav = document.getElementById('main-nav');
         let lastScroll = 0;
+        let scrollEndTimer = null;
         
         window.addEventListener('scroll', () => {
+            AppState.isScrolling = true;
+            clearTimeout(scrollEndTimer);
+            scrollEndTimer = setTimeout(() => { AppState.isScrolling = false; }, 150);
+
             const currentScroll = window.scrollY;
             if (currentScroll > 150 && currentScroll > lastScroll) {
                 nav.classList.add('hidden');
@@ -1149,21 +1155,23 @@
             doors.push(mesh);
         });
 
-        // Frame Independent Mathematical Physics Registry
-        let targetRotX = 0.5;
-        let targetRotY = 0.5;
-        let currentRotX = 0.5;
-        let currentRotY = 0.5;
-        let autoSpinSpeed = 0.15;
-
+        // Momentum Physics Registry (Restored & Frame-Normalized)
+        let spinRate = { x: 0, y: 0 };
+        let currentRotation = { x: 0.5, y: 0.5 };
+        
         let isDragging = false;
         let previousMouse = { x: 0, y: 0 };
         
-        let gyroOffsetTargetX = 0;
-        let gyroOffsetTargetY = 0;
-        let currentGyroOffsetX = 0;
-        let currentGyroOffsetY = 0;
+        let gyroTarget = { x: 0, y: 0 };
+        let currentGyroOffset = { x: 0, y: 0 };
         let isGyroActive = false;
+        let lastGyroTarget = { x: 0, y: 0 };
+        let gyroVelocity = { x: 0, y: 0 };
+
+        let driftPos = new THREE.Vector3(0, 0, 0);
+        let driftVel = new THREE.Vector3(0, 0, 0);
+        let driftAcc = new THREE.Vector3(0, 0, 0);
+        const driftBoundary = 0.6; 
 
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
@@ -1183,8 +1191,8 @@
             if (isDragging) {
                 const dx = e.clientX - previousMouse.x;
                 const dy = e.clientY - previousMouse.y;
-                targetRotY += dx * 0.005;
-                targetRotX += dy * 0.005;
+                spinRate.y += dx * 0.0015;
+                spinRate.x += dy * 0.0015;
                 previousMouse = { x: e.clientX, y: e.clientY };
             }
         });
@@ -1200,8 +1208,8 @@
 
         window.addEventListener('touchmove', e => {
             if (!isDragging || e.touches.length !== 1) return;
-            targetRotY += (e.touches[0].clientX - previousMouse.x) * 0.003;
-            targetRotX += (e.touches[0].clientY - previousMouse.y) * 0.003;
+            spinRate.y += (e.touches[0].clientX - previousMouse.x) * 0.002;
+            spinRate.x += (e.touches[0].clientY - previousMouse.y) * 0.002;
             previousMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
         }, { passive: true });
 
@@ -1212,8 +1220,13 @@
             isGyroActive = true;
             const beta = Math.max(-90, Math.min(90, e.beta));
             const gamma = Math.max(-90, Math.min(90, e.gamma));
-            gyroOffsetTargetX = THREE.MathUtils.degToRad(beta - 45) * 0.8; 
-            gyroOffsetTargetY = THREE.MathUtils.degToRad(gamma) * 0.8;
+            gyroTarget.x = THREE.MathUtils.degToRad(beta - 45) * 0.8; 
+            gyroTarget.y = THREE.MathUtils.degToRad(gamma) * 0.8;
+            if (!AppState.isScrolling) {
+                gyroVelocity.x += (gyroTarget.x - lastGyroTarget.x) * 2.0;
+                gyroVelocity.y += (gyroTarget.y - lastGyroTarget.y) * 2.0;
+            }
+            lastGyroTarget = { x: gyroTarget.x, y: gyroTarget.y };
         });
 
         const clock = new THREE.Clock();
@@ -1223,49 +1236,80 @@
             
             // Frame Independent Determinism (Delta Time) with hard cap for mobile smoothness
             const dt = Math.min(clock.getDelta(), 0.033);
+            const timeScale = dt * 60; // Normalize math to 60fps base
             const time = clock.getElapsedTime();
             
-            // Centralized Scroll Interpolation (Replaces GSAP Overwrite Jitter)
-            AppState.currentScrollProgress = THREE.MathUtils.lerp(AppState.currentScrollProgress, AppState.targetScrollProgress, dt * 6.0);
+            // Centralized Scroll Interpolation
+            AppState.currentScrollProgress += (AppState.targetScrollProgress - AppState.currentScrollProgress) * (1 - Math.pow(0.85, timeScale));
 
             // Matrix Operations
             doors.forEach(mesh => {
                 const data = mesh.userData;
                 const targetAngle = (Math.PI / 1.6) * data.dir * AppState.currentScrollProgress;
-                data.parentHinge.rotation[data.axis] = THREE.MathUtils.lerp(data.parentHinge.rotation[data.axis], targetAngle, dt * 8.0);
+                data.parentHinge.rotation[data.axis] += (targetAngle - data.parentHinge.rotation[data.axis]) * (1 - Math.pow(0.8, timeScale));
             });
 
             innerMaterial.emissiveIntensity = 0.25 + (AppState.currentScrollProgress * 2.5);
             coreMesh.rotation.x = AppState.currentScrollProgress * Math.PI;
             coreMesh.rotation.y = AppState.currentScrollProgress * Math.PI * 0.5;
 
-            // Fluid Rotational Mathematics
-            if (!isDragging && !isGyroActive) {
-                targetRotY += autoSpinSpeed * dt;
-                targetRotX += (autoSpinSpeed * 0.4) * dt;
+            // Momentum Physics 
+            currentRotation.x += spinRate.x * timeScale;
+            currentRotation.y += spinRate.y * timeScale;
+
+            const damping = (isGyroActive && !isDragging) ? 0.99 : 0.94;
+            spinRate.x *= Math.pow(damping, timeScale);
+            spinRate.y *= Math.pow(damping, timeScale);
+
+            if (!isDragging && !isGyroActive && Math.abs(spinRate.x) < 0.001 && Math.abs(spinRate.y) < 0.001) {
+                spinRate.y += 0.0006 * timeScale;
+                spinRate.x += 0.0003 * timeScale;
             }
 
             if (isGyroActive) {
-                currentGyroOffsetX = THREE.MathUtils.lerp(currentGyroOffsetX, gyroOffsetTargetX, dt * 2.5);
-                currentGyroOffsetY = THREE.MathUtils.lerp(currentGyroOffsetY, gyroOffsetTargetY, dt * 2.5);
+                if (!AppState.isScrolling) {
+                    spinRate.x += gyroVelocity.x * 0.05 * timeScale;
+                    spinRate.y += gyroVelocity.y * 0.05 * timeScale;
+                    gyroVelocity.x *= Math.pow(0.9, timeScale);
+                    gyroVelocity.y *= Math.pow(0.9, timeScale);
+                    currentGyroOffset.x *= Math.pow(0.9, timeScale);
+                    currentGyroOffset.y *= Math.pow(0.9, timeScale);
+                } else {
+                    currentGyroOffset.x += (gyroTarget.x - currentGyroOffset.x) * (1 - Math.pow(0.9, timeScale));
+                    currentGyroOffset.y += (gyroTarget.y - currentGyroOffset.y) * (1 - Math.pow(0.9, timeScale));
+                }
             }
 
-            currentRotX = THREE.MathUtils.lerp(currentRotX, targetRotX + currentGyroOffsetX, dt * 6.0);
-            currentRotY = THREE.MathUtils.lerp(currentRotY, targetRotY + currentGyroOffsetY, dt * 6.0);
+            boxGroup.rotation.x = currentRotation.x + currentGyroOffset.x;
+            boxGroup.rotation.y = currentRotation.y + currentGyroOffset.y;
 
-            boxGroup.rotation.x = currentRotX;
-            boxGroup.rotation.y = currentRotY;
-
-            // Fluid Positional Drift (Replaced Jitter)
+            // Fluid Positional Drift
             if (window.innerWidth >= 800) {
-                const targetDriftX = basePosX + Math.sin(time * 0.4) * 0.4;
-                const targetDriftY = Math.cos(time * 0.3) * 0.3;
+                driftAcc.x += (Math.random() - 0.5) * 0.00005 * timeScale;
+                driftAcc.y += (Math.random() - 0.5) * 0.00005 * timeScale;
                 
-                boxGroup.position.x = THREE.MathUtils.lerp(boxGroup.position.x, targetDriftX, dt * 2.0);
-                boxGroup.position.y = THREE.MathUtils.lerp(boxGroup.position.y, targetDriftY, dt * 2.0);
+                const distance = driftPos.length();
+                if (distance > driftBoundary) {
+                    const springForce = 0.0002 * (distance - driftBoundary) * timeScale;
+                    driftAcc.x -= (driftPos.x / distance) * springForce;
+                    driftAcc.y -= (driftPos.y / distance) * springForce;
+                } else {
+                    driftAcc.x -= driftPos.x * 0.000015 * timeScale;
+                    driftAcc.y -= driftPos.y * 0.000015 * timeScale;
+                }
+
+                driftVel.add(driftAcc);
+                driftVel.multiplyScalar(Math.pow(0.98, timeScale)); 
+                driftVel.clampLength(0, 0.02 * timeScale); 
+                
+                driftPos.add(driftVel);
+                driftAcc.set(0, 0, 0);
+
+                boxGroup.position.x += ((basePosX + driftPos.x) - boxGroup.position.x) * (1 - Math.pow(0.95, timeScale));
+                boxGroup.position.y += (driftPos.y - boxGroup.position.y) * (1 - Math.pow(0.95, timeScale));
             } else {
-                boxGroup.position.x = THREE.MathUtils.lerp(boxGroup.position.x, 0, dt * 4.0);
-                boxGroup.position.y = THREE.MathUtils.lerp(boxGroup.position.y, 0, dt * 4.0);
+                boxGroup.position.x += (0 - boxGroup.position.x) * (1 - Math.pow(0.95, timeScale));
+                boxGroup.position.y += (0 - boxGroup.position.y) * (1 - Math.pow(0.95, timeScale));
             }
 
             pointLight1.position.y = 6 + Math.sin(time * 0.8) * 2.5;
