@@ -470,7 +470,6 @@
 
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
 </head>
 <body>
 
@@ -798,21 +797,32 @@
     </div>
 
 <script>
-    // System Initialization via DOM Sync
-    if (typeof THREE !== 'undefined' && typeof gsap !== 'undefined') {
-        initThreeJS();
-        runEntranceAnimation();
-    } else {
-        document.addEventListener("DOMContentLoaded", () => {
-            if (typeof THREE !== 'undefined' && typeof gsap !== 'undefined') {
-                initThreeJS();
-                runEntranceAnimation();
-            }
-        });
+    const AppState = {
+        init: false,
+        targetScrollProgress: 0,
+        currentScrollProgress: 0
+    };
+
+    // DOM & System Init Sync Loop
+    function bootloader() {
+        if (AppState.init) return;
+        if (typeof THREE !== 'undefined') {
+            AppState.init = true;
+            initThreeJS();
+            runEntranceAnimation();
+            initDOMSystems();
+        } else {
+            requestAnimationFrame(bootloader);
+        }
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-        
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bootloader);
+    } else {
+        bootloader();
+    }
+
+    function initDOMSystems() {
         // --- OPTIMAL INTERSECTION OBSERVER FOR MAGICAL REVEALS ---
         const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
         const observer = new IntersectionObserver((entries, observer) => {
@@ -824,19 +834,8 @@
             });
         }, observerOptions);
 
-        // Wait to attach observer until initial entrance animation finishes
-        setTimeout(() => {
-            document.querySelectorAll('.io-target').forEach(el => observer.observe(el));
-        }, 1500);
-
-        // --- SYSTEM FLASH EFFECT ---
-        function flashSystem() {
-            if(typeof gsap === 'undefined') return;
-            gsap.fromTo("#system-flash", 
-                { opacity: 1 }, 
-                { opacity: 0, duration: 0.4, ease: "expo.out" }
-            );
-        }
+        // Immediate bind - Entrance CSS handles overlap mitigation organically
+        document.querySelectorAll('.io-target').forEach(el => observer.observe(el));
 
         // --- CONSOLIDATED DIALOG & SURFACE CONTROLLER ---
         const SurfaceController = {
@@ -844,7 +843,6 @@
             lastFocus: null,
             
             init() {
-                // Bind all close buttons and overlay clicks
                 document.querySelectorAll('.drawer-close, .modal-close, .drawer-overlay, .modal-overlay').forEach(el => {
                     el.addEventListener('click', (e) => {
                         if (e.target === el || e.currentTarget.classList.contains('drawer-close') || e.currentTarget.classList.contains('modal-close')) {
@@ -853,7 +851,6 @@
                     });
                 });
 
-                // Global Escape Key Listener
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape' && this.activeSurface) this.close();
                 });
@@ -873,14 +870,12 @@
                     document.getElementById('drawer-overlay').classList.add('active');
                 }
 
-                // WCAG True Focus Trap & Background Isolation
                 document.body.style.overflow = 'hidden';
                 document.getElementById('ui-layer').setAttribute('inert', '');
                 document.getElementById('main-nav').setAttribute('inert', '');
 
                 flashSystem();
 
-                // Focus the first interactive element inside the active surface
                 const firstFocusable = this.activeSurface.querySelector('button, input, textarea, a');
                 if (firstFocusable) {
                     setTimeout(() => firstFocusable.focus(), 50); 
@@ -895,7 +890,6 @@
                     document.getElementById('drawer-overlay').classList.remove('active');
                 }
 
-                // Restore Accessibility & Scroll
                 document.body.style.overflow = '';
                 document.getElementById('ui-layer').removeAttribute('inert');
                 document.getElementById('main-nav').removeAttribute('inert');
@@ -905,7 +899,6 @@
                     this.lastFocus.focus();
                 }
 
-                // Native CSS-Engine Sync for Iframe Teardown
                 if (this.activeSurface.id === 'preview-modal') {
                     const frame = document.getElementById('preview-frame');
                     const modal = this.activeSurface;
@@ -923,13 +916,11 @@
 
         SurfaceController.init();
 
-        // Bind Surface Triggers
         document.getElementById('nav-pricing-btn').addEventListener('click', function() { SurfaceController.open('pricing-drawer', this); });
         document.getElementById('nav-archive-btn').addEventListener('click', function() { SurfaceController.open('archive-drawer', this); });
         document.getElementById('nav-contact-btn').addEventListener('click', function() { SurfaceController.open('contact-modal', this); });
         document.querySelectorAll('.connect-section-trigger').forEach(btn => btn.addEventListener('click', function() { SurfaceController.open('contact-modal', this); }));
 
-        // Form Submit Hijack
         const contactForm = document.getElementById('contact-form');
         if (contactForm) {
             contactForm.addEventListener('submit', (e) => {
@@ -952,7 +943,6 @@
             });
         }
 
-        // Preview Link Hijack
         document.querySelectorAll('.archive-list a, .connect-btn').forEach(link => {
             if(link.hostname === window.location.hostname || link.href.includes('mailto') || link.href.includes('tel')) return;
             link.addEventListener('click', (e) => {
@@ -964,9 +954,10 @@
             });
         });
 
-        // --- NAV HIDE ON SCROLL LOGIC ---
+        // --- DECOUPLED NAV & SCROLL PROGRESS TRACKING ---
         const nav = document.getElementById('main-nav');
         let lastScroll = 0;
+        
         window.addEventListener('scroll', () => {
             const currentScroll = window.scrollY;
             if (currentScroll > 150 && currentScroll > lastScroll) {
@@ -975,10 +966,27 @@
                 nav.classList.remove('hidden');
             }
             lastScroll = currentScroll;
-        }, { passive: true });
-    });
 
-    // --- GRACEFUL FALLBACK & ENTRANCE ---
+            // Forensic Compliant Single Authority Scroll Signal
+            const maxScroll = document.body.scrollHeight - window.innerHeight;
+            AppState.targetScrollProgress = Math.min(1, Math.max(0, currentScroll / (maxScroll || 1)));
+            
+        }, { passive: true });
+    }
+
+    function flashSystem() {
+        const flash = document.getElementById('system-flash');
+        if(!flash) return;
+        
+        flash.style.opacity = '1';
+        flash.style.transition = 'none';
+        
+        requestAnimationFrame(() => {
+            flash.style.transition = 'opacity 0.4s cubic-bezier(0.19, 1, 0.22, 1)';
+            flash.style.opacity = '0';
+        });
+    }
+
     function runEntranceAnimation() {
         document.body.style.opacity = '1';
         
@@ -992,33 +1000,11 @@
             if (mainNav) mainNav.classList.add('is-loaded');
         }, 800);
         
-        if (typeof gsap !== 'undefined') {
-            gsap.to('#webgl-container', { opacity: 1, duration: 2.5, ease: "power2.inOut" });
+        const webgl = document.getElementById('webgl-container');
+        if (webgl) {
+            webgl.style.transition = 'opacity 2.5s cubic-bezier(0.16, 1, 0.3, 1)';
+            webgl.style.opacity = '1';
         }
-    }
-
-    // Zero-Dependency Failsafe Bootloader
-    let attempts = 0;
-    function checkDependencies() {
-        if(typeof THREE !== 'undefined' && typeof gsap !== 'undefined') {
-            initThreeJS();
-            runEntranceAnimation();
-        } else if (attempts < 40) { // 2000ms threshold
-            attempts++;
-            setTimeout(checkDependencies, 50);
-        } else {
-            console.warn("BNDR Bootloader: External libraries failed to mount. Forcing fallback visibility.");
-            document.body.style.opacity = '1';
-            document.querySelectorAll('.io-target').forEach(el => el.classList.add('is-visible'));
-            const mainNav = document.querySelector('#main-nav');
-            if (mainNav) mainNav.classList.add('is-loaded');
-        }
-    }
-    
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', checkDependencies);
-    } else {
-        checkDependencies();
     }
 
     function initThreeJS() {
@@ -1140,24 +1126,21 @@
             doors.push(mesh);
         });
 
-        let spinRate = { x: 0, y: 0 };
-        let currentRotation = { x: 0.5, y: 0.5 };
+        // Frame Independent Mathematical Physics Registry
+        let targetRotX = 0.5;
+        let targetRotY = 0.5;
+        let currentRotX = 0.5;
+        let currentRotY = 0.5;
+        let autoSpinSpeed = 0.15;
+
         let isDragging = false;
         let previousMouse = { x: 0, y: 0 };
-        let scrollProgress = 0;
         
-        let gyroTarget = { x: 0, y: 0 };
-        let currentGyroOffset = { x: 0, y: 0 };
+        let gyroOffsetTargetX = 0;
+        let gyroOffsetTargetY = 0;
+        let currentGyroOffsetX = 0;
+        let currentGyroOffsetY = 0;
         let isGyroActive = false;
-        let lastGyroTarget = { x: 0, y: 0 };
-        let gyroVelocity = { x: 0, y: 0 };
-        let isScrolling = false;
-        let scrollEndTimer = null;
-
-        let driftPos = new THREE.Vector3(0, 0, 0);
-        let driftVel = new THREE.Vector3(0, 0, 0);
-        let driftAcc = new THREE.Vector3(0, 0, 0);
-        const driftBoundary = 0.6; 
 
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
@@ -1175,9 +1158,10 @@
 
         window.addEventListener('mousemove', (e) => {
             if (isDragging) {
-                const delta = { x: e.clientX - previousMouse.x, y: e.clientY - previousMouse.y };
-                spinRate.y += delta.x * 0.0015;
-                spinRate.x += delta.y * 0.0015;
+                const dx = e.clientX - previousMouse.x;
+                const dy = e.clientY - previousMouse.y;
+                targetRotY += dx * 0.005;
+                targetRotX += dy * 0.005;
                 previousMouse = { x: e.clientX, y: e.clientY };
             }
         });
@@ -1193,8 +1177,8 @@
 
         window.addEventListener('touchmove', e => {
             if (!isDragging || e.touches.length !== 1) return;
-            spinRate.y += (e.touches[0].clientX - previousMouse.x) * 0.002;
-            spinRate.x += (e.touches[0].clientY - previousMouse.y) * 0.002;
+            targetRotY += (e.touches[0].clientX - previousMouse.x) * 0.005;
+            targetRotX += (e.touches[0].clientY - previousMouse.y) * 0.005;
             previousMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
         }, { passive: true });
 
@@ -1203,104 +1187,64 @@
         window.addEventListener('deviceorientation', (e) => {
             if (!e.beta || !e.gamma) return;
             isGyroActive = true;
-            let beta = Math.max(-90, Math.min(90, e.beta));
-            let gamma = Math.max(-90, Math.min(90, e.gamma));
-            gyroTarget.x = THREE.MathUtils.degToRad(beta - 45) * 0.8; 
-            gyroTarget.y = THREE.MathUtils.degToRad(gamma) * 0.8;
-            if (!isScrolling) {
-                gyroVelocity.x += (gyroTarget.x - lastGyroTarget.x) * 2.0;
-                gyroVelocity.y += (gyroTarget.y - lastGyroTarget.y) * 2.0;
-            }
-            lastGyroTarget = { x: gyroTarget.x, y: gyroTarget.y };
+            const beta = Math.max(-90, Math.min(90, e.beta));
+            const gamma = Math.max(-90, Math.min(90, e.gamma));
+            gyroOffsetTargetX = THREE.MathUtils.degToRad(beta - 45) * 0.8; 
+            gyroOffsetTargetY = THREE.MathUtils.degToRad(gamma) * 0.8;
         });
-
-        window.addEventListener('scroll', () => {
-            isScrolling = true;
-            clearTimeout(scrollEndTimer);
-            scrollEndTimer = setTimeout(() => { isScrolling = false; }, 150);
-            
-            const scrollY = window.scrollY;
-            const maxScroll = document.body.scrollHeight - window.innerHeight;
-            scrollProgress = Math.min(1, Math.max(0, scrollY / (maxScroll || 1)));
-            
-            doors.forEach(mesh => {
-                const data = mesh.userData;
-                gsap.to(data.parentHinge.rotation, {
-                    [data.axis]: (Math.PI / 1.6) * data.dir * scrollProgress,
-                    duration: 0.8,
-                    ease: "power2.out",
-                    overwrite: "auto"
-                });
-            });
-
-            innerMaterial.emissiveIntensity = 0.25 + (scrollProgress * 2.5);
-            coreMesh.rotation.x = scrollProgress * Math.PI;
-            coreMesh.rotation.y = scrollProgress * Math.PI * 0.5;
-        }, { passive: true });
 
         const clock = new THREE.Clock();
 
         function animate() {
             requestAnimationFrame(animate);
             
-            currentRotation.x += spinRate.x;
-            currentRotation.y += spinRate.y;
+            // Frame Independent Determinism (Delta Time)
+            const dt = Math.min(clock.getDelta(), 0.05); // Cap to prevent 0-frame explosions
+            const time = clock.getElapsedTime();
+            
+            // Centralized Scroll Interpolation (Replaces GSAP Overwrite Jitter)
+            AppState.currentScrollProgress = THREE.MathUtils.lerp(AppState.currentScrollProgress, AppState.targetScrollProgress, dt * 6.0);
 
-            const damping = (isGyroActive && !isScrolling && !isDragging) ? 0.99 : 0.94;
-            spinRate.x *= damping;
-            spinRate.y *= damping;
+            // Matrix Operations
+            doors.forEach(mesh => {
+                const data = mesh.userData;
+                const targetAngle = (Math.PI / 1.6) * data.dir * AppState.currentScrollProgress;
+                data.parentHinge.rotation[data.axis] = THREE.MathUtils.lerp(data.parentHinge.rotation[data.axis], targetAngle, dt * 8.0);
+            });
 
-            if (!isDragging && !isGyroActive && Math.abs(spinRate.x) < 0.001 && Math.abs(spinRate.y) < 0.001) {
-                spinRate.y += 0.0006;
-                spinRate.x += 0.0003;
+            innerMaterial.emissiveIntensity = 0.25 + (AppState.currentScrollProgress * 2.5);
+            coreMesh.rotation.x = AppState.currentScrollProgress * Math.PI;
+            coreMesh.rotation.y = AppState.currentScrollProgress * Math.PI * 0.5;
+
+            // Fluid Rotational Mathematics
+            if (!isDragging && !isGyroActive) {
+                targetRotY += autoSpinSpeed * dt;
+                targetRotX += (autoSpinSpeed * 0.4) * dt;
             }
 
             if (isGyroActive) {
-                if (!isScrolling) {
-                    spinRate.x += gyroVelocity.x * 0.05;
-                    spinRate.y += gyroVelocity.y * 0.05;
-                    gyroVelocity.x *= 0.9;
-                    gyroVelocity.y *= 0.9;
-                    currentGyroOffset.x *= 0.9;
-                    currentGyroOffset.y *= 0.9;
-                } else {
-                    currentGyroOffset.x += (gyroTarget.x - currentGyroOffset.x) * 0.1;
-                    currentGyroOffset.y += (gyroTarget.y - currentGyroOffset.y) * 0.1;
-                }
+                currentGyroOffsetX = THREE.MathUtils.lerp(currentGyroOffsetX, gyroOffsetTargetX, dt * 4.0);
+                currentGyroOffsetY = THREE.MathUtils.lerp(currentGyroOffsetY, gyroOffsetTargetY, dt * 4.0);
             }
 
-            boxGroup.rotation.x = currentRotation.x + currentGyroOffset.x;
-            boxGroup.rotation.y = currentRotation.y + currentGyroOffset.y;
+            currentRotX = THREE.MathUtils.lerp(currentRotX, targetRotX + currentGyroOffsetX, dt * 6.0);
+            currentRotY = THREE.MathUtils.lerp(currentRotY, targetRotY + currentGyroOffsetY, dt * 6.0);
 
+            boxGroup.rotation.x = currentRotX;
+            boxGroup.rotation.y = currentRotY;
+
+            // Fluid Positional Drift (Replaced Jitter)
             if (window.innerWidth >= 800) {
-                driftAcc.x += (Math.random() - 0.5) * 0.00005;
-                driftAcc.y += (Math.random() - 0.5) * 0.00005;
+                const targetDriftX = basePosX + Math.sin(time * 0.4) * 0.4;
+                const targetDriftY = Math.cos(time * 0.3) * 0.3;
                 
-                const distance = driftPos.length();
-                if (distance > driftBoundary) {
-                    const springForce = 0.0002 * (distance - driftBoundary);
-                    driftAcc.x -= (driftPos.x / distance) * springForce;
-                    driftAcc.y -= (driftPos.y / distance) * springForce;
-                } else {
-                    driftAcc.x -= driftPos.x * 0.000015;
-                    driftAcc.y -= driftPos.y * 0.000015;
-                }
-
-                driftVel.add(driftAcc);
-                driftVel.multiplyScalar(0.98); 
-                driftVel.clampLength(0, 0.02); 
-                
-                driftPos.add(driftVel);
-                driftAcc.set(0, 0, 0);
-
-                // Add slight lerp for base position tracking on resize
-                boxGroup.position.x += ((basePosX + driftPos.x) - boxGroup.position.x) * 0.05;
-                boxGroup.position.y += (driftPos.y - boxGroup.position.y) * 0.05;
+                boxGroup.position.x = THREE.MathUtils.lerp(boxGroup.position.x, targetDriftX, dt * 2.0);
+                boxGroup.position.y = THREE.MathUtils.lerp(boxGroup.position.y, targetDriftY, dt * 2.0);
             } else {
-                boxGroup.position.set(0, 0, 0);
+                boxGroup.position.x = THREE.MathUtils.lerp(boxGroup.position.x, 0, dt * 4.0);
+                boxGroup.position.y = THREE.MathUtils.lerp(boxGroup.position.y, 0, dt * 4.0);
             }
 
-            const time = clock.getElapsedTime();
             pointLight1.position.y = 6 + Math.sin(time * 0.8) * 2.5;
             pointLight2.position.x = -6 + Math.cos(time * 0.8) * 2.5;
             
@@ -1310,6 +1254,7 @@
 
             renderer.render(scene, camera);
         }
+        
         animate();
     }
 </script>
