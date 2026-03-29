@@ -303,8 +303,8 @@
 
         .drawer {
             position: fixed; top: 0; right: 0; width: 100%; max-width: 520px; height: 100vh; height: 100dvh;
-            background: rgba(26, 26, 28, 0.85); backdrop-filter: blur(60px) saturate(200%); -webkit-backdrop-filter: blur(60px) saturate(200%);
-            z-index: 1500; overflow-y: auto; -webkit-overflow-scrolling: touch; 
+            background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(60px) saturate(200%); -webkit-backdrop-filter: blur(60px) saturate(200%);
+            z-index: 1500; overflow-y: auto; -webkit-overflow-scrolling: touch; touch-action: pan-y;
             transform: translateX(100%); transition: transform 0.6s var(--ease-premium);
             border-left: 1px solid rgba(255, 255, 255, 0.08); 
             padding: 96px max(32px, env(safe-area-inset-right)) max(48px, env(safe-area-inset-bottom)) max(32px, env(safe-area-inset-left)); 
@@ -329,7 +329,7 @@
             border: 1px solid rgba(255,255,255,0.06); position: relative; overflow: hidden;
             transition: all 0.4s var(--ease-premium);
             box-shadow: inset 0 1px 1px rgba(255,255,255,0.05), 0 20px 40px -10px rgba(0,0,0,0.8);
-            z-index: 1;
+            z-index: 1; touch-action: pan-y;
         }
         @media (hover: hover) { .pricing-card-mini:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.2); background: rgba(10, 10, 11, 0.8); } }
         .pricing-card-mini.tier-special { border-color: rgba(255, 0, 85, 0.4); box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 16px 40px rgba(255, 0, 85, 0.08); }
@@ -352,7 +352,7 @@
             position: relative; overflow: hidden;
             transition: all 0.4s var(--ease-premium);
             box-shadow: inset 0 1px 1px rgba(255,255,255,0.05), 0 20px 40px -10px rgba(0,0,0,0.8);
-            z-index: 1;
+            z-index: 1; touch-action: pan-y;
         }
         @media (hover: hover) { .archive-category:hover { border-color: rgba(255,255,255,0.15); background: rgba(10, 10, 11, 0.8); } }
         .archive-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
@@ -1168,7 +1168,7 @@
         });
 
         window.addEventListener('mousedown', (e) => {
-            if(e.target.closest('a, button, details, form, p, h1, h2, h3, .pricing-card, .glass-panel, .archive-category')) return;
+            if(e.target.closest('a, button, details, form, p, h1, h2, h3, .pricing-card-mini, .glass-panel, .archive-category')) return;
             isDragging = true;
             previousMouse = { x: e.clientX, y: e.clientY };
         });
@@ -1185,7 +1185,7 @@
         window.addEventListener('mouseup', () => { isDragging = false; });
 
         window.addEventListener('touchstart', e => {
-            if(e.target.closest('a, button, details, form, p, h1, h2, h3, .pricing-card, .glass-panel, .archive-category, .modal-overlay, .drawer')) return;
+            if(e.target.closest('a, button, details, form, p, h1, h2, h3, .pricing-card-mini, .glass-panel, .archive-category, .modal-overlay, .drawer')) return;
             if (e.touches.length !== 1) return;
             isDragging = true;
             previousMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
