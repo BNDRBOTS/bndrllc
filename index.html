@@ -367,6 +367,45 @@
         @media (max-width: 539px) {
             .pricing-card-mini, .archive-category { padding: 24px; }
         }
+        /* Pricing drawer: three tiers, one screen — compact; auto if a device is still too short */
+        #pricing-drawer .drawer-scroll {
+            overflow-y: auto;
+            padding-top: max(68px, calc(env(safe-area-inset-top) + 52px));
+            padding-bottom: max(12px, env(safe-area-inset-bottom));
+        }
+        #pricing-drawer .pricing-drawer-grid {
+            gap: 10px;
+        }
+        #pricing-drawer .pricing-card-mini {
+            padding: 12px 14px;
+        }
+        #pricing-drawer .pricing-card-mini .section-header { margin-bottom: 8px !important; }
+        #pricing-drawer .pricing-card-mini h3 {
+            font-size: clamp(14px, 3.8vw, 17px);
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+        #pricing-drawer .pricing-card-mini .price-tag {
+            font-size: clamp(22px, 6vw, 28px);
+            margin-bottom: 8px;
+        }
+        #pricing-drawer .pricing-card-mini .price-tag span { font-size: 12px; }
+        #pricing-drawer .pricing-card-mini .feature-list {
+            margin-bottom: 8px;
+        }
+        #pricing-drawer .pricing-card-mini .feature-list li {
+            font-size: 12px;
+            margin-bottom: 2px;
+            line-height: 1.35;
+        }
+        #pricing-drawer .pricing-card-mini .btn-primary {
+            padding: 10px 14px;
+            font-size: 10px;
+        }
+        @media (max-height: 700px) {
+            #pricing-drawer .drawer-scroll { padding-top: max(60px, env(safe-area-inset-top)); }
+            #pricing-drawer #pricing-title { margin-bottom: 10px !important; font-size: clamp(18px, 4.5vw, 24px) !important; }
+        }
         
         /* --- FOOTER & CONTACT --- */
         footer { background: var(--charcoal); color: var(--bone); padding: 20px 0 12px; margin-top: auto; position: relative; z-index: 10; border-top: 1px solid rgba(255,255,255,0.05); }
@@ -660,20 +699,9 @@
     <aside id="pricing-drawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="pricing-title">
         <button class="drawer-close" aria-label="Close Pricing">&times;</button>
         <div class="drawer-scroll">
-        <div class="section-header" style="margin-bottom: 32px;"><div class="section-badge">The Offer</div></div>
-        <h2 id="pricing-title" class="lead-text" style="color: var(--bone); font-size: clamp(28px, 6vw, 36px); margin-bottom: 48px;">One partner.<br>Unlimited builds.</h2>
+        <div class="section-header" style="margin-bottom: 12px;"><div class="section-badge">The Offer</div></div>
+        <h2 id="pricing-title" class="lead-text" style="color: var(--bone); font-size: clamp(22px, 5.2vw, 30px); margin-bottom: 14px; line-height: 1.15;">One partner. Unlimited builds.</h2>
         <div class="pricing-drawer-grid">
-            <div class="pricing-card-mini tier-special">
-                <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge" style="background: var(--magenta);">First 3 Clients</div></div>
-                <h3>Three-Page Cut™</h3>
-                <div class="price-tag">$599</div>
-                <ul class="feature-list">
-                    <li>Custom three-page site</li>
-                    <li>2 light revisions</li>
-                    <li>Applied sales psychology</li>
-                </ul>
-                <a href="https://buy.stripe.com/eVq6oH3RVdAKckk82I0oM0f" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background: var(--magenta); color: var(--bone);">Secure Offer</a>
-            </div>
             <div class="pricing-card-mini">
                 <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Standard</div></div>
                 <h3>One-Page Lander™</h3>
