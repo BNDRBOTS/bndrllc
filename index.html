@@ -286,31 +286,36 @@
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             z-index: 1400; opacity: 0; pointer-events: none; transition: opacity 0.5s var(--ease-premium);
         }
-        .drawer-overlay.active { opacity: 1; pointer-events: auto; }
+        .drawer-overlay.active { opacity: 1; pointer-events: auto; touch-action: none; }
+        /* Shell: no overflow here — iOS reliably scrolls the inner .drawer-scroll only. */
         .drawer {
             position: fixed; top: 0; right: 0; width: 100%; max-width: 520px; height: 100vh; height: 100dvh;
             background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(60px) saturate(200%); -webkit-backdrop-filter: blur(60px) saturate(200%);
-            z-index: 1500; 
+            z-index: 1500; overflow: hidden; display: flex; flex-direction: column;
             transform: translateX(100%); transition: transform 0.6s var(--ease-premium);
-            border-left: 1px solid rgba(255, 255, 255, 0.08); 
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
             color: var(--bone);
             box-shadow: -20px 0 60px rgba(0,0,0,0.3);
-            display: flex; flex-direction: column;
         }
-        .drawer.active { transform: translateX(0); }
         .drawer-scroll {
-            flex-grow: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; touch-action: pan-y;
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+            touch-action: pan-y;
             padding: 96px max(32px, env(safe-area-inset-right)) max(48px, env(safe-area-inset-bottom)) max(32px, env(safe-area-inset-left));
         }
-        @media (max-width: 539px) { 
+        .drawer.active { transform: translateX(0); }
+        @media (max-width: 539px) {
             .drawer { max-width: 100%; }
-            .drawer-scroll { padding: 80px max(24px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left)); } 
+            .drawer-scroll { padding: 80px max(24px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left)); }
         }
         .drawer-close {
             position: absolute; top: max(32px, env(safe-area-inset-top)); right: max(32px, env(safe-area-inset-right)); background: none; border: none; font-size: 36px;
             color: var(--bone); cursor: pointer; opacity: 0.5; transition: all 0.3s var(--ease-premium);
             width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
-            z-index: 10;
+            z-index: 2;
         }
         .drawer-close:focus-visible, .drawer-close:active { opacity: 1; outline: none; color: var(--plasma); transform: rotate(90deg); background: rgba(255,255,255,0.05); }
         @media (hover: hover) { .drawer-close:hover { opacity: 1; color: var(--plasma); transform: rotate(90deg); background: rgba(255,255,255,0.05); } }
@@ -323,6 +328,7 @@
             transition: all 0.4s var(--ease-premium);
             box-shadow: inset 0 1px 1px rgba(255,255,255,0.08), 0 20px 40px -10px rgba(0,0,0,0.8);
             z-index: 1;
+            touch-action: pan-y;
         }
         @media (hover: hover) { .pricing-card-mini:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.25); background: rgba(10, 10, 11, 0.8); } }
         .pricing-card-mini.tier-special { border-color: rgba(255, 0, 85, 0.5); box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 16px 40px rgba(255, 0, 85, 0.1); }
@@ -344,6 +350,7 @@
             transition: all 0.4s var(--ease-premium);
             box-shadow: inset 0 1px 1px rgba(255,255,255,0.08), 0 20px 40px -10px rgba(0,0,0,0.8);
             z-index: 1;
+            touch-action: pan-y;
         }
         @media (hover: hover) { .archive-category:hover { border-color: rgba(255,255,255,0.25); background: rgba(10, 10, 11, 0.8); } }
         .archive-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
@@ -655,105 +662,105 @@
     <aside id="pricing-drawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="pricing-title">
         <button class="drawer-close" aria-label="Close Pricing">&times;</button>
         <div class="drawer-scroll">
-            <div class="section-header" style="margin-bottom: 32px;"><div class="section-badge">The Offer</div></div>
-            <h2 id="pricing-title" class="lead-text" style="color: var(--bone); font-size: clamp(28px, 6vw, 36px); margin-bottom: 48px;">One partner.<br>Unlimited builds.</h2>
-            <div class="pricing-drawer-grid">
-                <div class="pricing-card-mini tier-special">
-                    <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge" style="background: var(--magenta);">First 3 Clients</div></div>
-                    <h3>Three-Page Cut™</h3>
-                    <div class="price-tag">$599</div>
-                    <ul class="feature-list">
-                        <li>Custom three-page site</li>
-                        <li>2 light revisions</li>
-                        <li>Applied sales psychology</li>
-                    </ul>
-                    <a href="https://buy.stripe.com/eVq6oH3RVdAKckk82I0oM0f" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background: var(--magenta); color: var(--bone);">Secure Offer</a>
-                </div>
-                <div class="pricing-card-mini">
-                    <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Standard</div></div>
-                    <h3>One-Page Lander™</h3>
-                    <div class="price-tag">$750</div>
-                    <ul class="feature-list">
-                        <li>Custom one-page site</li>
-                        <li>1 light revision</li>
-                        <li>Applied sales psychology</li>
-                    </ul>
-                    <a href="https://buy.stripe.com/7sY28r88b9kudoobeU0oM0c" target="_blank" rel="noopener noreferrer" class="btn-primary">Start Project</a>
-                </div>
-                <div class="pricing-card-mini">
-                    <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Expanded</div></div>
-                    <h3>Three-Page Custom™</h3>
-                    <div class="price-tag">$1,500<span>.00</span></div>
-                    <ul class="feature-list">
-                        <li>Custom three-page site</li>
-                        <li>2 light revisions</li>
-                        <li>Applied sales psychology</li>
-                    </ul>
-                    <a href="https://buy.stripe.com/8x2cN5fADeEOfww0Ag0oM0d" target="_blank" rel="noopener noreferrer" class="btn-primary">Start Project</a>
-                </div>
-                <div class="pricing-card-mini tier-sub">
-                    <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Subscription</div></div>
-                    <h3>30-Day BNDR Unlimited™</h3>
-                    <div class="price-tag">$3,500<span>/mo</span></div>
-                    <ul class="feature-list">
-                        <li>Unlimited requests (1 active)</li>
-                        <li>Unlimited revisions</li>
-                        <li>Pause or cancel anytime</li>
-                    </ul>
-                    <a href="https://buy.stripe.com/eVq28r0FJ2W6988aaQ0oM0e" target="_blank" rel="noopener noreferrer" class="btn-primary">Start Project</a>
-                </div>
+        <div class="section-header" style="margin-bottom: 32px;"><div class="section-badge">The Offer</div></div>
+        <h2 id="pricing-title" class="lead-text" style="color: var(--bone); font-size: clamp(28px, 6vw, 36px); margin-bottom: 48px;">One partner.<br>Unlimited builds.</h2>
+        <div class="pricing-drawer-grid">
+            <div class="pricing-card-mini tier-special">
+                <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge" style="background: var(--magenta);">First 3 Clients</div></div>
+                <h3>Three-Page Cut™</h3>
+                <div class="price-tag">$599</div>
+                <ul class="feature-list">
+                    <li>Custom three-page site</li>
+                    <li>2 light revisions</li>
+                    <li>Applied sales psychology</li>
+                </ul>
+                <a href="https://buy.stripe.com/eVq6oH3RVdAKckk82I0oM0f" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background: var(--magenta); color: var(--bone);">Secure Offer</a>
             </div>
+            <div class="pricing-card-mini">
+                <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Standard</div></div>
+                <h3>One-Page Lander™</h3>
+                <div class="price-tag">$750</div>
+                <ul class="feature-list">
+                    <li>Custom one-page site</li>
+                    <li>1 light revision</li>
+                    <li>Applied sales psychology</li>
+                </ul>
+                <a href="https://buy.stripe.com/7sY28r88b9kudoobeU0oM0c" target="_blank" rel="noopener noreferrer" class="btn-primary">Start Project</a>
+            </div>
+            <div class="pricing-card-mini">
+                <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Expanded</div></div>
+                <h3>Three-Page Custom™</h3>
+                <div class="price-tag">$1,500<span>.00</span></div>
+                <ul class="feature-list">
+                    <li>Custom three-page site</li>
+                    <li>2 light revisions</li>
+                    <li>Applied sales psychology</li>
+                </ul>
+                <a href="https://buy.stripe.com/8x2cN5fADeEOfww0Ag0oM0d" target="_blank" rel="noopener noreferrer" class="btn-primary">Start Project</a>
+            </div>
+            <div class="pricing-card-mini tier-sub">
+                <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Subscription</div></div>
+                <h3>30-Day BNDR Unlimited™</h3>
+                <div class="price-tag">$3,500<span>/mo</span></div>
+                <ul class="feature-list">
+                    <li>Unlimited requests (1 active)</li>
+                    <li>Unlimited revisions</li>
+                    <li>Pause or cancel anytime</li>
+                </ul>
+                <a href="https://buy.stripe.com/eVq28r0FJ2W6988aaQ0oM0e" target="_blank" rel="noopener noreferrer" class="btn-primary">Start Project</a>
+            </div>
+        </div>
         </div>
     </aside>
     <!-- Archive Drawer -->
     <aside id="archive-drawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="archive-title">
         <button class="drawer-close" aria-label="Close Archive">&times;</button>
         <div class="drawer-scroll">
-            <div class="section-header" style="margin-bottom: 48px;"><div id="archive-title" class="section-badge">The Archive</div></div>
-            <div class="archive-drawer-grid">
-                <div class="archive-category">
-                    <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Core Implementations</div></div>
-                    <ul class="archive-list">
-                        <li><a href="https://bndrbots.github.io/BNDR_LifeMatrix/">LifeMatrix</a></li>
-                        <li><a href="https://bndrbots.github.io/Studio/">Studio</a></li>
-                        <li><a href="https://bndrbots.github.io/Voss/">Voss</a></li>
-                        <li><a href="https://bndrbots.github.io/SaguaroIronline/">Saguaro Ironline</a></li>
-                        <li><a href="https://bndrbots.github.io/auto_logistics/">Auto Logistics</a></li>
-                        <li><a href="https://bndrbots.github.io/particularlygreen/">Particularly Green</a></li>
-                    </ul>
-                </div>
-                <div class="archive-category">
-                    <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Tactile WebApps</div></div>
-                    <ul class="archive-list">
-                        <li><a href="https://bndrbots.github.io/breather">Breather</a></li>
-                        <li><a href="https://bndrbots.github.io/morph_black/">Morph Black</a></li>
-                        <li><a href="https://bndrbots.github.io/somaflux/">Somaflux</a></li>
-                        <li><a href="https://bndrbots.github.io/volumetric/">Volumetric</a></li>
-                        <li><a href="https://bndrbots.github.io/distortion/">Distortion</a></li>
-                        <li><a href="https://bndrbots.github.io/CRYSTAL-GATE/">Crystal Gate</a></li>
-                    </ul>
-                </div>
-                <div class="archive-category">
-                    <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Interactive Games</div></div>
-                    <ul class="archive-list">
-                        <li><a href="https://bndrbots.github.io/RogueRitaV3/">Rogue Rita V3</a></li>
-                        <li><a href="https://bndrbots.github.io/RogueRitaV2/">Rogue Rita V2</a></li>
-                        <li><a href="https://bndrbots.github.io/RogueRitaV1/">Rogue Rita V1</a></li>
-                        <li><a href="https://bndrbots.github.io/endlessfocus/">Endless Focus</a></li>
-                        <li><a href="https://bndrbots.github.io/Graffiti-Generator/">Graffiti Generator</a></li>
-                    </ul>
-                </div>
-                     <div class="archive-category">
-                    <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Tools & Utilities</div></div>
-                    <ul class="archive-list">
-                        <li><a href="https://v0-image-analysis-three-chi-68.vercel.app/">Image Analysis Array</a></li>
-                        <li><a href="https://bndrbots.github.io/cyber_playground/">Cyber Playground</a></li>
-                        <li><a href="https://bndrbots.github.io/rosefieldvip/">Rosefield VIP</a></li>
-                        <li><a href="https://bndrbots.github.io/crystal_love/">Crystal Love</a></li>
-                        <li><a href="https://bndrbots.github.io/TheFeedUpraded/">The Feed</a></li>
-                    </ul>
-                </div>
+        <div class="section-header" style="margin-bottom: 48px;"><div id="archive-title" class="section-badge">The Archive</div></div>
+        <div class="archive-drawer-grid">
+            <div class="archive-category">
+                <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Core Implementations</div></div>
+                <ul class="archive-list">
+                    <li><a href="https://bndrbots.github.io/BNDR_LifeMatrix/">LifeMatrix</a></li>
+                    <li><a href="https://bndrbots.github.io/Studio/">Studio</a></li>
+                    <li><a href="https://bndrbots.github.io/Voss/">Voss</a></li>
+                    <li><a href="https://bndrbots.github.io/SaguaroIronline/">Saguaro Ironline</a></li>
+                    <li><a href="https://bndrbots.github.io/auto_logistics/">Auto Logistics</a></li>
+                    <li><a href="https://bndrbots.github.io/particularlygreen/">Particularly Green</a></li>
+                </ul>
             </div>
+            <div class="archive-category">
+                <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Tactile WebApps</div></div>
+                <ul class="archive-list">
+                    <li><a href="https://bndrbots.github.io/breather">Breather</a></li>
+                    <li><a href="https://bndrbots.github.io/morph_black/">Morph Black</a></li>
+                    <li><a href="https://bndrbots.github.io/somaflux/">Somaflux</a></li>
+                    <li><a href="https://bndrbots.github.io/volumetric/">Volumetric</a></li>
+                    <li><a href="https://bndrbots.github.io/distortion/">Distortion</a></li>
+                    <li><a href="https://bndrbots.github.io/CRYSTAL-GATE/">Crystal Gate</a></li>
+                </ul>
+            </div>
+            <div class="archive-category">
+                <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Interactive Games</div></div>
+                <ul class="archive-list">
+                    <li><a href="https://bndrbots.github.io/RogueRitaV3/">Rogue Rita V3</a></li>
+                    <li><a href="https://bndrbots.github.io/RogueRitaV2/">Rogue Rita V2</a></li>
+                    <li><a href="https://bndrbots.github.io/RogueRitaV1/">Rogue Rita V1</a></li>
+                    <li><a href="https://bndrbots.github.io/endlessfocus/">Endless Focus</a></li>
+                    <li><a href="https://bndrbots.github.io/Graffiti-Generator/">Graffiti Generator</a></li>
+                </ul>
+            </div>
+                 <div class="archive-category">
+                <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Tools & Utilities</div></div>
+                <ul class="archive-list">
+                    <li><a href="https://v0-image-analysis-three-chi-68.vercel.app/">Image Analysis Array</a></li>
+                    <li><a href="https://bndrbots.github.io/cyber_playground/">Cyber Playground</a></li>
+                    <li><a href="https://bndrbots.github.io/rosefieldvip/">Rosefield VIP</a></li>
+                    <li><a href="https://bndrbots.github.io/crystal_love/">Crystal Love</a></li>
+                    <li><a href="https://bndrbots.github.io/TheFeedUpraded/">The Feed</a></li>
+                </ul>
+            </div>
+        </div>
         </div>
     </aside>
     <!-- CONTACT MODAL -->
@@ -888,7 +895,15 @@
                 if (this.activeSurface.classList.contains('drawer')) {
                     document.getElementById('drawer-overlay').classList.add('active');
                 }
-                
+                const scrollY = window.scrollY;
+                document.documentElement.style.overflow = 'hidden';
+                document.documentElement.style.overscrollBehavior = 'none';
+                document.body.style.overflow = 'hidden';
+                document.body.style.touchAction = 'none';
+                document.body.style.position = 'fixed';
+                document.body.style.top = `-${scrollY}px`;
+                document.body.style.width = '100%';
+                document.body.dataset.scrollY = scrollY;
                 document.getElementById('ui-layer').setAttribute('inert', '');
                 document.getElementById('main-nav').setAttribute('inert', '');
                 flashSystem();
@@ -903,7 +918,15 @@
                 if (this.activeSurface.classList.contains('drawer')) {
                     document.getElementById('drawer-overlay').classList.remove('active');
                 }
-                
+                const scrollY = document.body.dataset.scrollY;
+                document.documentElement.style.overflow = '';
+                document.documentElement.style.overscrollBehavior = '';
+                document.body.style.overflow = '';
+                document.body.style.touchAction = '';
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.width = '';
+                window.scrollTo(0, parseInt(scrollY || '0'));
                 document.getElementById('ui-layer').removeAttribute('inert');
                 document.getElementById('main-nav').removeAttribute('inert');
                 if (this.lastFocus && this.lastFocus.setAttribute) {
@@ -1054,7 +1077,7 @@
         const ctx = shadowCanvas.getContext('2d');
         const gradient = ctx.createRadialGradient(256, 256, 0, 256, 256, 256);
         gradient.addColorStop(0, 'rgba(10, 10, 11, 0.3)'); 
-        gradient.addColorStop(1, 'rgba(10, 10, 11, 0)');   
+        gradient.addColorStop(1, 'rgba(10, 10, 11, 0)');    
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, 512, 512);
         const shadowTexture = new THREE.CanvasTexture(shadowCanvas);
