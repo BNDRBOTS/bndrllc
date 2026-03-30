@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         /* --- RESET & TOKENS --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
         :root {
             --bone: #E8E4DF;       
             --void: #020202;       
@@ -19,6 +19,8 @@
             --magenta: #ff0055;
             --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
             --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+            --radius-soft: 16px;
+            --radius-pill: 99px;
         }
         html {
             width: 100%;
@@ -43,16 +45,6 @@
             letter-spacing: -0.01em;
         }
         @media (pointer: fine) { body { cursor: crosshair; } }
-
-        /* --- IOS SAFARI SCROLL LOCK --- */
-        html.surface-active, body.surface-active {
-            overflow: hidden !important;
-            overscroll-behavior: none !important;
-        }
-        body.surface-active {
-            touch-action: none !important; 
-        }
-        
         /* --- 3D BACKGROUND LAYER --- */
         #webgl-container {
             position: fixed;
@@ -65,13 +57,11 @@
             pointer-events: none;
             opacity: 0;
         }
-        
         /* --- SYSTEM EFFECTS --- */
         #system-flash {
             position: fixed; inset: 0; background: var(--plasma);
             pointer-events: none; opacity: 0; z-index: 10000;
         }
-        
         /* --- OPTIMAL INTERSECTION ANIMATIONS & STAGGERS --- */
         .reveal-left { opacity: 0; transform: translate3d(-60px, 0, 0); transition: opacity 1.2s var(--ease-out-expo), transform 1.2s var(--ease-out-expo); will-change: opacity, transform; }
         .reveal-right { opacity: 0; transform: translate3d(60px, 0, 0); transition: opacity 1.2s var(--ease-out-expo), transform 1.2s var(--ease-out-expo); will-change: opacity, transform; }
@@ -93,7 +83,6 @@
             z-index: 10;
             width: 100%;
         }
-        
         /* --- GLOBAL NAV & BACK BUTTON --- */
         .nav-pill {
             position: fixed;
@@ -105,7 +94,7 @@
             backdrop-filter: blur(32px) saturate(180%);
             -webkit-backdrop-filter: blur(32px) saturate(180%);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 99px;
+            border-radius: var(--radius-pill);
             display: flex;
             gap: 4px;
             padding: 6px;
@@ -134,7 +123,7 @@
             letter-spacing: 0.1em;
             text-transform: uppercase;
             padding: 10px 20px;
-            border-radius: 99px;
+            border-radius: var(--radius-pill);
             background: transparent;
             border: none;
             cursor: pointer;
@@ -164,7 +153,6 @@
             .nav-pill { top: max(16px, env(safe-area-inset-top)); gap: 2px; padding: 4px; }
             .nav-pill a, .nav-pill button { font-size: 10px; padding: 10px 14px; letter-spacing: 0.08em; }
         }
-        
         /* --- LAYOUT GRIDS --- */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 max(24px, env(safe-area-inset-right)) 0 max(24px, env(safe-area-inset-left)); }
         .grid-2 { display: grid; grid-template-columns: 1fr; gap: 56px; }
@@ -173,7 +161,6 @@
         @media (min-width: 800px) {
             .balance-offset { margin-top: 76px; }
         }
-        
         /* --- HERO --- */
         .hero {
             position: relative;
@@ -198,7 +185,7 @@
         .hero h1::after {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
-            pointer-events: none; border-radius: 4px;
+            pointer-events: none; mix-blend-mode: overlay; border-radius: 4px;
         }
         .hero h1 .dot { color: var(--magenta); position: relative; display: inline-block; }
         .hero h1 .dot::before {
@@ -215,7 +202,6 @@
             max-width: 90%;
             will-change: transform, opacity;
         }
-        
         /* --- SECTIONS --- */
         section { padding: 96px 0; position: relative; }
         @media (min-width: 768px) { section { padding: 160px 0; } }
@@ -225,6 +211,7 @@
         .section-badge {
             position: relative; display: inline-flex; align-items: center; gap: 12px; padding: 10px 24px 10px 18px;
             font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bone); z-index: 1;
+            border-radius: 4px;
         }
         .section-badge::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -242,39 +229,40 @@
         
         /* Tactile Glass Effect */
         .glass-panel {
-            background-color: rgba(10, 10, 11, 0.65);
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            background: rgba(10, 10, 11, 0.65);
             backdrop-filter: blur(16px) saturate(200%); -webkit-backdrop-filter: blur(16px) saturate(200%);
             border-top: 1px solid rgba(255, 255, 255, 0.1); border-bottom: 1px solid rgba(2, 2, 2, 0.5);
             box-shadow: inset 0 1px 1px rgba(255,255,255,0.08), 0 -20px 40px -20px rgba(0,0,0,0.6);
             position: relative; z-index: 1;
         }
-        
+        .glass-panel::before, .pricing-card-mini::before, .archive-category::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            mix-blend-mode: overlay; opacity: 0.04; pointer-events: none; border-radius: inherit; z-index: -1;
+        }
         /* --- COPY BLOCK --- */
         .lead-text { font-size: clamp(28px, 5vw, 44px); font-weight: 700; line-height: 1.15; margin-bottom: 32px; letter-spacing: -0.02em; color: var(--bone); }
         .body-text { font-size: 18px; line-height: 1.65; color: rgba(232, 228, 223, 0.85); margin-bottom: 28px; font-weight: 500; }
-        
         /* --- BUTTONS --- */
         .btn-primary {
             display: block; width: 100%; background: var(--plasma); color: var(--void); text-align: center;
             padding: 20px 32px; font-size: 12px; font-family: 'Outfit', sans-serif; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase;
-            text-decoration: none; border: none; border-radius: 4px; cursor: pointer; transition: all 0.4s var(--ease-premium); position: relative; z-index: 1;
-            box-shadow: 0 4px 12px rgba(204, 255, 0, 0.1);
+            text-decoration: none; border: none; border-radius: 12px; cursor: pointer; transition: all 0.4s var(--ease-premium); position: relative; z-index: 1;
+            box-shadow: 0 8px 24px -8px rgba(204, 255, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.5);
         }
         .btn-primary:focus-visible, .btn-primary:active { 
             background: #e5ff66; 
             transform: translateY(-1px); 
-            box-shadow: 0 6px 12px -4px rgba(204, 255, 0, 0.3); 
+            box-shadow: 0 6px 16px -4px rgba(204, 255, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.6); 
             outline: none; 
         }
         @media (hover: hover) {
             .btn-primary:hover { 
                 background: #e5ff66; 
                 transform: translateY(-3px); 
-                box-shadow: 0 12px 24px -6px rgba(204, 255, 0, 0.4); 
+                box-shadow: 0 16px 32px -8px rgba(204, 255, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.7); 
             }
         }
-        
         /* --- FAQ ACCORDION --- */
         .faq-columns { display: grid; grid-template-columns: 1fr; gap: 0 64px; align-items: start; }
         @media (min-width: 800px) { .faq-columns { grid-template-columns: 1fr 1fr; } }
@@ -302,20 +290,27 @@
         .drawer {
             position: fixed; top: 0; right: 0; width: 100%; max-width: 520px; height: 100vh; height: 100dvh;
             background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(60px) saturate(200%); -webkit-backdrop-filter: blur(60px) saturate(200%);
-            z-index: 1500; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; 
-            touch-action: auto !important; /* Critical to unlock iOS nested scroll */
+            z-index: 1500; 
             transform: translateX(100%); transition: transform 0.6s var(--ease-premium);
             border-left: 1px solid rgba(255, 255, 255, 0.08); 
-            padding: 96px max(32px, env(safe-area-inset-right)) max(48px, env(safe-area-inset-bottom)) max(32px, env(safe-area-inset-left)); 
             color: var(--bone);
             box-shadow: -20px 0 60px rgba(0,0,0,0.3);
+            display: flex; flex-direction: column;
         }
         .drawer.active { transform: translateX(0); }
-        @media (max-width: 539px) { .drawer { max-width: 100%; padding: 80px max(24px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left)); } }
+        .drawer-scroll {
+            flex-grow: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; touch-action: pan-y;
+            padding: 96px max(32px, env(safe-area-inset-right)) max(48px, env(safe-area-inset-bottom)) max(32px, env(safe-area-inset-left));
+        }
+        @media (max-width: 539px) { 
+            .drawer { max-width: 100%; }
+            .drawer-scroll { padding: 80px max(24px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left)); } 
+        }
         .drawer-close {
             position: absolute; top: max(32px, env(safe-area-inset-top)); right: max(32px, env(safe-area-inset-right)); background: none; border: none; font-size: 36px;
             color: var(--bone); cursor: pointer; opacity: 0.5; transition: all 0.3s var(--ease-premium);
             width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
+            z-index: 10;
         }
         .drawer-close:focus-visible, .drawer-close:active { opacity: 1; outline: none; color: var(--plasma); transform: rotate(90deg); background: rgba(255,255,255,0.05); }
         @media (hover: hover) { .drawer-close:hover { opacity: 1; color: var(--plasma); transform: rotate(90deg); background: rgba(255,255,255,0.05); } }
@@ -323,16 +318,15 @@
         /* --- PRICING MINI CARDS --- */
         .pricing-drawer-grid { display: grid; gap: 24px; }
         .pricing-card-mini {
-            background-color: rgba(2, 2, 2, 0.4);
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-            color: var(--bone); padding: 32px; border-radius: 6px;
-            border: 1px solid rgba(255,255,255,0.06); position: relative; isolation: isolate;
+            background: rgba(2, 2, 2, 0.4); color: var(--bone); padding: 32px; border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08); position: relative;
             transition: all 0.4s var(--ease-premium);
-            box-shadow: inset 0 1px 1px rgba(255,255,255,0.05), 0 20px 40px -10px rgba(0,0,0,0.8);
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.08), 0 20px 40px -10px rgba(0,0,0,0.8);
+            z-index: 1;
         }
-        @media (hover: hover) { .pricing-card-mini:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.25); background-color: rgba(10, 10, 11, 0.8); } }
-        .pricing-card-mini.tier-special { border-color: rgba(255, 0, 85, 0.4); box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 16px 40px rgba(255, 0, 85, 0.08); }
-        .pricing-card-mini.tier-sub { border-color: rgba(204, 255, 0, 0.25); }
+        @media (hover: hover) { .pricing-card-mini:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.25); background: rgba(10, 10, 11, 0.8); } }
+        .pricing-card-mini.tier-special { border-color: rgba(255, 0, 85, 0.5); box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 16px 40px rgba(255, 0, 85, 0.1); }
+        .pricing-card-mini.tier-sub { border-color: rgba(204, 255, 0, 0.3); }
         .pricing-card-mini h3 { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
         .pricing-card-mini .price-tag { font-size: 40px; font-weight: 800; line-height: 1; margin-bottom: 24px; color: var(--plasma); text-shadow: 0 0 16px rgba(204, 255, 0, 0.2); }
         .pricing-card-mini.tier-special .price-tag { color: var(--magenta); text-shadow: 0 0 16px rgba(255, 0, 85, 0.25); }
@@ -345,14 +339,13 @@
         /* --- ARCHIVE MINI CARDS --- */
         .archive-drawer-grid { display: grid; gap: 24px; }
         .archive-category {
-            background-color: rgba(2, 2, 2, 0.4);
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-            color: var(--bone); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 32px;
-            position: relative; isolation: isolate;
+            background: rgba(2, 2, 2, 0.4); color: var(--bone); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 32px;
+            position: relative;
             transition: all 0.4s var(--ease-premium);
-            box-shadow: inset 0 1px 1px rgba(255,255,255,0.05), 0 20px 40px -10px rgba(0,0,0,0.8);
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.08), 0 20px 40px -10px rgba(0,0,0,0.8);
+            z-index: 1;
         }
-        @media (hover: hover) { .archive-category:hover { border-color: rgba(255,255,255,0.25); background-color: rgba(10, 10, 11, 0.8); } }
+        @media (hover: hover) { .archive-category:hover { border-color: rgba(255,255,255,0.25); background: rgba(10, 10, 11, 0.8); } }
         .archive-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
         .archive-list li a {
             display: flex; justify-content: space-between; align-items: center; color: rgba(232, 228, 223, 0.75);
@@ -368,22 +361,6 @@
         }
         @media (max-width: 539px) {
             .pricing-card-mini, .archive-category { padding: 24px; }
-        }
-        
-        /* keep tap behavior on actual controls, but stop them from hijacking pan */
-        .btn-primary,
-        .archive-list li a,
-        .drawer-close {
-            touch-action: manipulation;
-        }
-
-        /* kill touch transforms to prevent tap target stubbornness */
-        @media (hover: none) and (pointer: coarse) {
-            .btn-primary:active,
-            .archive-list li a:active,
-            .drawer-close:active {
-                transform: none !important;
-            }
         }
         
         /* --- FOOTER & CONTACT --- */
@@ -430,7 +407,6 @@
         @media (hover: hover) {
             .elite-qr:hover { filter: grayscale(0%) opacity(1); }
         }
-        
         /* --- LEGAL LINKS --- */
         .footer-policy-links { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; }
         .footer-policy-links a { position: relative; color: var(--bone); text-decoration: none; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s; opacity: 0.8; }
@@ -439,19 +415,23 @@
         @media (hover: hover) { .footer-policy-links a:hover { color: var(--plasma); opacity: 1; } }
         .legal-notice { font-size: 10px; font-weight: 400; letter-spacing: 0.01em; line-height: 1.5; color: rgba(255,255,255,0.4); border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px; max-width: 100%; }
         
-        /* --- MODALS --- */
+        /* --- MODALS (Ultra-Professional Glass) --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh; height: 100dvh; background: rgba(10, 10, 11, 0.9);
             backdrop-filter: blur(32px) saturate(180%); -webkit-backdrop-filter: blur(32px) saturate(180%); z-index: 2000;
             display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: max(24px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
-            opacity: 0; pointer-events: none; transition: opacity 0.5s var(--ease-premium); overscroll-behavior: contain; touch-action: auto !important;
+            opacity: 0; pointer-events: none; transition: opacity 0.5s var(--ease-premium); overscroll-behavior: contain; touch-action: pan-y;
         }
         @media (min-width: 768px) { .modal-overlay { align-items: center; padding: 0; } }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content {
-            background: var(--bone); padding: 40px 32px; width: 100%; max-width: 520px; border-radius: 6px;
-            position: relative; transform: translateY(40px) scale(0.98); transition: all 0.6s var(--ease-premium); margin: auto;
-            box-shadow: 0 40px 80px -20px rgba(0,0,0,0.5);
+            background: rgba(232, 228, 223, 0.98);
+            backdrop-filter: blur(24px) saturate(200%); -webkit-backdrop-filter: blur(24px) saturate(200%);
+            padding: 40px 32px; width: 100%; max-width: 520px; 
+            border-radius: var(--radius-soft);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            position: relative; transform: translateY(40px) scale(0.96); transition: all 0.6s var(--ease-premium); margin: auto;
+            box-shadow: 0 40px 100px -20px rgba(0,0,0,0.6), inset 0 2px 0 rgba(255,255,255,0.8);
         }
         @media (min-width: 768px) { .modal-content { padding: 64px 56px; } }
         @media (max-width: 539px) { .modal-content { padding: 40px 24px; } }
@@ -461,10 +441,27 @@
         @media (hover: hover) { .modal-close:hover { opacity: 1; transform: rotate(90deg); background: rgba(0,0,0,0.05); color: var(--magenta); } }
         .modal-content h2 { color: var(--void); font-size: 32px; font-weight: 800; margin-bottom: 40px; letter-spacing: -0.02em; font-family: 'Outfit', sans-serif;}
         
-        .form-group input, .form-group textarea { width: 100%; background: transparent; border: none; border-bottom: 2px solid rgba(2, 2, 2, 0.15); padding: 16px 0; margin-bottom: 32px; font-size: 17px; font-family: inherit; color: var(--void); outline: none; transition: border-color 0.4s var(--ease-premium), background 0.4s; border-radius: 0; }
-        .form-group input:focus, .form-group textarea:focus { border-bottom-color: var(--magenta); background: rgba(0,0,0,0.02); }
+        .form-group input, .form-group textarea { 
+            width: 100%; 
+            background: rgba(0,0,0,0.03); 
+            border: 1px solid rgba(2, 2, 2, 0.1); 
+            padding: 16px; 
+            margin-bottom: 24px; 
+            font-size: 16px; 
+            font-family: inherit; 
+            color: var(--void); 
+            outline: none; 
+            transition: all 0.4s var(--ease-premium); 
+            border-radius: 8px; 
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .form-group input:focus, .form-group textarea:focus { 
+            background: rgba(255,255,255,0.8);
+            border-color: var(--magenta); 
+            box-shadow: 0 0 0 4px rgba(255,0,85,0.1), inset 0 1px 2px rgba(0,0,0,0.02);
+        }
         
-        #preview-modal .modal-content { max-width: 1200px; height: 90vh; height: 90dvh; padding: 24px; display: flex; flex-direction: column; gap: 20px; background: var(--charcoal); border: 1px solid rgba(255,255,255,0.08); }
+        #preview-modal .modal-content { max-width: 1200px; height: 90vh; height: 90dvh; padding: 24px; display: flex; flex-direction: column; gap: 20px; background: rgba(10, 10, 11, 0.95); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 40px 100px -20px rgba(0,0,0,0.8), inset 0 2px 0 rgba(255,255,255,0.2); }
         @media (min-width: 768px) { #preview-modal .modal-content { padding: 40px; } }
         #preview-modal h2 { color: var(--bone); margin: 0; font-size: 24px; }
         #preview-modal .modal-close { color: var(--bone); top: 24px; right: 24px; }
@@ -652,113 +649,113 @@
             </div>
         </footer>
     </main>
-    
     <!-- DRAWERS -->
     <div id="drawer-overlay" class="drawer-overlay" aria-hidden="true"></div>
-    
     <!-- Pricing Drawer -->
     <aside id="pricing-drawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="pricing-title">
         <button class="drawer-close" aria-label="Close Pricing">&times;</button>
-        <div class="section-header" style="margin-bottom: 32px;"><div class="section-badge">The Offer</div></div>
-        <h2 id="pricing-title" class="lead-text" style="color: var(--bone); font-size: clamp(28px, 6vw, 36px); margin-bottom: 48px;">One partner.<br>Unlimited builds.</h2>
-        <div class="pricing-drawer-grid">
-            <div class="pricing-card-mini tier-special">
-                <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge" style="background: var(--magenta);">First 3 Clients</div></div>
-                <h3>Three-Page Cut™</h3>
-                <div class="price-tag">$599</div>
-                <ul class="feature-list">
-                    <li>Custom three-page site</li>
-                    <li>2 light revisions</li>
-                    <li>Applied sales psychology</li>
-                </ul>
-                <a href="https://buy.stripe.com/eVq6oH3RVdAKckk82I0oM0f" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background: var(--magenta); color: var(--bone);">Secure Offer</a>
-            </div>
-            <div class="pricing-card-mini">
-                <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Standard</div></div>
-                <h3>One-Page Lander™</h3>
-                <div class="price-tag">$750</div>
-                <ul class="feature-list">
-                    <li>Custom one-page site</li>
-                    <li>1 light revision</li>
-                    <li>Applied sales psychology</li>
-                </ul>
-                <a href="https://buy.stripe.com/7sY28r88b9kudoobeU0oM0c" target="_blank" rel="noopener noreferrer" class="btn-primary">Start Project</a>
-            </div>
-            <div class="pricing-card-mini">
-                <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Expanded</div></div>
-                <h3>Three-Page Custom™</h3>
-                <div class="price-tag">$1,500<span>.00</span></div>
-                <ul class="feature-list">
-                    <li>Custom three-page site</li>
-                    <li>2 light revisions</li>
-                    <li>Applied sales psychology</li>
-                </ul>
-                <a href="https://buy.stripe.com/8x2cN5fADeEOfww0Ag0oM0d" target="_blank" rel="noopener noreferrer" class="btn-primary">Start Project</a>
-            </div>
-            <div class="pricing-card-mini tier-sub">
-                <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Subscription</div></div>
-                <h3>30-Day BNDR Unlimited™</h3>
-                <div class="price-tag">$3,500<span>/mo</span></div>
-                <ul class="feature-list">
-                    <li>Unlimited requests (1 active)</li>
-                    <li>Unlimited revisions</li>
-                    <li>Pause or cancel anytime</li>
-                </ul>
-                <a href="https://buy.stripe.com/eVq28r0FJ2W6988aaQ0oM0e" target="_blank" rel="noopener noreferrer" class="btn-primary">Start Project</a>
+        <div class="drawer-scroll">
+            <div class="section-header" style="margin-bottom: 32px;"><div class="section-badge">The Offer</div></div>
+            <h2 id="pricing-title" class="lead-text" style="color: var(--bone); font-size: clamp(28px, 6vw, 36px); margin-bottom: 48px;">One partner.<br>Unlimited builds.</h2>
+            <div class="pricing-drawer-grid">
+                <div class="pricing-card-mini tier-special">
+                    <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge" style="background: var(--magenta);">First 3 Clients</div></div>
+                    <h3>Three-Page Cut™</h3>
+                    <div class="price-tag">$599</div>
+                    <ul class="feature-list">
+                        <li>Custom three-page site</li>
+                        <li>2 light revisions</li>
+                        <li>Applied sales psychology</li>
+                    </ul>
+                    <a href="https://buy.stripe.com/eVq6oH3RVdAKckk82I0oM0f" target="_blank" rel="noopener noreferrer" class="btn-primary" style="background: var(--magenta); color: var(--bone);">Secure Offer</a>
+                </div>
+                <div class="pricing-card-mini">
+                    <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Standard</div></div>
+                    <h3>One-Page Lander™</h3>
+                    <div class="price-tag">$750</div>
+                    <ul class="feature-list">
+                        <li>Custom one-page site</li>
+                        <li>1 light revision</li>
+                        <li>Applied sales psychology</li>
+                    </ul>
+                    <a href="https://buy.stripe.com/7sY28r88b9kudoobeU0oM0c" target="_blank" rel="noopener noreferrer" class="btn-primary">Start Project</a>
+                </div>
+                <div class="pricing-card-mini">
+                    <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Expanded</div></div>
+                    <h3>Three-Page Custom™</h3>
+                    <div class="price-tag">$1,500<span>.00</span></div>
+                    <ul class="feature-list">
+                        <li>Custom three-page site</li>
+                        <li>2 light revisions</li>
+                        <li>Applied sales psychology</li>
+                    </ul>
+                    <a href="https://buy.stripe.com/8x2cN5fADeEOfww0Ag0oM0d" target="_blank" rel="noopener noreferrer" class="btn-primary">Start Project</a>
+                </div>
+                <div class="pricing-card-mini tier-sub">
+                    <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Subscription</div></div>
+                    <h3>30-Day BNDR Unlimited™</h3>
+                    <div class="price-tag">$3,500<span>/mo</span></div>
+                    <ul class="feature-list">
+                        <li>Unlimited requests (1 active)</li>
+                        <li>Unlimited revisions</li>
+                        <li>Pause or cancel anytime</li>
+                    </ul>
+                    <a href="https://buy.stripe.com/eVq28r0FJ2W6988aaQ0oM0e" target="_blank" rel="noopener noreferrer" class="btn-primary">Start Project</a>
+                </div>
             </div>
         </div>
     </aside>
-    
     <!-- Archive Drawer -->
     <aside id="archive-drawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="archive-title">
         <button class="drawer-close" aria-label="Close Archive">&times;</button>
-        <div class="section-header" style="margin-bottom: 48px;"><div id="archive-title" class="section-badge">The Archive</div></div>
-        <div class="archive-drawer-grid">
-            <div class="archive-category">
-                <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Core Implementations</div></div>
-                <ul class="archive-list">
-                    <li><a href="https://bndrbots.github.io/BNDR_LifeMatrix/">LifeMatrix</a></li>
-                    <li><a href="https://bndrbots.github.io/Studio/">Studio</a></li>
-                    <li><a href="https://bndrbots.github.io/Voss/">Voss</a></li>
-                    <li><a href="https://bndrbots.github.io/SaguaroIronline/">Saguaro Ironline</a></li>
-                    <li><a href="https://bndrbots.github.io/auto_logistics/">Auto Logistics</a></li>
-                    <li><a href="https://bndrbots.github.io/particularlygreen/">Particularly Green</a></li>
-                </ul>
-            </div>
-            <div class="archive-category">
-                <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Tactile WebApps</div></div>
-                <ul class="archive-list">
-                    <li><a href="https://bndrbots.github.io/breather">Breather</a></li>
-                    <li><a href="https://bndrbots.github.io/morph_black/">Morph Black</a></li>
-                    <li><a href="https://bndrbots.github.io/somaflux/">Somaflux</a></li>
-                    <li><a href="https://bndrbots.github.io/volumetric/">Volumetric</a></li>
-                    <li><a href="https://bndrbots.github.io/distortion/">Distortion</a></li>
-                    <li><a href="https://bndrbots.github.io/CRYSTAL-GATE/">Crystal Gate</a></li>
-                </ul>
-            </div>
-            <div class="archive-category">
-                <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Interactive Games</div></div>
-                <ul class="archive-list">
-                    <li><a href="https://bndrbots.github.io/RogueRitaV3/">Rogue Rita V3</a></li>
-                    <li><a href="https://bndrbots.github.io/RogueRitaV2/">Rogue Rita V2</a></li>
-                    <li><a href="https://bndrbots.github.io/RogueRitaV1/">Rogue Rita V1</a></li>
-                    <li><a href="https://bndrbots.github.io/endlessfocus/">Endless Focus</a></li>
-                    <li><a href="https://bndrbots.github.io/Graffiti-Generator/">Graffiti Generator</a></li>
-                </ul>
-            </div>
-                 <div class="archive-category">
-                <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Tools & Utilities</div></div>
-                <ul class="archive-list">
-                    <li><a href="https://v0-image-analysis-three-chi-68.vercel.app/">Image Analysis Array</a></li>
-                    <li><a href="https://bndrbots.github.io/cyber_playground/">Cyber Playground</a></li>
-                    <li><a href="https://bndrbots.github.io/rosefieldvip/">Rosefield VIP</a></li>
-                    <li><a href="https://bndrbots.github.io/crystal_love/">Crystal Love</a></li>
-                    <li><a href="https://bndrbots.github.io/TheFeedUpraded/">The Feed</a></li>
-                </ul>
+        <div class="drawer-scroll">
+            <div class="section-header" style="margin-bottom: 48px;"><div id="archive-title" class="section-badge">The Archive</div></div>
+            <div class="archive-drawer-grid">
+                <div class="archive-category">
+                    <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Core Implementations</div></div>
+                    <ul class="archive-list">
+                        <li><a href="https://bndrbots.github.io/BNDR_LifeMatrix/">LifeMatrix</a></li>
+                        <li><a href="https://bndrbots.github.io/Studio/">Studio</a></li>
+                        <li><a href="https://bndrbots.github.io/Voss/">Voss</a></li>
+                        <li><a href="https://bndrbots.github.io/SaguaroIronline/">Saguaro Ironline</a></li>
+                        <li><a href="https://bndrbots.github.io/auto_logistics/">Auto Logistics</a></li>
+                        <li><a href="https://bndrbots.github.io/particularlygreen/">Particularly Green</a></li>
+                    </ul>
+                </div>
+                <div class="archive-category">
+                    <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Tactile WebApps</div></div>
+                    <ul class="archive-list">
+                        <li><a href="https://bndrbots.github.io/breather">Breather</a></li>
+                        <li><a href="https://bndrbots.github.io/morph_black/">Morph Black</a></li>
+                        <li><a href="https://bndrbots.github.io/somaflux/">Somaflux</a></li>
+                        <li><a href="https://bndrbots.github.io/volumetric/">Volumetric</a></li>
+                        <li><a href="https://bndrbots.github.io/distortion/">Distortion</a></li>
+                        <li><a href="https://bndrbots.github.io/CRYSTAL-GATE/">Crystal Gate</a></li>
+                    </ul>
+                </div>
+                <div class="archive-category">
+                    <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Interactive Games</div></div>
+                    <ul class="archive-list">
+                        <li><a href="https://bndrbots.github.io/RogueRitaV3/">Rogue Rita V3</a></li>
+                        <li><a href="https://bndrbots.github.io/RogueRitaV2/">Rogue Rita V2</a></li>
+                        <li><a href="https://bndrbots.github.io/RogueRitaV1/">Rogue Rita V1</a></li>
+                        <li><a href="https://bndrbots.github.io/endlessfocus/">Endless Focus</a></li>
+                        <li><a href="https://bndrbots.github.io/Graffiti-Generator/">Graffiti Generator</a></li>
+                    </ul>
+                </div>
+                     <div class="archive-category">
+                    <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Tools & Utilities</div></div>
+                    <ul class="archive-list">
+                        <li><a href="https://v0-image-analysis-three-chi-68.vercel.app/">Image Analysis Array</a></li>
+                        <li><a href="https://bndrbots.github.io/cyber_playground/">Cyber Playground</a></li>
+                        <li><a href="https://bndrbots.github.io/rosefieldvip/">Rosefield VIP</a></li>
+                        <li><a href="https://bndrbots.github.io/crystal_love/">Crystal Love</a></li>
+                        <li><a href="https://bndrbots.github.io/TheFeedUpraded/">The Feed</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </aside>
-    
     <!-- CONTACT MODAL -->
     <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contact-title">
         <div class="modal-content">
@@ -778,7 +775,6 @@
             </form>
         </div>
     </div>
-    
     <!-- PREVIEW MODAL -->
     <div id="preview-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="preview-title">
         <div class="modal-content">
@@ -794,7 +790,6 @@
             </div>
         </div>
     </div>
-    
 <script>
     const AppState = {
         init: false,
@@ -887,17 +882,12 @@
                 if (this.activeSurface) this.close();                
                 this.activeSurface = document.getElementById(surfaceId);
                 if (!this.activeSurface) return;
-                
                 this.lastFocus = triggerBtn || document.activeElement;
                 if (triggerBtn && triggerBtn.setAttribute) triggerBtn.setAttribute('aria-expanded', 'true');
-                
                 this.activeSurface.classList.add('active');
                 if (this.activeSurface.classList.contains('drawer')) {
                     document.getElementById('drawer-overlay').classList.add('active');
                 }
-                
-                document.documentElement.classList.add('surface-active');
-                document.body.classList.add('surface-active');
                 
                 document.getElementById('ui-layer').setAttribute('inert', '');
                 document.getElementById('main-nav').setAttribute('inert', '');
@@ -909,18 +899,13 @@
             },
             close() {
                 if (!this.activeSurface) return;
-                
                 this.activeSurface.classList.remove('active');
                 if (this.activeSurface.classList.contains('drawer')) {
                     document.getElementById('drawer-overlay').classList.remove('active');
                 }
                 
-                document.documentElement.classList.remove('surface-active');
-                document.body.classList.remove('surface-active');
-                
                 document.getElementById('ui-layer').removeAttribute('inert');
                 document.getElementById('main-nav').removeAttribute('inert');
-                
                 if (this.lastFocus && this.lastFocus.setAttribute) {
                     this.lastFocus.setAttribute('aria-expanded', 'false');
                     this.lastFocus.focus();
@@ -1069,7 +1054,7 @@
         const ctx = shadowCanvas.getContext('2d');
         const gradient = ctx.createRadialGradient(256, 256, 0, 256, 256, 256);
         gradient.addColorStop(0, 'rgba(10, 10, 11, 0.3)'); 
-        gradient.addColorStop(1, 'rgba(10, 10, 11, 0)');    
+        gradient.addColorStop(1, 'rgba(10, 10, 11, 0)');   
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, 512, 512);
         const shadowTexture = new THREE.CanvasTexture(shadowCanvas);
