@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>BNDR LLC | Custom Web Design</title>
     <meta name="description" content="Custom web design that pulls its own weight. We bring 20 years of retail and applied sales psychology to every build.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,12 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         /* --- RESET & TOKENS --- */
-        * { 
-            margin: 0; padding: 0; box-sizing: border-box; 
-            -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; 
-            -webkit-text-size-adjust: 100%; text-size-adjust: 100%; 
-            -webkit-tap-highlight-color: transparent; 
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
         :root {
             --bone: #E8E4DF;       
             --void: #020202;       
@@ -49,12 +44,6 @@
             font-family: 'Outfit', sans-serif;
             letter-spacing: -0.01em;
         }
-        
-        /* Mobile Input Latency Nullification */
-        a, button, summary, input, textarea {
-            touch-action: manipulation;
-        }
-
         @media (pointer: fine) { body { cursor: crosshair; } }
         /* --- 3D BACKGROUND LAYER --- */
         #webgl-container {
@@ -142,7 +131,7 @@
             position: relative;
         }
         .nav-pill a::after, .nav-pill button::after {
-            content: ''; position: absolute; top: -12px; left: -8px; right: -8px; bottom: -12px; z-index: -1;
+            content: ''; position: absolute; top: -8px; left: -8px; right: -8px; bottom: -8px; z-index: -1;
         }
         .nav-pill a:focus-visible, .nav-pill button:focus-visible, .nav-pill a:active, .nav-pill button:active {
             background: var(--plasma);
@@ -150,7 +139,6 @@
             box-shadow: 0 0 20px rgba(204, 255, 0, 0.3);
             outline: none;
             transform: scale(1.02);
-            transition-duration: 0.1s;
         }
         @media (hover: hover) {
             .nav-pill a:hover, .nav-pill button:hover {
@@ -160,10 +148,6 @@
                 outline: none;
                 transform: scale(1.02);
             }
-        }
-        @media (max-width: 539px) {
-            .nav-pill { top: max(16px, env(safe-area-inset-top)); gap: 2px; padding: 4px; }
-            .nav-pill a, .nav-pill button { font-size: 10px; padding: 12px 14px; letter-spacing: 0.08em; }
         }
         /* --- LAYOUT GRIDS --- */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 max(24px, env(safe-area-inset-right)) 0 max(24px, env(safe-area-inset-left)); }
@@ -235,8 +219,8 @@
             content: ''; width: 6px; height: 6px; background: var(--plasma); border-radius: 50%;
             box-shadow: 0 0 12px rgba(204, 255, 0, 0.5); order: -1; animation: plasma-pulse 3s infinite ease-in-out;
         }
-        button.section-badge { background: none; border: none; font: inherit; color: inherit; cursor: pointer; transition: transform 0.3s var(--ease-premium); padding: 12px 24px 12px 18px; }
-        button.section-badge:focus-visible, button.section-badge:active { outline: 2px solid var(--plasma); outline-offset: 4px; transform: translateY(-2px); transition-duration: 0.1s; }
+        button.section-badge { background: none; border: none; font: inherit; color: inherit; cursor: pointer; transition: transform 0.3s var(--ease-premium); }
+        button.section-badge:focus-visible, button.section-badge:active { outline: 2px solid var(--plasma); outline-offset: 4px; transform: translateY(-2px); }
         @media (hover: hover) { button.section-badge:hover { transform: translateY(-2px); } }
         
         /* Tactile Glass Effect */
@@ -264,10 +248,9 @@
         }
         .btn-primary:focus-visible, .btn-primary:active { 
             background: #e5ff66; 
-            transform: translateY(1px); 
-            box-shadow: 0 4px 12px -4px rgba(204, 255, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.6); 
+            transform: translateY(-1px); 
+            box-shadow: 0 6px 16px -4px rgba(204, 255, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.6); 
             outline: none; 
-            transition-duration: 0.1s;
         }
         @media (hover: hover) {
             .btn-primary:hover { 
@@ -283,9 +266,8 @@
         .faq-item summary {
             font-size: 24px; font-family: 'Outfit', sans-serif; font-weight: 700; letter-spacing: -0.01em; cursor: pointer; list-style: none; display: flex;
             justify-content: space-between; align-items: center; color: #ffffff; transition: color 0.3s var(--ease-premium);
-            padding: 4px 0; /* Expanded touch zone */
         }
-        .faq-item summary:focus-visible, .faq-item summary:active { color: var(--magenta); outline: none; transition-duration: 0.1s; }
+        .faq-item summary:focus-visible, .faq-item summary:active { color: var(--magenta); outline: none; }
         @media (hover: hover) { .faq-item summary:hover { color: var(--magenta); } }
         .faq-item summary::-webkit-details-marker { display: none; }
         .faq-item summary::after { content: '+'; font-size: 28px; font-weight: 300; transition: transform 0.4s var(--ease-premium); color: var(--bone); }
@@ -294,38 +276,47 @@
         @media (min-width: 768px) { .faq-item p { padding-right: 48px; } }
         @keyframes faqReveal { to { opacity: 1; transform: translateY(0); } }
         
-        /* --- DRAWERS (SIDE PANELS) --- */
+        /* --- DRAWERS (SIDE PANELS - DESKTOP BASE) --- */
         .drawer-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh; height: 100dvh; background: rgba(2, 2, 2, 0.6);
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             z-index: 1400; opacity: 0; pointer-events: none; transition: opacity 0.5s var(--ease-premium);
         }
-        .drawer-overlay.active { opacity: 1; pointer-events: auto; }
+        .drawer-overlay.active { opacity: 1; pointer-events: auto; touch-action: none; }
+        
         .drawer {
             position: fixed; top: 0; right: 0; width: 100%; max-width: 520px; height: 100vh; height: 100dvh;
             background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(60px) saturate(200%); -webkit-backdrop-filter: blur(60px) saturate(200%);
-            z-index: 1500; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; touch-action: pan-y;
+            z-index: 1500; overflow: hidden; display: flex; flex-direction: column;
             transform: translateX(100%); transition: transform 0.6s var(--ease-premium);
-            border-left: 1px solid rgba(255, 255, 255, 0.08); 
-            padding: 96px max(32px, env(safe-area-inset-right)) max(48px, env(safe-area-inset-bottom)) max(32px, env(safe-area-inset-left)); 
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
             color: var(--bone);
             box-shadow: -20px 0 60px rgba(0,0,0,0.3);
         }
-        .drawer.active { transform: translateX(0); }
-        @media (max-width: 539px) { .drawer { max-width: 100%; padding: 80px max(24px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left)); } }
-        .drawer-close {
-            position: absolute; top: max(24px, env(safe-area-inset-top)); right: max(24px, env(safe-area-inset-right)); background: none; border: none; font-size: 36px;
-            color: var(--bone); cursor: pointer; opacity: 0.5; transition: all 0.3s var(--ease-premium);
-            width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
+        .drawer-scroll {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+            padding: 96px max(32px, env(safe-area-inset-right)) max(48px, env(safe-area-inset-bottom)) max(32px, env(safe-area-inset-left));
         }
-        .drawer-close:focus-visible, .drawer-close:active { opacity: 1; outline: none; color: var(--plasma); transform: rotate(90deg) scale(0.9); background: rgba(255,255,255,0.05); transition-duration: 0.1s; }
+        .drawer.active { transform: translateX(0); }
+
+        .drawer-close {
+            position: absolute; top: max(32px, env(safe-area-inset-top)); right: max(32px, env(safe-area-inset-right)); background: none; border: none; font-size: 36px;
+            color: var(--bone); cursor: pointer; opacity: 0.5; transition: all 0.3s var(--ease-premium);
+            width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
+            z-index: 2;
+        }
+        .drawer-close:focus-visible, .drawer-close:active { opacity: 1; outline: none; color: var(--plasma); transform: rotate(90deg); background: rgba(255,255,255,0.05); }
         @media (hover: hover) { .drawer-close:hover { opacity: 1; color: var(--plasma); transform: rotate(90deg); background: rgba(255,255,255,0.05); } }
         
-        /* --- PRICING MINI CARDS --- */
+        /* --- PRICING CARDS (DESKTOP) --- */
         .pricing-drawer-grid { display: grid; gap: 24px; }
         .pricing-card-mini {
             background: rgba(2, 2, 2, 0.4); color: var(--bone); padding: 32px; border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.08); position: relative; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08); position: relative;
             transition: all 0.4s var(--ease-premium);
             box-shadow: inset 0 1px 1px rgba(255,255,255,0.08), 0 20px 40px -10px rgba(0,0,0,0.8);
             z-index: 1;
@@ -342,11 +333,11 @@
         .pricing-card-mini .feature-list li::before { content: '✓'; color: var(--plasma); font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; }
         .pricing-card-mini.tier-special .feature-list li::before { color: var(--magenta); }
         
-        /* --- ARCHIVE MINI CARDS --- */
+        /* --- ARCHIVE CARDS (DESKTOP) --- */
         .archive-drawer-grid { display: grid; gap: 24px; }
         .archive-category {
             background: rgba(2, 2, 2, 0.4); color: var(--bone); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 32px;
-            position: relative; overflow: hidden;
+            position: relative;
             transition: all 0.4s var(--ease-premium);
             box-shadow: inset 0 1px 1px rgba(255,255,255,0.08), 0 20px 40px -10px rgba(0,0,0,0.8);
             z-index: 1;
@@ -359,15 +350,11 @@
             border-bottom: 1px solid rgba(255,255,255,0.04); transition: all 0.3s var(--ease-premium); position: relative;
         }
         .archive-list li a::after { content: '↗'; font-size: 13px; color: var(--plasma); opacity: 0; transform: translateX(-16px); transition: all 0.4s var(--ease-premium); }
-        .archive-list li a:focus-visible, .archive-list li a:active { color: var(--plasma); padding-left: 12px; border-bottom-color: rgba(204, 255, 0, 0.3); outline: none; background: linear-gradient(90deg, rgba(204,255,0,0.05) 0%, transparent 100%); transition-duration: 0.1s; }
+        .archive-list li a:focus-visible, .archive-list li a:active { color: var(--plasma); padding-left: 12px; border-bottom-color: rgba(204, 255, 0, 0.3); outline: none; background: linear-gradient(90deg, rgba(204,255,0,0.05) 0%, transparent 100%); }
         .archive-list li a:focus-visible::after, .archive-list li a:active::after { opacity: 1; transform: translateX(0); }
         @media (hover: hover) {
             .archive-list li a:hover { color: var(--plasma); padding-left: 12px; border-bottom-color: rgba(204, 255, 0, 0.3); outline: none; background: linear-gradient(90deg, rgba(204,255,0,0.05) 0%, transparent 100%); }
             .archive-list li a:hover::after { opacity: 1; transform: translateX(0); }
-        }
-        @media (max-width: 539px) {
-            .pricing-card-mini, .archive-category { padding: 24px; }
-            .archive-list li a { padding: 18px 0; font-size: 16px; } /* Thumb zone expansion */
         }
         
         /* --- FOOTER & CONTACT --- */
@@ -377,13 +364,13 @@
         .footer-brand .footer-logo { max-width: 90px; display: block; margin-bottom: 12px; filter: brightness(0) invert(1); opacity: 0.9; transition: opacity 0.3s; }
         @media (hover: hover) { .footer-brand .footer-logo:hover { opacity: 1; } }
         .footer-address { font-size: 12px; font-weight: 500; letter-spacing: 0.02em; line-height: 1.5; color: rgba(255,255,255,0.5); font-style: normal; }
-        .footer-links a:not(.connect-btn) { display: block; position: relative; color: var(--bone); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.02em; margin-bottom: 8px; padding: 4px 0; transition: all 0.3s var(--ease-premium); opacity: 0.7; }
+        .footer-links a:not(.connect-btn) { display: block; position: relative; color: var(--bone); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.02em; margin-bottom: 8px; transition: all 0.3s var(--ease-premium); opacity: 0.7; }
         .footer-links a:not(.connect-btn):after { content: ''; position: absolute; top: -6px; bottom: -6px; left: -10px; right: -10px; z-index: -1; }
-        .footer-links a:not(.connect-btn):focus-visible, .footer-links a:not(.connect-btn):active { color: var(--plasma); opacity: 1; outline: none; transform: translateX(4px); transition-duration: 0.1s;}
+        .footer-links a:not(.connect-btn):focus-visible, .footer-links a:not(.connect-btn):active { color: var(--plasma); opacity: 1; outline: none; transform: translateX(4px); }
         @media (hover: hover) { .footer-links a:not(.connect-btn):hover { color: var(--plasma); opacity: 1; transform: translateX(4px); } }
         .connect-grid { display: flex; flex-wrap: wrap; gap: 8px; }
         .connect-btn {
-            position: relative; display: inline-flex; align-items: center; justify-content: center; padding: 8px 14px;
+            position: relative; display: inline-flex; align-items: center; justify-content: center; padding: 6px 12px;
             font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--void);
             text-decoration: none; z-index: 1; transition: transform 0.3s var(--ease-premium);
         }
@@ -394,13 +381,12 @@
         .connect-btn::after {
             content: ''; position: absolute; top: -10px; bottom: -10px; left: -10px; right: -10px; z-index: -2;
         }
-        .connect-btn:focus-visible, .connect-btn:active { transform: translateY(1px) scale(0.98); outline: none; transition-duration: 0.1s; }
-        .connect-btn:focus-visible::before, .connect-btn:active::before { background: #e5ff66; box-shadow: 0 4px 12px -4px rgba(204, 255, 0, 0.4); transition-duration: 0.1s; }
+        .connect-btn:focus-visible, .connect-btn:active { transform: translateY(-2px); outline: none; }
+        .connect-btn:focus-visible::before, .connect-btn:active::before { background: #e5ff66; box-shadow: 0 6px 16px -4px rgba(204, 255, 0, 0.4); }
         @media (hover: hover) {
             .connect-btn:hover { transform: translateY(-3px); }
             .connect-btn:hover::before { background: #e5ff66; box-shadow: 0 6px 16px -4px rgba(204, 255, 0, 0.4); }
         }
-        /* Elite QR Code Compression */
         .elite-qr {
             height: 72px; 
             max-height: 80px;
@@ -416,18 +402,18 @@
         }
         /* --- LEGAL LINKS --- */
         .footer-policy-links { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; }
-        .footer-policy-links a { position: relative; color: var(--bone); text-decoration: none; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s; padding: 6px 0; opacity: 0.8; }
+        .footer-policy-links a { position: relative; color: var(--bone); text-decoration: none; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s; opacity: 0.8; }
         .footer-policy-links a::after { content: ''; position: absolute; top: -10px; bottom: -10px; left: -10px; right: -10px; z-index: -1; }
         .footer-policy-links a:focus-visible, .footer-policy-links a:active { color: var(--plasma); opacity: 1; outline: none; }
         @media (hover: hover) { .footer-policy-links a:hover { color: var(--plasma); opacity: 1; } }
         .legal-notice { font-size: 10px; font-weight: 400; letter-spacing: 0.01em; line-height: 1.5; color: rgba(255,255,255,0.4); border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px; max-width: 100%; }
         
-        /* --- MODALS (Ultra-Professional Glass) --- */
+        /* --- MODALS --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh; height: 100dvh; background: rgba(10, 10, 11, 0.9);
             backdrop-filter: blur(32px) saturate(180%); -webkit-backdrop-filter: blur(32px) saturate(180%); z-index: 2000;
             display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: max(24px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
-            opacity: 0; pointer-events: none; transition: opacity 0.5s var(--ease-premium); overscroll-behavior: contain; touch-action: pan-y;
+            opacity: 0; pointer-events: none; transition: opacity 0.5s var(--ease-premium); overscroll-behavior: contain;
         }
         @media (min-width: 768px) { .modal-overlay { align-items: center; padding: 0; } }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
@@ -443,8 +429,8 @@
         @media (min-width: 768px) { .modal-content { padding: 64px 56px; } }
         @media (max-width: 539px) { .modal-content { padding: 40px 24px; } }
         .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
-        .modal-close { position: absolute; top: 24px; right: 24px; background: none; border: none; font-size: 32px; color: var(--void); cursor: pointer; opacity: 0.4; transition: all 0.3s var(--ease-premium); width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
-        .modal-close:focus-visible, .modal-close:active { opacity: 1; outline: none; transform: rotate(90deg) scale(0.9); background: rgba(0,0,0,0.05); color: var(--magenta); transition-duration: 0.1s; }
+        .modal-close { position: absolute; top: 24px; right: 24px; background: none; border: none; font-size: 32px; color: var(--void); cursor: pointer; opacity: 0.4; transition: all 0.3s var(--ease-premium); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+        .modal-close:focus-visible, .modal-close:active { opacity: 1; outline: none; transform: rotate(90deg); background: rgba(0,0,0,0.05); color: var(--magenta); }
         @media (hover: hover) { .modal-close:hover { opacity: 1; transform: rotate(90deg); background: rgba(0,0,0,0.05); color: var(--magenta); } }
         .modal-content h2 { color: var(--void); font-size: 32px; font-weight: 800; margin-bottom: 40px; letter-spacing: -0.02em; font-family: 'Outfit', sans-serif;}
         
@@ -454,14 +440,13 @@
             border: 1px solid rgba(2, 2, 2, 0.1); 
             padding: 16px; 
             margin-bottom: 24px; 
-            font-size: 16px; /* Prevents iOS auto-zoom */
+            font-size: 16px; 
             font-family: inherit; 
             color: var(--void); 
             outline: none; 
             transition: all 0.4s var(--ease-premium); 
             border-radius: 8px; 
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-            -webkit-appearance: none;
         }
         .form-group input:focus, .form-group textarea:focus { 
             background: rgba(255,255,255,0.8);
@@ -478,6 +463,200 @@
         .preview-actions { display: flex; gap: 16px; align-items: center; margin-right: 56px; }
         .preview-iframe-container { flex-grow: 1; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative; box-shadow: inset 0 0 20px rgba(0,0,0,0.1); }
         .preview-iframe-container iframe { width: 100%; height: 100%; border: none; background: transparent; }
+
+        /* --- COMPLETELY RE-ENVISIONED MOBILE ARCHITECTURE: NATIVE PUSH VIEW + CSS GRID SCROLLER --- */
+        @media (max-width: 539px) {
+            
+            /* Remove background dimming; this is a full page takeover */
+            .drawer-overlay { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; pointer-events: none; }
+            .drawer-overlay.active { pointer-events: none; } /* Keep touches passing through to the view */
+            
+            /* The View Container */
+            .drawer {
+                top: 0; left: 0; right: 0; bottom: 0;
+                width: 100vw; height: 100dvh;
+                max-width: 100vw;
+                border-radius: 0;
+                border: none;
+                background: #050505; /* Deep solid black for flawless hardware rendering */
+                box-shadow: none;
+                /* iOS style horizontal push */
+                transform: translateX(100%);
+                transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+                z-index: 9999;
+            }
+            .drawer.active { transform: translateX(0); }
+
+            /* Native Sticky Blur Header */
+            .drawer::after {
+                content: '';
+                position: absolute;
+                top: 0; left: 0; right: 0;
+                height: max(80px, env(safe-area-inset-top, 44px));
+                background: rgba(5, 5, 5, 0.85);
+                backdrop-filter: blur(24px);
+                -webkit-backdrop-filter: blur(24px);
+                z-index: 100;
+                border-bottom: 1px solid rgba(255,255,255,0.08);
+                pointer-events: none;
+            }
+
+            /* Standard Document Scrolling inside the View */
+            .drawer-scroll {
+                position: absolute;
+                top: 0; left: 0; right: 0; bottom: 0;
+                padding: max(100px, env(safe-area-inset-top, 64px)) 0 max(60px, env(safe-area-inset-bottom)) 0;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                overscroll-behavior-y: contain;
+                display: block; 
+            }
+
+            /* Convert Close 'X' to a Native '< Back' Button */
+            .drawer-close {
+                top: max(20px, env(safe-area-inset-top, 12px));
+                left: 12px; 
+                right: auto;
+                width: auto; height: 44px;
+                background: transparent;
+                border-radius: 0;
+                font-size: 0; /* Hides the &times; */
+                color: var(--plasma);
+                opacity: 1;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                z-index: 101;
+                padding: 0 12px;
+                transform: none !important;
+            }
+            .drawer-close::before {
+                content: '‹ Back';
+                font-size: 18px;
+                font-family: 'Inter', sans-serif;
+                font-weight: 500;
+                line-height: 1;
+            }
+            .drawer-close:focus-visible, .drawer-close:active {
+                background: transparent;
+                color: var(--bone);
+                transform: none !important;
+                opacity: 0.5;
+            }
+
+            /* View Typography */
+            #pricing-title, #archive-title { margin: 0 0 32px 24px; font-size: 34px; padding: 0; }
+            .drawer-scroll > .section-header { display: none; } /* Hide badges to match native iOS */
+
+            /* --- THE ULTIMATE NATIVE HORIZONTAL GRID SCROLLER --- */
+            .pricing-drawer-grid, .archive-drawer-grid {
+                display: grid;
+                grid-auto-flow: column;
+                grid-auto-columns: calc(100vw - 64px); /* 100vw - 24px left pad - 40px right reveal */
+                gap: 16px;
+                padding: 0 24px 40px 24px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                overscroll-behavior-x: contain; /* Prevents Safari swipe-back navigation from hijacking the carousel */
+                scroll-snap-type: x mandatory;
+                scroll-padding-left: 24px; /* Anchors the snap point exactly to the padding */
+                scrollbar-width: none;
+                -webkit-overflow-scrolling: touch;
+            }
+            .pricing-drawer-grid::-webkit-scrollbar, .archive-drawer-grid::-webkit-scrollbar { display: none; }
+            
+            /* Safely pads the final item in the scrollable bounds */
+            .pricing-drawer-grid::after, .archive-drawer-grid::after {
+                content: '';
+                display: block;
+                width: 8px; /* 24px target - 16px gap = 8px padding buffer */
+            }
+
+            /* Unified Card Styling for both sections */
+            .pricing-card-mini, .archive-category {
+                scroll-snap-align: start;
+                width: 100%;
+                height: 100%;
+                padding: 28px 24px;
+                border-radius: 20px;
+                background: #0A0A0B;
+                border: 1px solid rgba(255,255,255,0.08);
+                margin: 0;
+                box-shadow: none; /* Flat design on mobile */
+            }
+            
+            .archive-category {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .archive-category .section-header { margin-bottom: 20px; }
+            .archive-category .section-badge { 
+                background: rgba(255,255,255,0.05); box-shadow: none; border: none; padding: 6px 12px; 
+                color: var(--bone); font-size: 11px; letter-spacing: 0.1em; 
+                border-radius: 99px;
+            }
+            .archive-category .section-badge::before, .archive-category .section-badge::after { display: none; }
+            
+            .archive-list {
+                background: transparent;
+                border-radius: 0;
+                border: none;
+                gap: 0;
+                margin: 0;
+                flex-grow: 1;
+            }
+            .archive-list li a {
+                padding: 16px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                font-size: 15px;
+                font-weight: 500;
+                color: #E8E4DF;
+                display: flex;
+                background: transparent;
+            }
+            .archive-list li:last-child a { border-bottom: none; padding-bottom: 0; }
+            .archive-list li a::after {
+                content: '›';
+                font-size: 20px;
+                line-height: 1;
+                font-family: system-ui, -apple-system, sans-serif;
+                color: rgba(255,255,255,0.25);
+                opacity: 1; transform: none; transition: none;
+            }
+            .archive-list li a:active { background: transparent; opacity: 0.5; }
+
+            /* Global Base Optimizations */
+            .nav-pill { top: max(12px, env(safe-area-inset-top)); gap: 4px; padding: 6px; max-width: calc(100% - 24px); }
+            .nav-pill a, .nav-pill button { font-size: 11px; padding: 14px 18px; letter-spacing: 0.08em; }
+            section { padding: 80px 0; }
+            .lead-text { font-size: clamp(26px, 7vw, 32px); line-height: 1.25; margin-bottom: 24px; }
+            .body-text { font-size: 16px; line-height: 1.6; margin-bottom: 24px; }
+            .faq-item { padding: 24px 0; }
+            .faq-item summary { font-size: 20px; }
+            .faq-item p { font-size: 16px; }
+            
+            /* Footer Native OS Optimizations */
+            footer { padding: 64px 0 32px; }
+            .footer-grid { gap: 48px; margin-bottom: 32px; }
+            .footer-address { font-size: 14px; line-height: 1.6; opacity: 0.8; }
+            
+            /* Connect tags forced into a precise rigid grid */
+            .connect-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 12px; }
+            .connect-btn { width: 100%; padding: 14px 8px; font-size: 10.5px; }
+            
+            /* Direct links as iOS-style table rows for flawless tap accuracy */
+            .footer-links a:not(.connect-btn) { padding: 18px 0; margin-bottom: 0; font-size: 15px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+            .footer-links a:not(.connect-btn):last-of-type { border-bottom: none; padding-bottom: 0; }
+            
+            /* Legal block breathing room */
+            .legal-notice { padding-top: 32px; font-size: 11px; line-height: 1.6; }
+            .footer-policy-links { gap: 24px; margin-bottom: 24px; }
+            .footer-policy-links a { padding: 8px 0; font-size: 11px; }
+
+            .modal-content { padding: 48px 24px; }
+            .modal-close { top: 16px; right: 16px; }
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 </head>
@@ -535,7 +714,7 @@
                 <div class="faq-columns">
                     <div class="faq-col reveal-left delay-2 io-target">
                         <details class="faq-item">
-                            <summary>What’s the difference between the services?</summary>
+                            <summary>What's the difference between the services?</summary>
                             <p>→ <strong>One-Page Lander™</strong> is a custom one-page site with 1 light revision.<br>
                             → <strong>Three-Page Custom™</strong> is a custom three-page site with 2 light revisions.<br>
                             → <strong>30-Day BNDR Unlimited™</strong> is 30 calendar days of direct work for one business.</p>
@@ -550,7 +729,7 @@
                         </details>
                         <details class="faq-item">
                             <summary>How do requests work?</summary>
-                            <p>For 30-Day BNDR Unlimited™, unlimited requests can be queued. One request is active at a time, if it’s something smaller, at times I may have the room to double-up, but not always.</p>
+                            <p>For 30-Day BNDR Unlimited™, unlimited requests can be queued. One request is active at a time, if it's something smaller, at times I may have the room to double-up, but not always.</p>
                         </details>
                         <details class="faq-item">
                             <summary>How do revisions work?</summary>
@@ -562,7 +741,7 @@
                         </details>
                         <details class="faq-item">
                             <summary>How does onboarding work?</summary>
-                            <p>A short alignment exchange by email: goals, priority, links/assets, and what “done” means to you for any given request. Then I get to work, and send you the results, and we go from there.</p>
+                            <p>A short alignment exchange by email: goals, priority, links/assets, and what "done" means to you for any given request. Then I get to work, and send you the results, and we go from there.</p>
                         </details>
                         <details class="faq-item">
                             <summary>How fast do you start?</summary>
@@ -599,13 +778,14 @@
                             <p>Additional work beyond the selected package is billed at $75/hr.</p>
                         </details>
                         <details class="faq-item">
-                            <summary>What’s the refund policy?</summary>
+                            <summary>What's the refund policy?</summary>
                             <p>30-Day BNDR Unlimited™ is month-to-month. Cancel anytime. It includes a 1-week 75% money-back guarantee. After the first week, the month remains active through day 30 and is non-refundable. All other work is non-refundable. While this is true, it's important to remember that client satisfaction is a primary driving force behind my work.</p>
                         </details>
                     </div>
                 </div>
             </div>
         </section>
+
         <footer id="contact">
             <div class="container">
                 <div class="footer-grid">      
@@ -661,6 +841,7 @@
     <!-- Pricing Drawer -->
     <aside id="pricing-drawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="pricing-title">
         <button class="drawer-close" aria-label="Close Pricing">&times;</button>
+        <div class="drawer-scroll">
         <div class="section-header" style="margin-bottom: 32px;"><div class="section-badge">The Offer</div></div>
         <h2 id="pricing-title" class="lead-text" style="color: var(--bone); font-size: clamp(28px, 6vw, 36px); margin-bottom: 48px;">One partner.<br>Unlimited builds.</h2>
         <div class="pricing-drawer-grid">
@@ -709,14 +890,16 @@
                 <a href="https://buy.stripe.com/eVq28r0FJ2W6988aaQ0oM0e" target="_blank" rel="noopener noreferrer" class="btn-primary">Start Project</a>
             </div>
         </div>
+        </div>
     </aside>
     <!-- Archive Drawer -->
     <aside id="archive-drawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="archive-title">
         <button class="drawer-close" aria-label="Close Archive">&times;</button>
+        <div class="drawer-scroll">
         <div class="section-header" style="margin-bottom: 48px;"><div id="archive-title" class="section-badge">The Archive</div></div>
         <div class="archive-drawer-grid">
             <div class="archive-category">
-                <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Core Implementations</div></div>
+                <div class="section-header"><div class="section-badge">Core Implementations</div></div>
                 <ul class="archive-list">
                     <li><a href="https://bndrbots.github.io/BNDR_LifeMatrix/">LifeMatrix</a></li>
                     <li><a href="https://bndrbots.github.io/Studio/">Studio</a></li>
@@ -727,7 +910,7 @@
                 </ul>
             </div>
             <div class="archive-category">
-                <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Tactile WebApps</div></div>
+                <div class="section-header"><div class="section-badge">Tactile WebApps</div></div>
                 <ul class="archive-list">
                     <li><a href="https://bndrbots.github.io/breather">Breather</a></li>
                     <li><a href="https://bndrbots.github.io/morph_black/">Morph Black</a></li>
@@ -738,7 +921,7 @@
                 </ul>
             </div>
             <div class="archive-category">
-                <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Interactive Games</div></div>
+                <div class="section-header"><div class="section-badge">Interactive Games</div></div>
                 <ul class="archive-list">
                     <li><a href="https://bndrbots.github.io/RogueRitaV3/">Rogue Rita V3</a></li>
                     <li><a href="https://bndrbots.github.io/RogueRitaV2/">Rogue Rita V2</a></li>
@@ -747,8 +930,8 @@
                     <li><a href="https://bndrbots.github.io/Graffiti-Generator/">Graffiti Generator</a></li>
                 </ul>
             </div>
-                 <div class="archive-category">
-                <div class="section-header" style="margin-bottom: 24px;"><div class="section-badge">Tools & Utilities</div></div>
+            <div class="archive-category">
+                <div class="section-header"><div class="section-badge">Tools & Utilities</div></div>
                 <ul class="archive-list">
                     <li><a href="https://v0-image-analysis-three-chi-68.vercel.app/">Image Analysis Array</a></li>
                     <li><a href="https://bndrbots.github.io/cyber_playground/">Cyber Playground</a></li>
@@ -757,6 +940,7 @@
                     <li><a href="https://bndrbots.github.io/TheFeedUpraded/">The Feed</a></li>
                 </ul>
             </div>
+        </div>
         </div>
     </aside>
     <!-- CONTACT MODAL -->
@@ -800,6 +984,7 @@
         currentScrollProgress: 0,
         isScrolling: false
     };
+
     // Advanced Text Stagger Tool (Zero Dependency)
     function applyTextStagger(selector) {
         const el = document.querySelector(selector);
@@ -807,6 +992,7 @@
         
         // Exclude elements with nested structural tags if not carefully handled
         if(el.querySelector('.dot')) return; // Leave hero title intact to avoid breaking span
+
         const words = el.innerText.split(' ');
         el.innerHTML = '';
         
@@ -823,11 +1009,13 @@
             el.appendChild(wrap);
         });
     }
+
     // Prepare advanced motion FX
     document.addEventListener('DOMContentLoaded', () => {
         applyTextStagger('#hero-desc');
         applyTextStagger('#work-lead');
     });
+
     // DOM & System Init Sync Loop
     function bootloader() {
         if (AppState.init) return;
@@ -845,6 +1033,7 @@
     } else {
         bootloader();
     }
+
     function initDOMSystems() {
         // --- OPTIMAL INTERSECTION OBSERVER FOR MAGICAL REVEALS ---
         const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
@@ -887,6 +1076,9 @@
                     document.getElementById('drawer-overlay').classList.add('active');
                 }
                 const scrollY = window.scrollY;
+                document.documentElement.style.overflow = 'hidden';
+                document.documentElement.style.overscrollBehavior = 'none';
+                document.body.style.overflow = 'hidden';
                 document.body.style.position = 'fixed';
                 document.body.style.top = `-${scrollY}px`;
                 document.body.style.width = '100%';
@@ -906,6 +1098,9 @@
                     document.getElementById('drawer-overlay').classList.remove('active');
                 }
                 const scrollY = document.body.dataset.scrollY;
+                document.documentElement.style.overflow = '';
+                document.documentElement.style.overscrollBehavior = '';
+                document.body.style.overflow = '';
                 document.body.style.position = '';
                 document.body.style.top = '';
                 document.body.style.width = '';
@@ -989,6 +1184,7 @@
             AppState.targetScrollProgress = Math.min(1, Math.max(0, currentScroll / (maxScroll || 1)));            
         }, { passive: true });
     }
+
     function flashSystem() {
         const flash = document.getElementById('system-flash');
         if(!flash) return;
@@ -999,6 +1195,7 @@
             flash.style.opacity = '0';
         });
     }
+
     function runEntranceAnimation() {
         document.body.style.opacity = '1';        
         setTimeout(() => {
@@ -1015,6 +1212,7 @@
             webgl.style.opacity = '1';
         }
     }
+
     function initThreeJS() {
         const container = document.getElementById('webgl-container');
         if (!container) return;        
@@ -1117,6 +1315,7 @@
             pivotGroup.rotation.set(...def.r);            
             // Store origin for 4D structural fracture
             pivotGroup.userData = { origPos: new THREE.Vector3(...def.p) };
+
             const hinge = new THREE.Group();
             hinge.position.set(...def.pivot);
             pivotGroup.add(hinge);
@@ -1129,6 +1328,7 @@
             
             doors.push({ mesh, pivotGroup, axis: def.axis, dir: def.dir, parentHinge: hinge });
         });
+
         // -------------------------------------------------------------
         // RESTORED TACTILE PHYSICS (Frame-Normalized Original)
         // -------------------------------------------------------------
@@ -1145,21 +1345,19 @@
         let driftAcc = new THREE.Vector3(0, 0, 0);
         const driftBoundary = 0.6; 
         
-        // Prevent WebGL Jitter when mobile URL bar collapse triggers vertical-only resize event
-        let lastInnerWidth = window.innerWidth;
         window.addEventListener('resize', () => {
-            if (window.innerWidth !== lastInnerWidth || window.innerWidth >= 800) {
-                lastInnerWidth = window.innerWidth;
-                camera.aspect = window.innerWidth / window.innerHeight;
-                basePosX = window.innerWidth > 800 ? -2.5 : 0;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-                renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth < 800 ? 1.5 : 2));
-            }
+            camera.aspect = window.innerWidth / window.innerHeight;
+            basePosX = window.innerWidth > 800 ? -2.5 : 0;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth < 800 ? 1.5 : 2));
         });
-        
+
         // INTERACTION ROUTING & PERMISSION
-        function handleInteractionInit() {
+        function handleInteractionInit(e) {
+            // Guard: Do not fire gyro requests if interacting with UI overlay elements
+            if(e && e.target && e.target.closest('#ui-layer, .drawer, .modal-overlay, .nav-pill')) return;
+            
             if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
                 DeviceOrientationEvent.requestPermission()
                     .then(permissionState => {
@@ -1174,8 +1372,9 @@
             window.removeEventListener('mousedown', handleInteractionInit);
             window.removeEventListener('touchstart', handleInteractionInit);
         }
-        window.addEventListener('mousedown', handleInteractionInit, { once: true });
-        window.addEventListener('touchstart', handleInteractionInit, { once: true });
+        window.addEventListener('mousedown', handleInteractionInit);
+        window.addEventListener('touchstart', handleInteractionInit);
+
         window.addEventListener('mousedown', (e) => {
             if(e.target.closest('button, a, input, textarea, details, .glass-panel, .drawer, .modal-overlay')) return;
             isDragging = true;
@@ -1214,6 +1413,7 @@
             gyroTarget.x = THREE.MathUtils.degToRad(beta - 45) * 0.8; 
             gyroTarget.y = THREE.MathUtils.degToRad(gamma) * 0.8;
         }
+
         const clock = new THREE.Clock();
         
         function animate() {
@@ -1227,6 +1427,7 @@
                 // 1. Angular Open
                 const targetAngle = (Math.PI / 1.6) * door.dir * AppState.currentScrollProgress;
                 door.parentHinge.rotation[door.axis] += (targetAngle - door.parentHinge.rotation[door.axis]) * 0.2;
+
                 // 2. Positional Fracture (Outward Expansion)
                 const fractureAmount = AppState.currentScrollProgress * 2.5; 
                 const origPos = door.pivotGroup.userData.origPos;
