@@ -1232,7 +1232,7 @@
         });
 
         // -------------------------------------------------------------
-        // KINETIC SPRING & DRAG PHYSICS (Flick + Z-Bounce Logic) - SURGICAL REPLACEMENT APPLIED
+        // KINETIC SPRING & DRAG PHYSICS (Flick + Z-Bounce Logic)
         // -------------------------------------------------------------
         let currentRotation = { x: 0.5, y: 0.5 };
         let spinRate = { x: 0, y: 0 }; 
@@ -1356,27 +1356,35 @@
             coreMesh.rotation.y = AppState.currentScrollProgress * Math.PI * 0.5;
             coreMesh.scale.setScalar(1 + (AppState.currentScrollProgress * 0.4));
             
-            // ---------------------------------------------------------------------
-            // TARGET 01: REPLACED PHYSICS BLOCK – high‑tension spring + heavy friction
-            // ---------------------------------------------------------------------
+            // Unified Spring / Flick Physics Engine
             if (!isDragging) {
-                // High-tension spring: box snaps to anchor immediately
-                vel.x += (basePosX - boxGroup.position.x) * 0.15;
-                vel.y += (0 - boxGroup.position.y) * 0.15;
-                vel.z += (0 - boxGroup.position.z) * 0.1;
+                // Spring pull toward base layout position (X/Y stronger to stay centered, Z weaker to sink deep)
+                vel.x += (basePosX - boxGroup.position.x) * 0.015;
+                vel.y += (0 - boxGroup.position.y) * 0.015;
+                vel.z += (0 - boxGroup.position.z) * 0.004; // Sinks into the background longer
 
+                // Ambient drift execution when settled
+                if (vel.lengthSq() < 0.001 && boxGroup.position.distanceToSquared(new THREE.Vector3(basePosX, 0, 0)) < 1) {
+                    vel.x += (Math.random() - 0.5) * 0.001;
+                    vel.y += (Math.random() - 0.5) * 0.001;
+                    vel.z += (Math.random() - 0.5) * 0.002; // Slight Z-breathing
+                }
+
+                // Apply velocity vectors
                 boxGroup.position.add(vel);
-                // Heavy friction: kills inertia so it doesn't slide
-                vel.multiplyScalar(0.65);
-            }
+                vel.multiplyScalar(0.94); // Base Friction - slightly smoother glide
 
-            // ---------------------------------------------------------------------
-            // TARGET 02: AMBIENT SPIN NULLIFIED – fully commented out
-            // ---------------------------------------------------------------------
-            // Drift Nullified
-            if (false && !isDragging && !isGyroActive) {
-                spinRate.y += 0.0003; 
-                spinRate.x += 0.00015;
+                // Rigid Body Rebound / Z-Axis Bouncing (The Walls)
+                const limitBack = -40; // Let it sink way deeper
+                const limitFront = 6;
+                const limitSide = 12; // Keep it more tightly horizontally centered
+
+                if (boxGroup.position.z < limitBack) { boxGroup.position.z = limitBack; vel.z *= -0.6; }
+                if (boxGroup.position.z > limitFront) { boxGroup.position.z = limitFront; vel.z *= -0.6; }
+                if (boxGroup.position.x < -limitSide) { boxGroup.position.x = -limitSide; vel.x *= -0.6; }
+                if (boxGroup.position.x > limitSide) { boxGroup.position.x = limitSide; vel.x *= -0.6; }
+                if (boxGroup.position.y < -limitSide) { boxGroup.position.y = -limitSide; vel.y *= -0.6; }
+                if (boxGroup.position.y > limitSide) { boxGroup.position.y = limitSide; vel.y *= -0.6; }
             }
 
             // Spin Mechanics
@@ -1389,6 +1397,11 @@
             // Limit max spin speed so it doesn't get chaotic and blur
             spinRate.x = Math.max(-0.08, Math.min(0.08, spinRate.x));
             spinRate.y = Math.max(-0.08, Math.min(0.08, spinRate.y));
+            
+            if (!isDragging && !isGyroActive && Math.abs(spinRate.x) < 0.001 && Math.abs(spinRate.y) < 0.001) {
+                spinRate.y += 0.0003; // Slower, elegant ambient spin
+                spinRate.x += 0.00015;
+            }
             
             if (isGyroActive) {
                 if (!AppState.isScrolling) {
