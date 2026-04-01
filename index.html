@@ -305,7 +305,7 @@
             -webkit-backdrop-filter: blur(8px);
             z-index: 1400; opacity: 0; pointer-events: none; transition: opacity 0.5s var(--ease-premium);
         }
-        .drawer-overlay.active { opacity: 1; pointer-events: auto; }
+        .drawer-overlay.active { opacity: 1; pointer-events: auto; touch-action: none; }
         
         .drawer {
             position: fixed; top: 0; right: 0; width: 100%; max-width: 520px; height: 100vh; height: 100dvh;
@@ -319,6 +319,7 @@
             box-shadow: -20px 0 60px rgba(0,0,0,0.4);
             will-change: transform;
         }
+
         .drawer-scroll {
             flex: 1 1 auto;
             min-height: 0;
@@ -326,10 +327,9 @@
             -webkit-overflow-scrolling: touch;
             overscroll-behavior: contain;
             touch-action: pan-y;
-            user-select: none;
+            user-select: none; /* prevents selection during drag, allows scroll capture */
             padding: 96px max(32px, env(safe-area-inset-right)) max(48px, env(safe-area-inset-bottom)) max(32px, env(safe-area-inset-left));
         }
-        .drawer.active { transform: translateX(0); }
 
         /* Re-enable selection only for actual text on long-press */
         .drawer-scroll p,
@@ -348,8 +348,10 @@
         .drawer-scroll .archive-list li a,
         .drawer-scroll .btn-primary {
             -webkit-tap-highlight-color: transparent;
-            cursor: pointer;
+            cursor: pointer; /* preserves clickability */
         }
+
+        .drawer.active { transform: translateX(0); }
 
         .drawer-close {
             position: absolute; top: max(32px, env(safe-area-inset-top, 32px)); right: max(32px, env(safe-area-inset-right, 32px));
@@ -1143,7 +1145,7 @@
         const ctx = shadowCanvas.getContext('2d');
         const gradient = ctx.createRadialGradient(256, 256, 0, 256, 256, 256);
         gradient.addColorStop(0, 'rgba(4, 4, 5, 0.5)');
-        gradient.addColorStop(1, 'rgba(4, 4, 5, 0)');    
+        gradient.addColorStop(1, 'rgba(4, 4, 5, 0)');   
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, 512, 512);
         const shadowTexture = new THREE.CanvasTexture(shadowCanvas);
