@@ -37,7 +37,6 @@
         html {
             width: 100%;
             max-width: 100%;
-            overflow-x: hidden;
             position: relative;
         }
         
@@ -48,7 +47,7 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             width: 100%;
             max-width: 100%;
-            overflow-x: hidden;
+            overflow-x: clip; /* Upgraded from hidden to preserve OS-level scroll momentum */
             position: relative;
             opacity: 0;
             letter-spacing: -0.01em;
@@ -266,7 +265,7 @@
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            opacity: 0.04; pointer-events: none; border-radius: inherit; z-index: -1;
+            opacity: 0.04; pointer-events: none; border-radius: inherit; z-index: 1;
         }
         .frame-square { aspect-ratio: 1 / 1; }
         .frame-wide { aspect-ratio: 16 / 9; }
@@ -291,6 +290,7 @@
             border: 1px solid rgba(2, 2, 2, 0.1);
             border-radius: var(--radius-pill);
             display: flex;
+            align-items: center;
             gap: 4px;
             padding: 6px;
             z-index: 100;
@@ -302,6 +302,8 @@
             white-space: nowrap;
             -ms-overflow-style: none;
             scrollbar-width: none;
+            scroll-snap-type: x mandatory;
+            scroll-padding: 0 6px;
         }
         .nav-pill::-webkit-scrollbar { display: none; }
         .nav-pill.is-loaded { transform: translate3d(0, 0, 0); opacity: 1; }
@@ -309,12 +311,15 @@
 
         @media (max-width: 799px) {
             .nav-pill {
-                right: auto;
-                left: 50%;
-                transform: translate3d(-50%, -20px, 0);
+                right: max(16px, env(safe-area-inset-right));
+                left: max(16px, env(safe-area-inset-left));
+                margin: 0 auto;
+                width: max-content;
+                max-width: 100%;
+                transform: translate3d(0, -20px, 0);
             }
-            .nav-pill.is-loaded { transform: translate3d(-50%, 0, 0); opacity: 1; }
-            .nav-pill.hidden { transform: translate3d(-50%, -120%, 0); opacity: 0; }
+            .nav-pill.is-loaded { transform: translate3d(0, 0, 0); opacity: 1; }
+            .nav-pill.hidden { transform: translate3d(0, -120%, 0); opacity: 0; }
         }
 
         .nav-pill button {
@@ -332,6 +337,8 @@
             cursor: pointer;
             transition: all 0.4s var(--ease-out-expo);
             position: relative;
+            flex: 0 0 auto;
+            scroll-snap-align: start;
         }
         .nav-pill button::after {
             content: ''; position: absolute; top: -8px; left: -8px; right: -8px; bottom: -8px; z-index: -1;
@@ -666,9 +673,9 @@
 
         /* --- FLOATING CONTACT ANIMATION --- */
         .float-contact-btn {
-            position: fixed;
-            bottom: max(32px, env(safe-area-inset-bottom));
-            right: max(32px, env(safe-area-inset-right));
+            position: absolute;
+            top: -72px;
+            left: 50%;
             background: var(--plasma);
             color: var(--void);
             font-family: 'Outfit', sans-serif;
@@ -685,23 +692,41 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            transform: translateX(150%) scale(0.9);
+            transform: translateX(-50%) translateY(40px) scale(0.9);
             opacity: 0;
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s, background 0.3s;
             pointer-events: none;
         }
         .float-contact-btn.is-active {
-            transform: translateX(0) scale(1);
+            transform: translateX(-50%) translateY(0) scale(1);
             opacity: 1;
             pointer-events: auto;
+            animation: float-fizzle 3.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+            animation-delay: 0.6s;
         }
         .float-contact-btn:focus-visible { outline: 2px solid var(--magenta); outline-offset: 4px; }
-        .float-contact-btn:active { transform: scale(0.98); background: #e5ff66; }
+        .float-contact-btn:active { transform: translateX(-50%) scale(0.98); background: #e5ff66; animation: none; }
         @media (hover: hover) {
-            .float-contact-btn.is-active:hover { background: #e5ff66; transform: translateY(-4px) scale(1.02); box-shadow: 0 16px 40px -8px rgba(204, 255, 0, 0.6); }
+            .float-contact-btn.is-active:hover { 
+                background: #e5ff66; 
+                transform: translateX(-50%) translateY(-4px) scale(1.02); 
+                box-shadow: 0 16px 40px -8px rgba(204, 255, 0, 0.6); 
+                animation: none; 
+            }
         }
         @media (max-width: 768px) {
-            .float-contact-btn { bottom: 24px; right: 24px; padding: 14px 20px; font-size: 10px; }
+            .float-contact-btn { top: -64px; left: 50%; right: auto; padding: 14px 20px; font-size: 10px; }
+        }
+
+        @keyframes float-fizzle {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0px) scale(1);
+                box-shadow: 0 0 0 0 rgba(204, 255, 0, 0.5), 0 12px 32px -8px rgba(204, 255, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.5);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-12px) scale(1);
+                box-shadow: 0 0 0 16px rgba(204, 255, 0, 0), 0 24px 48px -12px rgba(204, 255, 0, 0.2), inset 0 1px 0 rgba(255,255,255,0.7);
+            }
         }
 
         /* Modals inside Mobile */
@@ -833,26 +858,26 @@
             <div class="art-grid">
                 
                 <div class="art-card">
-                    <div class="art-frame frame-square"></div>
+                    <div class="art-frame frame-square" style="background-image: url('https://dl.dropboxusercontent.com/scl/fi/kfl4hkrx8pzalrybc48wf/u9574564132_Inside_the_Singularity_The_Final_Shot_Your_shot_isn_0defdbda-8daa-4dc9-8093-5c1783344231.png?rlkey=n86clze3ksj3zi5vyahjpu3p8&st=f45yrals&raw=1'); background-size: cover; background-position: center;"></div>
                     <div class="art-desc">
-                        <strong>Project 01</strong>
-                        <p>Minimal, clinical description corresponding to the square structural layout. Preserving pure negative space.</p>
+                        <strong>Project 01 // Singularity</strong>
+                        <p>Dimensional focal composition. Encapsulated within a strict 1:1 footprint to maintain terminal visual gravity.</p>
                     </div>
                 </div>
 
                 <div class="art-card">
-                    <div class="art-frame frame-wide"></div>
+                    <div class="art-frame frame-wide" style="background-image: url('https://dl.dropboxusercontent.com/scl/fi/ky7nguo6w2mq0fwz1uplk/Graphic-Design-Professional-Examples.png?rlkey=1baik8nzrx8n7rhj53q0nq449&st=frlb09if&raw=1'); background-size: cover; background-position: center;"></div>
                     <div class="art-desc">
-                        <strong>Project 02</strong>
-                        <p>Architectural execution description corresponding to the wide panoramic footprint. Emphasis on optical hierarchy.</p>
+                        <strong>Project 02 // Agency Profile</strong>
+                        <p>Expanded 16:9 cinematic baseline. Optically balanced for horizontal sweep and rigorous grid conformity.</p>
                     </div>
                 </div>
 
                 <div class="art-card">
-                    <div class="art-frame frame-tall"></div>
+                    <div class="art-frame frame-tall" style="background-image: url('https://dl.dropboxusercontent.com/scl/fi/a9k4suefvhs8ekfkfh7en/redhood.jpeg?rlkey=x8c3r9c6xglnn1p0ybipkln6t&st=71o972pk&raw=1'); background-size: cover; background-position: center;"></div>
                     <div class="art-desc">
-                        <strong>Project 03</strong>
-                        <p>Vertical posture description corresponding to the tall visual framework. Grounded typography scaling.</p>
+                        <strong>Project 03 // Red Hood</strong>
+                        <p>Vertical dominance protocol. Anchored to a 3:4 ratio for intense character scaling and mobile-first ocular tracking.</p>
                     </div>
                 </div>
                 
@@ -989,6 +1014,12 @@
 
     <!-- [GLOBAL FOOTER] -->
     <footer id="contact">
+        <!-- [FLOATING CONTACT ACTION] -->
+        <button id="floating-contact-btn" class="float-contact-btn" aria-controls="contact-modal">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            <span>Initiate Build</span>
+        </button>
+
         <div class="container">
             <div class="footer-grid">
                 
@@ -1069,12 +1100,6 @@
             </div>
         </div>
     </footer>
-
-    <!-- [FLOATING CONTACT ACTION] -->
-    <button id="floating-contact-btn" class="float-contact-btn" aria-controls="contact-modal">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-        <span>Initiate Build</span>
-    </button>
 
     <!-- MODALS -->
     <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contact-title">
