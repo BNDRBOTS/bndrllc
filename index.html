@@ -122,9 +122,9 @@
             flex-grow: 1;
         }
         
-        #gallery-layer, #faq-layer, #art-layer, #about-layer { 
+        #gallery-layer, #faq-layer, #art-layer, #about-layer, #pricing-layer { 
             display: none; 
-            padding-top: max(120px, 15vh);
+            padding-top: 104px;
             padding-bottom: 96px;
         }
 
@@ -225,33 +225,38 @@
         .art-grid {
             display: flex;
             flex-direction: column;
-            gap: 64px;
-            margin-top: 48px;
+            gap: 96px;
+            margin-top: 64px;
         }
         .art-card {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
         }
         @media (min-width: 800px) {
             .art-card {
-                flex-direction: row;
-                align-items: flex-end;
-                gap: 32px;
+                grid-template-columns: repeat(12, 1fr);
+                align-items: center;
+                gap: 40px;
             }
-            .art-frame {
-                flex: 0 0 60%;
-            }
-            .art-desc {
-                flex: 1;
-                padding-bottom: 16px;
-            }
+            
+            /* Square Frame - Left */
+            .art-card:nth-child(1) .art-frame { grid-column: 1 / 7; }
+            .art-card:nth-child(1) .art-desc { grid-column: 7 / 11; padding-left: 24px; }
+            
+            /* Wide Frame - Right (Alternating) */
+            .art-card:nth-child(2) .art-frame { grid-column: 5 / 13; order: 2; }
+            .art-card:nth-child(2) .art-desc { grid-column: 2 / 5; order: 1; text-align: right; padding-right: 24px; }
+            
+            /* Tall Frame - Centered-ish Left */
+            .art-card:nth-child(3) .art-frame { grid-column: 3 / 7; }
+            .art-card:nth-child(3) .art-desc { grid-column: 7 / 11; padding-left: 24px; }
         }
         .art-frame {
             background: rgba(255, 255, 255, 0.65);
             border: 1px solid rgba(2, 2, 2, 0.1);
             border-radius: var(--radius-soft);
-            box-shadow: inset 0 1px 1px rgba(255,255,255,0.5), 0 10px 30px -10px rgba(0,0,0,0.05);
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.5), 0 20px 40px -10px rgba(0,0,0,0.08);
             width: 100%;
             position: relative;
             overflow: hidden;
@@ -269,10 +274,10 @@
         
         .art-desc { padding: 0 8px; }
         .art-desc strong {
-            display: block; font-size: 11px; font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--void); margin-bottom: 8px;
+            display: block; font-size: 11px; font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--void); margin-bottom: 12px;
         }
         .art-desc p {
-            font-size: 14px; color: rgba(2, 2, 2, 0.65); line-height: 1.6; font-weight: 500;
+            font-size: 15px; color: rgba(2, 2, 2, 0.7); line-height: 1.7; font-weight: 500; margin: 0;
         }
 
         /* --- GLOBAL NAV --- */
@@ -514,9 +519,12 @@
         }
 
         /* --- PRICING CARDS --- */
-        .pricing-drawer-grid { display: flex; flex-direction: column; gap: 24px; }
+        .pricing-drawer-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 32px; }
+        @media (min-width: 768px) { .pricing-drawer-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1024px) { .pricing-drawer-grid { grid-template-columns: repeat(4, 1fr); } }
+        
         .pricing-card-mini {
-            background: rgba(0, 0, 0, 0.03); color: var(--void); padding: 32px;
+            background: rgba(0, 0, 0, 0.03); color: var(--void); padding: 28px 24px;
             border-radius: 12px; border: 1px solid rgba(2, 2, 2, 0.1); position: relative;
             transition: all 0.4s var(--ease-premium);
             box-shadow: inset 0 1px 1px rgba(255,255,255,0.5), 0 10px 30px -10px rgba(0,0,0,0.05);
@@ -529,18 +537,19 @@
         }
         .pricing-card-mini.tier-special { border-color: rgba(255, 0, 85, 0.5); box-shadow: inset 0 1px 1px rgba(255,255,255,0.8), 0 16px 40px rgba(255, 0, 85, 0.15); }
         .pricing-card-mini.tier-sub { border-color: rgba(204, 255, 0, 0.6); }
-        .pricing-card-mini h3 { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+        .pricing-card-mini h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
         .pricing-card-mini .price-tag {
-            display: flex; align-items: baseline; font-size: 40px; font-weight: 800;
+            display: flex; align-items: baseline; font-size: 36px; font-weight: 800;
             line-height: 1; margin-bottom: 24px; color: var(--void);
             text-shadow: none;
         }
         .pricing-card-mini.tier-special .price-tag { color: var(--magenta); }
-        .pricing-card-mini .price-tag span { font-size: 16px; font-family: 'Inter', sans-serif; font-weight: 500; color: rgba(2, 2, 2, 0.5); text-shadow: none; margin-left: 4px; }
+        .pricing-card-mini .price-tag span { font-size: 14px; font-family: 'Inter', sans-serif; font-weight: 500; color: rgba(2, 2, 2, 0.5); text-shadow: none; margin-left: 4px; }
         .pricing-card-mini .feature-list { list-style: none; margin-bottom: 32px; flex-grow: 1; }
-        .pricing-card-mini .feature-list li { font-size: 15px; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; color: rgba(2, 2, 2, 0.85); line-height: 1.5; }
+        .pricing-card-mini .feature-list li { font-size: 14px; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; color: rgba(2, 2, 2, 0.85); line-height: 1.4; }
         .pricing-card-mini .feature-list li::before { content: '✓'; color: var(--void); font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; }
         .pricing-card-mini.tier-special .feature-list li::before { color: var(--magenta); }
+        .pricing-card-mini .btn-primary { padding: 16px 20px; font-size: 11px; }
 
         /* --- FORM INPUTS --- */
         .form-group input, .form-group textarea {
@@ -566,7 +575,7 @@
         footer { 
             background: var(--void); 
             color: var(--bone); 
-            padding: 24px 0 16px; 
+            padding: 48px 0 24px; 
             position: relative; 
             z-index: 10; 
             border-top: 1px solid rgba(255,255,255,0.05); 
@@ -574,58 +583,125 @@
         .footer-grid { 
             display: grid; 
             grid-template-columns: 1fr; 
-            gap: 24px; 
-            margin-bottom: 16px; 
+            gap: 32px; 
+            margin-bottom: 32px; 
         }
         @media (min-width: 800px) { 
-            .footer-grid { grid-template-columns: auto 1fr auto; gap: 48px; align-items: start; } 
+            .footer-grid { grid-template-columns: 1fr 3fr 1.5fr; gap: 32px; align-items: center; } 
+        }
+        @media (min-width: 1024px) {
+            .footer-grid { grid-template-columns: 1.5fr 5fr 1.5fr; gap: 48px; }
         }
         
-        .footer-logo { max-width: 110px; height: auto; display: block; margin-bottom: 16px; filter: brightness(0) invert(1); opacity: 1; transition: opacity 0.3s var(--ease-premium); }
-        .footer-address { font-size: 10px; font-weight: 400; letter-spacing: 0.05em; line-height: 1.5; color: var(--bone); font-style: normal; }
+        .footer-brand { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+        .footer-logo { max-width: 100px; height: auto; display: block; filter: brightness(0) invert(1); opacity: 1; transition: opacity 0.3s var(--ease-premium); }
+        .footer-logo:hover { opacity: 0.8; }
+        .footer-address { font-size: 11px; font-weight: 400; letter-spacing: 0.05em; line-height: 1.6; color: var(--bone); font-style: normal; opacity: 0.6; margin: 0; }
         
         /* Unified Social Grid Angled Buttons */
         .connect-grid { 
             display: grid; 
             grid-template-columns: repeat(2, 1fr);
-            gap: 6px; 
-            max-width: 280px;
-        }
-        .connect-btn {
-            display: flex; align-items: center; justify-content: center;
+            gap: 8px; 
             width: 100%;
+        }
+        @media (min-width: 600px) {
+            .connect-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        .footer-direct { display: flex; flex-direction: column; align-items: flex-end; }
+        .direct-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-end;
+            width: 100%;
+        }
+        
+        .connect-btn {
+            display: inline-flex; align-items: center; justify-content: center;
             box-sizing: border-box;
-            padding: 8px 12px; font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+            padding: 10px 16px; font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
             text-transform: uppercase; color: var(--bone); text-decoration: none;
-            background: transparent; border: 1px solid rgba(255,255,255,0.1);
+            background: transparent; border: 1px solid rgba(255,255,255,0.15);
             border-radius: 0;
-            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
             transition: all 0.3s var(--ease-premium);
             cursor: pointer;
+            white-space: nowrap;
+            width: 100%;
         }
+        .direct-grid .connect-btn { max-width: 200px; }
+
         .connect-btn:focus-visible, .connect-btn:active { background: var(--plasma); color: var(--void); border-color: var(--plasma); outline: none; }
         @media (hover: hover) { 
-            .connect-btn:hover { background: var(--plasma); color: var(--void); border-color: var(--plasma); transform: translateY(-1px); } 
+            .connect-btn:hover { background: var(--plasma); color: var(--void); border-color: var(--plasma); transform: translateY(-2px); } 
         }
         
-        .direct-link { 
-            display: block; font-size: 11px; font-weight: 500; color: var(--bone); 
-            text-decoration: none; margin-bottom: 4px; transition: color 0.3s; letter-spacing: 0.05em; 
+        .qr-code-footer {
+            display: block; margin-top: 16px; width: 64px; opacity: 0.7; 
+            transition: opacity 0.3s var(--ease-premium), transform 0.3s var(--ease-premium);
         }
-        .direct-link:hover { color: var(--plasma); }
+        @media (hover: hover) {
+            .qr-code-footer:hover { opacity: 1; transform: translateY(-2px); }
+        }
+        .qr-code-footer img { width: 100%; height: auto; filter: invert(1); }
         
-        .footer-policy-links { display: flex; flex-wrap: wrap; gap: 16px; }
+        .footer-policy-links { display: flex; flex-wrap: wrap; gap: 24px; }
         
         /* Safely isolated styling */
-        footer .footer-policy-links a { color: var(--bone); text-decoration: none; font-size: 9px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s; }
-        footer .footer-policy-links a:hover { color: var(--plasma); }
+        footer .footer-policy-links a { color: var(--bone); text-decoration: none; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s; opacity: 0.6; }
+        footer .footer-policy-links a:hover { color: var(--plasma); opacity: 1; }
         
-        .legal-notice { font-size: 9px; font-weight: 400; color: var(--bone); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .legal-notice { font-size: 10px; font-weight: 400; color: var(--bone); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .legal-notice span { opacity: 0.5; }
         
         /* Footer Mobile Adjustments */
-        @media (max-width: 539px) {
-            .legal-notice { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .connect-grid { max-width: 100%; }
+        @media (max-width: 799px) {
+            .legal-notice { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .footer-direct, .direct-grid { align-items: stretch; }
+            .direct-grid .connect-btn { max-width: none; }
+            .footer-brand { align-items: stretch; }
+        }
+
+        /* --- FLOATING CONTACT ANIMATION --- */
+        .float-contact-btn {
+            position: fixed;
+            bottom: max(32px, env(safe-area-inset-bottom));
+            right: max(32px, env(safe-area-inset-right));
+            background: var(--plasma);
+            color: var(--void);
+            font-family: 'Outfit', sans-serif;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 16px 28px;
+            border-radius: var(--radius-pill);
+            box-shadow: 0 12px 32px -8px rgba(204, 255, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.5);
+            border: none;
+            cursor: pointer;
+            z-index: 90;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateX(150%) scale(0.9);
+            opacity: 0;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s, background 0.3s;
+            pointer-events: none;
+        }
+        .float-contact-btn.is-active {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .float-contact-btn:focus-visible { outline: 2px solid var(--magenta); outline-offset: 4px; }
+        .float-contact-btn:active { transform: scale(0.98); background: #e5ff66; }
+        @media (hover: hover) {
+            .float-contact-btn.is-active:hover { background: #e5ff66; transform: translateY(-4px) scale(1.02); box-shadow: 0 16px 40px -8px rgba(204, 255, 0, 0.6); }
+        }
+        @media (max-width: 768px) {
+            .float-contact-btn { bottom: 24px; right: 24px; padding: 14px 20px; font-size: 10px; }
         }
 
         /* Modals inside Mobile */
@@ -634,7 +710,6 @@
             .modal-content { width: 100%; margin: 0; margin-top: auto; border-radius: 24px 24px 0 0; border: none; border-top: 1px solid rgba(2, 2, 2, 0.1); padding: 40px 24px max(40px, env(safe-area-inset-bottom)); transform: translateY(100%); }
             .modal-overlay.active .modal-content { transform: translateY(0); }
             .modal-close { top: 16px; right: 16px; width: 44px; height: 44px; background: rgba(0, 0, 0, 0.05); display: flex; align-items: center; justify-content: center; }
-            .pricing-card-mini { padding: 28px 20px; border-radius: 16px; }
             .process-grid { grid-template-columns: 1fr; gap: 16px; }
             .btn-primary { min-height: 48px; }
         }
@@ -661,9 +736,9 @@
     <nav class="nav-pill" id="main-nav" aria-label="Main Navigation">
         <button class="route-btn" data-route="/home">Home</button>
         <button class="route-btn" data-route="/gallery">Site Gallery</button>
-        <button class="route-btn" data-route="/art">Art</button>
+        <button class="route-btn" data-route="/art">Art Gallery</button>
         <button class="route-btn" data-route="/about">About</button>
-        <button id="nav-pricing-btn" aria-controls="pricing-modal">Pricing</button>
+        <button class="route-btn" data-route="/pricing">Pricing</button>
         <button class="route-btn" data-route="/faq">FAQ</button>
         <button id="nav-contact-btn" aria-haspopup="dialog" aria-controls="contact-modal">Contact</button>
     </nav>
@@ -754,7 +829,7 @@
             <div class="section-header is-visible">
                 <div class="section-badge">Visuals</div>
             </div>
-            <h2 class="lead-text">Art & Curation.</h2>
+            <h2 class="lead-text">Art Gallery.</h2>
             <div class="art-grid">
                 
                 <div class="art-card">
@@ -836,56 +911,15 @@
         </div>
     </main>
 
-    <!-- [GLOBAL FOOTER] -->
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-brand reveal-left delay-1 io-element">
-                    <img src="https://www.dropbox.com/scl/fi/t1zxkjm4lq4sfveedn119/bndr26.png?rlkey=mc6decn5olct67crw7zmqp89g&st=cj5uqif6&raw=1" alt="BNDR LLC Logo" class="footer-logo" onerror="this.style.display='none';">
-                    <address class="footer-address">
-                        1896 East Innovation Park Drive, STE 100<br>
-                        Oro Valley, AZ 85755
-                    </address>
-                </div>
-                <div class="footer-links reveal-up delay-2 io-element">
-                    <div class="connect-grid">
-                        <a href="https://www.linkedin.com/in/bndrtech/" data-open="external" class="connect-btn">LinkedIn</a>
-                        <a href="https://substack.com/@bndrllc" data-open="external" class="connect-btn">Substack</a>
-                        <a href="https://github.com/BNDRBOTS" data-open="external" class="connect-btn">GitHub</a>
-                        <a href="https://www.instagram.com/bndrllc" data-open="external" class="connect-btn">Instagram</a>
-                        <a href="https://www.facebook.com/BNDRLLC" data-open="external" class="connect-btn">Facebook</a>
-                        <a href="https://buymeacoffee.com/bndr" data-open="external" class="connect-btn">Coffee</a>
-                        <a href="https://bndrllc.gumroad.com/" data-open="external" class="connect-btn">Gumroad</a>
-                        <a href="https://promptbase.com/profile/bndrllc" data-open="external" class="connect-btn">PromptBase</a>
-                    </div>
-                </div>
-                <div class="footer-direct reveal-right delay-3 io-element">
-                    <button type="button" class="connect-btn connect-section-trigger" style="margin-bottom: 8px;" aria-controls="contact-modal">Start Project</button>
-                    <a href="mailto:bndr.labs@gmail.com" class="direct-link">bndr.labs@gmail.com</a>
-                    <a href="tel:4807885414" class="direct-link">(480) 788-5414</a>
-                    <a href="https://propps.me/bndrllc" data-open="external" style="display: block; margin-top: 16px; width: 60px;">
-                        <img src="https://www.dropbox.com/scl/fi/e9o6rynw1j50qp765rhqu/propps.me.bndrllc.png?rlkey=taitw7sji8z7p21nuaw9inrwm&st=yudzfww7&raw=1" alt="BNDR Propps" style="width: 100%; height: auto; filter: invert(1);">
-                    </a>
-                </div>
+    <!-- [LAYER 6: PRICING PAGE] -->
+    <main id="pricing-layer" class="page-layer">
+        <div class="container" style="max-width: 1200px;">
+            <div class="section-header is-visible">
+                <div class="section-badge">The Offer</div>
             </div>
-            <div class="legal-notice reveal-up delay-3 io-element">
-                <div class="footer-policy-links">
-                    <a href="https://www.dropbox.com/scl/fi/um6xi0vfzj0w03kgxtrq2/privacy.html?rlkey=6ylhioa276mrynqylvxc19u7v&st=dgn3s7uz&dl=0" data-open="external">Privacy Policy</a>
-                    <a href="https://www.dropbox.com/scl/fi/kojw24oymxcuku5r2nupj/terms.html?rlkey=zlta95mcdxzqd9qjkbk38alhl&st=af3kun5i&dl=0" data-open="external">Terms of Service</a>
-                </div>
-                <span>© 2026 BNDR LLC. All rights reserved.</span>
-            </div>
-        </div>
-    </footer>
+            <h2 class="lead-text">One partner.<br>Unlimited builds.</h2>
 
-    <!-- MODALS -->
-    <div id="pricing-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="pricing-title">
-        <div class="modal-content">
-            <button class="modal-close" aria-label="Close Pricing">&times;</button>
-            <div class="section-header" style="margin-bottom: 32px;"><div class="section-badge">The Offer</div></div>
-            <h2 id="pricing-title" class="lead-text">One partner.<br>Unlimited builds.</h2>
-
-            <div class="process-grid">
+            <div class="process-grid" style="margin-top: 48px;">
                 <div class="process-grid-item">
                     <strong>Start</strong>
                     <p>Same day payment clears.</p>
@@ -951,8 +985,98 @@
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
+    <!-- [GLOBAL FOOTER] -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                
+                <div class="footer-brand reveal-left delay-1 io-element">
+                    <img src="https://www.dropbox.com/scl/fi/t1zxkjm4lq4sfveedn119/bndr26.png?rlkey=mc6decn5olct67crw7zmqp89g&st=cj5uqif6&raw=1" alt="BNDR LLC Logo" class="footer-logo" onerror="this.style.display='none';">
+                    <address class="footer-address">
+                        1896 East Innovation Park Drive, STE 100<br>
+                        Oro Valley, AZ 85755
+                    </address>
+                </div>
+
+                <div class="footer-links reveal-up delay-2 io-element">
+                    <!-- === EXACT LITERAL CODE START === -->
+                    <div class="connect-grid">
+                        <a href="https://www.linkedin.com/in/bndrtech/" data-open="external" class="connect-btn">
+                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; fill: currentColor;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zM7.119 20.452H3.554V9h3.565v11.452z"/></svg>
+                            LinkedIn
+                        </a>
+                        <a href="https://substack.com/@bndrllc" data-open="external" class="connect-btn">
+                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; fill: currentColor;"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>
+                            Substack
+                        </a>
+                        <a href="https://github.com/BNDRBOTS" data-open="external" class="connect-btn">
+                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; fill: currentColor;"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113-.82-.258-.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                            GitHub
+                        </a>
+                        <a href="https://www.instagram.com/bndrllc" data-open="external" class="connect-btn">
+                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; fill: currentColor;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm3.98-10.98a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                            Instagram
+                        </a>
+                        <a href="https://www.facebook.com/BNDRLLC" data-open="external" class="connect-btn">
+                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; fill: currentColor;"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                            Facebook
+                        </a>
+                        <a href="https://buymeacoffee.com/bndr" data-open="external" class="connect-btn">
+                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; fill: currentColor;"><path d="M20.216 10.372c-.08-.43-.464-.741-.9-.741h-1.576V6.155c0-1.283-1.042-2.325-2.325-2.325H4.557C3.275 3.83 2.233 4.872 2.233 6.155v7.26c0 2.41 1.957 4.367 4.367 4.367h6.634c2.25 0 4.108-1.71 4.336-3.905h1.218c1.378 0 2.502-1.124 2.502-2.502.001-1.037-.803-1.886-1.074-2.003zM15.415 15.61H6.6c-1.21 0-2.195-.985-2.195-2.195V6.155c0-.085.068-.153.153-.153h10.858c.085 0 .153.068.153.153v9.455zm2.934-2.906h-1.173V11.8h1.173c.18 0 .327.147.327.327 0 .314-.262.578-.327.578zM10.15 2.115c.29-.29.29-.757 0-1.047-.29-.29-.757-.29-1.047 0-.29.29-.29.757 0 1.047.29.29.756.29 1.047 0zm3.87 0c.29-.29.29-.757 0-1.047-.29-.29-.757-.29-1.047 0-.29.29-.29.757 0 1.047.29.29.756.29 1.047 0z"/></svg>
+                            Coffee
+                        </a>
+                        <a href="https://bndrllc.gumroad.com/" data-open="external" class="connect-btn">
+                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; fill: currentColor;"><path d="M18.8 8.43c0 2.84-2.28 5.16-5.12 5.16-2.85 0-5.17-2.32-5.17-5.16 0-2.85 2.32-5.17 5.17-5.17 2.84 0 5.12 2.32 5.12 5.17zm-10.29 0c0-1.93-1.44-3.52-3.32-3.76v7.52c1.88-.24 3.32-1.83 3.32-3.76zM13.68 20.8v-5.63c-2.3-.4-4.14-2.19-4.63-4.46H3.45c.44 5.33 4.9 9.55 10.23 10.09z"/></svg>
+                            Gumroad
+                        </a>
+                        <a href="https://promptbase.com/profile/bndrllc" data-open="external" class="connect-btn">
+                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; fill: currentColor;"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                            PromptBase
+                        </a>
+                    </div>
+                    <!-- === EXACT LITERAL CODE END === -->
+                </div>
+                
+                <div class="footer-direct reveal-right delay-3 io-element">
+                    <div class="direct-grid">
+                        <button type="button" class="connect-btn connect-section-trigger" aria-controls="contact-modal">
+                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; fill: currentColor;"><path d="M13 3L4 14h7v7l9-11h-7V3z"/></svg>
+                            Start Project
+                        </button>
+                        <a href="mailto:bndr.labs@gmail.com" class="connect-btn" target="_top">
+                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; fill: currentColor;"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                            Email
+                        </a>
+                        <a href="tel:4807885414" class="connect-btn" target="_top">
+                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; fill: currentColor;"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                            Phone
+                        </a>
+                    </div>
+                    <a href="https://propps.me/bndrllc" data-open="external" class="qr-code-footer">
+                        <img src="https://www.dropbox.com/scl/fi/e9o6rynw1j50qp765rhqu/propps.me.bndrllc.png?rlkey=taitw7sji8z7p21nuaw9inrwm&st=yudzfww7&raw=1" alt="BNDR Propps">
+                    </a>
+                </div>
+            </div>
+            
+            <div class="legal-notice reveal-up delay-3 io-element">
+                <div class="footer-policy-links">
+                    <a href="https://www.dropbox.com/scl/fi/um6xi0vfzj0w03kgxtrq2/privacy.html?rlkey=6ylhioa276mrynqylvxc19u7v&st=dgn3s7uz&dl=0" data-open="external">Privacy Policy</a>
+                    <a href="https://www.dropbox.com/scl/fi/kojw24oymxcuku5r2nupj/terms.html?rlkey=zlta95mcdxzqd9qjkbk38alhl&st=af3kun5i&dl=0" data-open="external">Terms of Service</a>
+                </div>
+                <span>&copy; 2026 BNDR LLC. All rights reserved.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- [FLOATING CONTACT ACTION] -->
+    <button id="floating-contact-btn" class="float-contact-btn" aria-controls="contact-modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        <span>Initiate Build</span>
+    </button>
+
+    <!-- MODALS -->
     <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contact-title">
         <div class="modal-content">
             <button class="modal-close" aria-label="Close Contact Modal">&times;</button>
@@ -998,6 +1122,17 @@
     // Refactored Data Payload: Hierarchical UI Sorting
     const galleryCategories = [
         {
+            title: "Brand & Architecture",
+            items: [
+                { name: "Business SaaS Demo", url: "https://bndrbots.github.io/raydeo/" },
+                { name: "Voss", url: "https://bndrbots.github.io/Voss/" },
+                { name: "Forma", url: "https://bndrbots.github.io/forma/" },
+                { name: "Life Space", url: "https://bndrbots.github.io/lifespace" },
+                { name: "Jacksons", url: "https://bndrbots.github.io/jacksons/" },
+                { name: "Zen", url: "https://bndrbots.github.io/zen/" }
+            ]
+        },
+        {
             title: "Concepts & Experiences",
             items: [
                 { name: "Liquid Glass", url: "https://bndrbots.github.io/liquidglass/" },
@@ -1005,16 +1140,6 @@
                 { name: "Demo", url: "https://bndrbots.github.io/demo/" },
                 { name: "Oil Flux", url: "https://bndrbots.github.io/oilflux/" },
                 { name: "Heavy Ink", url: "https://bndrbots.github.io/heavyink/" }
-            ]
-        },
-        {
-            title: "Brand & Architecture",
-            items: [
-                { name: "Voss", url: "https://bndrbots.github.io/Voss/" },
-                { name: "Forma", url: "https://bndrbots.github.io/forma/" },
-                { name: "Life Space", url: "https://bndrbots.github.io/lifespace" },
-                { name: "Jacksons", url: "https://bndrbots.github.io/jacksons/" },
-                { name: "Zen", url: "https://bndrbots.github.io/zen/" }
             ]
         },
         {
@@ -1094,7 +1219,8 @@
             '/gallery': document.getElementById('gallery-layer'),
             '/art': document.getElementById('art-layer'),
             '/about': document.getElementById('about-layer'),
-            '/faq': document.getElementById('faq-layer')
+            '/faq': document.getElementById('faq-layer'),
+            '/pricing': document.getElementById('pricing-layer')
         };
         const webgl = document.getElementById('webgl-container');
 
@@ -1295,9 +1421,28 @@
         window.SurfaceController = SurfaceController; // Expose strictly for dynamically bound nodes
         SurfaceController.init();
 
-        document.getElementById('nav-pricing-btn').addEventListener('click', function() { SurfaceController.open('pricing-modal', this); });
         document.getElementById('nav-contact-btn').addEventListener('click', function() { SurfaceController.open('contact-modal', this); });
         document.querySelectorAll('.connect-section-trigger').forEach(btn => btn.addEventListener('click', function() { SurfaceController.open('contact-modal', this); }));
+
+        const floatBtn = document.getElementById('floating-contact-btn');
+        const contactFooter = document.getElementById('contact');
+        
+        if (floatBtn && contactFooter) {
+            const footerObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        floatBtn.classList.add('is-active');
+                    } else {
+                        floatBtn.classList.remove('is-active');
+                    }
+                });
+            }, { threshold: 0.05, rootMargin: "0px 0px 50px 0px" });
+            footerObserver.observe(contactFooter);
+
+            floatBtn.addEventListener('click', function() {
+                SurfaceController.open('contact-modal', this);
+            });
+        }
 
         const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORMSPREE_ID';
 
