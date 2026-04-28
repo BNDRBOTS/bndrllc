@@ -47,7 +47,7 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             width: 100%;
             max-width: 100%;
-            overflow-x: clip; /* Upgraded from hidden to preserve OS-level scroll momentum */
+            overflow-x: clip; 
             position: relative;
             opacity: 0;
             letter-spacing: -0.01em;
@@ -295,34 +295,13 @@
             padding: 6px;
             z-index: 100;
             box-shadow: 0 16px 40px -8px rgba(2, 2, 2, 0.15), inset 0 1px 0 rgba(255,255,255,0.5);
-            transition: transform 0.6s var(--ease-out-expo), opacity 0.6s var(--ease-out-expo);
-            max-width: calc(100% - 48px);
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            white-space: nowrap;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-            scroll-snap-type: x mandatory;
-            scroll-padding: 0 6px;
+            transition: transform 0.6s var(--ease-out-expo), opacity 0.6s var(--ease-out-expo), border-radius 0.6s var(--ease-premium), width 0.6s var(--ease-premium), box-shadow 0.6s var(--ease-premium);
         }
         .nav-pill::-webkit-scrollbar { display: none; }
         .nav-pill.is-loaded { transform: translate3d(0, 0, 0); opacity: 1; }
         .nav-pill.hidden { transform: translate3d(0, -120%, 0); opacity: 0; }
 
-        @media (max-width: 799px) {
-            .nav-pill {
-                right: max(16px, env(safe-area-inset-right));
-                left: max(16px, env(safe-area-inset-left));
-                margin: 0 auto;
-                width: max-content;
-                max-width: 100%;
-                transform: translate3d(0, -20px, 0);
-            }
-            .nav-pill.is-loaded { transform: translate3d(0, 0, 0); opacity: 1; }
-            .nav-pill.hidden { transform: translate3d(0, -120%, 0); opacity: 0; }
-        }
-
-        .nav-pill button {
+        .nav-pill button.route-btn, .nav-pill button#nav-contact-btn {
             color: var(--void);
             text-decoration: none;
             font-size: 11px;
@@ -337,20 +316,123 @@
             cursor: pointer;
             transition: all 0.4s var(--ease-out-expo);
             position: relative;
-            flex: 0 0 auto;
-            scroll-snap-align: start;
         }
-        .nav-pill button::after {
+        .nav-pill button.route-btn::after, .nav-pill button#nav-contact-btn::after {
             content: ''; position: absolute; top: -8px; left: -8px; right: -8px; bottom: -8px; z-index: -1;
         }
-        .nav-pill button:focus-visible, .nav-pill button:active {
+        .nav-pill button.route-btn:focus-visible, .nav-pill button.route-btn:active, 
+        .nav-pill button#nav-contact-btn:focus-visible, .nav-pill button#nav-contact-btn:active {
             background: var(--plasma); color: var(--void);
             box-shadow: 0 0 20px rgba(204, 255, 0, 0.3); outline: none;
         }
         @media (hover: hover) {
-            .nav-pill button:hover {
+            .nav-pill button.route-btn:hover, .nav-pill button#nav-contact-btn:hover {
                 background: var(--plasma); color: var(--void);
                 box-shadow: 0 0 20px rgba(204, 255, 0, 0.3); outline: none; transform: scale(1.02);
+            }
+        }
+
+        /* --- DESKTOP NAVIGATION --- */
+        @media (min-width: 800px) {
+            .nav-pill {
+                max-width: calc(100vw - 48px);
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                overscroll-behavior-x: contain;
+                white-space: nowrap;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+                scroll-snap-type: x mandatory;
+                scroll-padding: 0 6px;
+            }
+            .nav-pill button.route-btn, .nav-pill button#nav-contact-btn {
+                flex: 0 0 auto;
+                scroll-snap-align: start;
+            }
+            #mobile-nav-toggle { display: none; }
+            .nav-items-wrapper { display: contents; }
+            .nav-items-inner { display: contents; }
+        }
+
+        /* --- MOBILE MORPHING NAVIGATION --- */
+        @media (max-width: 799px) {
+            .nav-pill {
+                right: auto;
+                left: 50%;
+                transform: translate3d(-50%, -20px, 0);
+                flex-direction: column;
+                background: var(--bone);
+                min-width: 140px;
+                padding: 4px;
+                border-radius: 32px;
+                box-shadow: 0 16px 40px -8px rgba(2, 2, 2, 0.2);
+                width: auto;
+                max-width: calc(100vw - 48px);
+            }
+            .nav-pill.is-loaded { transform: translate3d(-50%, 0, 0); opacity: 1; }
+            .nav-pill.hidden { transform: translate3d(-50%, -120%, 0); opacity: 0; }
+            
+            .nav-pill.is-open {
+                width: calc(100vw - 48px);
+                border-radius: 20px;
+                box-shadow: 0 24px 60px -12px rgba(2, 2, 2, 0.3), inset 0 1px 0 rgba(255,255,255,0.8);
+            }
+
+            #mobile-nav-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                background: var(--bone);
+                color: var(--void);
+                padding: 14px 24px;
+                border-radius: 32px;
+                font-family: 'Outfit', sans-serif;
+                font-weight: 800;
+                font-size: 13px;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                border: none;
+                cursor: pointer;
+                transition: background 0.4s var(--ease-premium);
+            }
+            .nav-pill.is-open #mobile-nav-toggle {
+                background: rgba(2, 2, 2, 0.04);
+                margin-bottom: 8px;
+            }
+
+            #mobile-nav-toggle .toggle-text-close { display: none; }
+            .nav-pill.is-open #mobile-nav-toggle .toggle-text-start { display: none; }
+            .nav-pill.is-open #mobile-nav-toggle .toggle-text-close { display: block; }
+            
+            .nav-items-wrapper {
+                display: grid;
+                grid-template-rows: 0fr;
+                transition: grid-template-rows 0.6s var(--ease-premium);
+                width: 100%;
+            }
+            .nav-pill.is-open .nav-items-wrapper {
+                grid-template-rows: 1fr;
+            }
+            
+            .nav-items-inner {
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                padding: 0 4px;
+            }
+            .nav-pill.is-open .nav-items-inner {
+                padding-bottom: 8px;
+            }
+            
+            .nav-pill button.route-btn, .nav-pill button#nav-contact-btn {
+                width: 100%;
+                padding: 16px 20px;
+                margin: 0;
+                text-align: center;
+                border-radius: 12px;
+                font-size: 13px;
             }
         }
 
@@ -594,10 +676,18 @@
             margin-bottom: 32px; 
         }
         @media (min-width: 800px) { 
-            .footer-grid { grid-template-columns: 1fr 3fr 1.5fr; gap: 32px; align-items: center; } 
+            /* Strict Geometric Distribution: 4 Equal Columns */
+            .footer-grid { 
+                grid-template-columns: repeat(4, 1fr); 
+                gap: 40px; 
+                align-items: flex-start; 
+            } 
+            .footer-brand { grid-column: 1 / 2; }
+            .footer-links { grid-column: 2 / 4; } /* Center span absorbs horizontal void */
+            .footer-direct { grid-column: 4 / 5; align-items: flex-start; }
         }
         @media (min-width: 1024px) {
-            .footer-grid { grid-template-columns: 1.5fr 5fr 1.5fr; gap: 48px; }
+            .footer-grid { gap: 64px; }
         }
         
         .footer-brand { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
@@ -614,6 +704,13 @@
         }
         @media (min-width: 600px) {
             .connect-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+        @media (min-width: 800px) {
+            /* Force 2x4 matrix on desktop to eliminate vertical void */
+            .connect-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; width: 100%; }
+        }
+        @media (min-width: 1024px) {
+            .connect-grid { gap: 24px; }
         }
 
         .footer-direct { display: flex; flex-direction: column; align-items: flex-end; }
@@ -638,11 +735,16 @@
             white-space: nowrap;
             width: 100%;
         }
-        .direct-grid .connect-btn { max-width: 200px; }
-
-        .connect-btn:focus-visible, .connect-btn:active { background: var(--plasma); color: var(--void); border-color: var(--plasma); outline: none; }
-        @media (hover: hover) { 
-            .connect-btn:hover { background: var(--plasma); color: var(--void); border-color: var(--plasma); transform: translateY(-2px); } 
+        
+        @media (min-width: 800px) {
+            /* Left-flush alignment for rigid structural tracking */
+            .footer-direct { align-items: flex-start; }
+            .direct-grid { align-items: flex-start; }
+            .direct-grid .connect-btn { width: 100%; max-width: none; }
+            .qr-code-footer { margin-left: 0; }
+        }
+        @media (max-width: 799px) {
+            .direct-grid .connect-btn { max-width: 200px; }
         }
         
         .qr-code-footer {
@@ -757,15 +859,23 @@
         })();
     </script>
 
-    <!-- SPA NAV PILL -->
+    <!-- SPA NAV PILL WITH MOBILE MORPH -->
     <nav class="nav-pill" id="main-nav" aria-label="Main Navigation">
-        <button class="route-btn" data-route="/home">Home</button>
-        <button class="route-btn" data-route="/gallery">Site Gallery</button>
-        <button class="route-btn" data-route="/art">Art Gallery</button>
-        <button class="route-btn" data-route="/about">About</button>
-        <button class="route-btn" data-route="/pricing">Pricing</button>
-        <button class="route-btn" data-route="/faq">FAQ</button>
-        <button id="nav-contact-btn" aria-haspopup="dialog" aria-controls="contact-modal">Contact</button>
+        <button id="mobile-nav-toggle" class="mobile-only-toggle" aria-expanded="false">
+            <span class="toggle-text-start">START</span>
+            <span class="toggle-text-close">CLOSE</span>
+        </button>
+        <div class="nav-items-wrapper">
+            <div class="nav-items-inner">
+                <button class="route-btn" data-route="/home">Index</button>
+                <button class="route-btn" data-route="/gallery">Site Gallery</button>
+                <button class="route-btn" data-route="/art">Art Gallery</button>
+                <button class="route-btn" data-route="/about">About</button>
+                <button class="route-btn" data-route="/pricing">Pricing</button>
+                <button class="route-btn" data-route="/faq">FAQ</button>
+                <button id="nav-contact-btn" aria-haspopup="dialog" aria-controls="contact-modal">Contact</button>
+            </div>
+        </div>
     </nav>
 
     <!-- [LAYER 1: HOME PAGE] -->
@@ -866,7 +976,7 @@
                 </div>
 
                 <div class="art-card">
-                    <div class="art-frame frame-wide" style="background-image: url('https://dl.dropboxusercontent.com/scl/fi/ky7nguo6w2mq0fwz1uplk/Graphic-Design-Professional-Examples.png?rlkey=1baik8nzrx8n7rhj53q0nq449&st=frlb09if&raw=1'); background-size: cover; background-position: center;"></div>
+                    <div class="art-frame frame-wide" style="background-image: url('https://dl.dropboxusercontent.com/scl/fi/b6rj16y4ng0k2x9otxitx/digital_tokyo_A_futuristic_honeycomb_design_with_glowing_neon_o_981cfb04-d986-4e79-96a1-3d079d686659.png?rlkey=hl0k5ed068oahl01xx1wnuhn1&st=utwtjr10&raw=1'); background-size: cover; background-position: center;"></div>
                     <div class="art-desc">
                         <strong>Project 02 // Agency Profile</strong>
                         <p>Expanded 16:9 cinematic baseline. Optically balanced for horizontal sweep and rigorous grid conformity.</p>
@@ -1332,6 +1442,24 @@
                 window.open(el.href, '_blank', 'noopener,noreferrer');
             });
         });
+
+        // Morphing Nav Logic
+        const navPill = document.getElementById('main-nav');
+        const mobileToggle = document.getElementById('mobile-nav-toggle');
+        
+        if (mobileToggle && navPill) {
+            mobileToggle.addEventListener('click', () => {
+                navPill.classList.toggle('is-open');
+                mobileToggle.setAttribute('aria-expanded', navPill.classList.contains('is-open'));
+            });
+            
+            navPill.querySelectorAll('.route-btn, #nav-contact-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    navPill.classList.remove('is-open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+        }
     });
 
     function bootloader() {
