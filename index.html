@@ -4,7 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
     <title>BNDR LLC | Custom Web Design</title>
+    
+    <!-- SEO & META OPTIMIZATION -->
     <meta name="description" content="Custom web design that pulls its own weight. We bring 20 years of retail and applied sales psychology to every build.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#E8E4DF">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="BNDR LLC | Custom Web Design">
+    <meta property="og:description" content="Custom web design that pulls its own weight. We bring 20 years of retail and applied sales psychology to every build.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BNDR LLC | Custom Web Design">
+    <meta name="twitter:description" content="Custom web design that pulls its own weight. We bring 20 years of retail and applied sales psychology to every build.">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,900;1,900&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -187,12 +198,14 @@
             margin-bottom: 24px;
         }
 
-        .gallery-card h3 {
+        .gallery-title {
             font-size: 22px;
             font-family: 'Outfit', sans-serif;
             font-weight: 700;
+            font-style: normal;
             letter-spacing: -0.02em;
             margin-bottom: 0;
+            margin-top: 0;
             line-height: 1.1;
         }
 
@@ -272,8 +285,8 @@
         .frame-tall { aspect-ratio: 3 / 4; }
         
         .art-desc { padding: 0 8px; }
-        .art-desc strong {
-            display: block; font-size: 11px; font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--void); margin-bottom: 12px;
+        .art-title {
+            display: block; font-size: 11px; font-family: 'Inter', sans-serif; font-weight: 700; font-style: normal; letter-spacing: 0.15em; text-transform: uppercase; color: var(--void); margin-bottom: 12px; margin-top: 0;
         }
         .art-desc p {
             font-size: 15px; color: rgba(2, 2, 2, 0.7); line-height: 1.7; font-weight: 500; margin: 0;
@@ -307,6 +320,7 @@
             font-size: 11px;
             font-family: 'Outfit', sans-serif;
             font-weight: 700;
+            font-style: normal;
             letter-spacing: 0.1em;
             text-transform: uppercase;
             padding: 10px 20px;
@@ -433,6 +447,13 @@
             }
             
             .nav-items-inner {
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                padding: 0 4px;
+            }
+            .nav-pill.is-open .nav-items-inner {
                 padding-bottom: 8px;
             }
             
@@ -499,6 +520,7 @@
             letter-spacing: -0.04em;
             line-height: 0.95;
             margin-bottom: 32px;
+            margin-top: 0;
             position: relative;
             will-change: transform, opacity;
         }
@@ -546,6 +568,7 @@
             color: var(--magenta);
             font-family: 'Outfit', sans-serif;
             font-weight: 800;
+            font-style: normal;
             font-size: 14px;
             text-shadow: 0 0 12px rgba(255, 0, 85, 0.5), 0 0 20px rgba(255, 0, 85, 0.3);
         }
@@ -575,7 +598,7 @@
             box-shadow: 0 0 12px rgba(255, 0, 85, 0.5), 0 0 20px rgba(255, 0, 85, 0.3); order: -1; animation: magenta-pulse 3s infinite ease-in-out;
         }
         
-        button.section-badge { background: none; border: none; font: inherit; color: inherit; cursor: pointer; transition: transform 0.3s var(--ease-premium); min-height: 44px; }
+        button.section-badge { background: none; border: none; font: inherit; color: inherit; cursor: pointer; transition: transform 0.3s var(--ease-premium); min-height: 44px; font-style: normal; }
         button.section-badge:focus-visible, button.section-badge:active { outline: 2px solid var(--plasma); outline-offset: 4px; transform: translateY(-2px); }
         @media (hover: hover) { button.section-badge:hover { transform: translateY(-2px); } }
 
@@ -593,7 +616,7 @@
         }
 
         /* === COPY BLOCKS === */
-        .lead-text { font-size: clamp(26px, 4vw, 40px); font-family: 'Inter', sans-serif; font-style: italic; font-weight: 900; line-height: 1.15; margin-bottom: 32px; letter-spacing: -0.02em; color: var(--void); }
+        .lead-text { font-size: clamp(26px, 4vw, 40px); font-family: 'Inter', sans-serif; font-style: italic; font-weight: 900; line-height: 1.15; margin-bottom: 32px; margin-top: 0; letter-spacing: -0.02em; color: var(--void); }
         .body-text { font-size: 16px; line-height: 1.65; color: rgba(2, 2, 2, 0.85); margin-bottom: 28px; font-weight: 500; }
         .body-text:last-child { margin-bottom: 0; }
         .body-text-lead { font-size: 18px; line-height: 1.55; color: var(--void); margin-bottom: 28px; font-weight: 600; letter-spacing: -0.015em; }
@@ -620,11 +643,14 @@
         /* === FAQ === */
         .faq-item { border-bottom: 1px solid rgba(2, 2, 2, 0.1); padding: 32px 0; transition: background 0.3s; }
         .faq-item summary {
-            font-size: 22px; font-family: 'Outfit', sans-serif; font-weight: 700;
-            letter-spacing: -0.01em; cursor: pointer; list-style: none;
+            cursor: pointer; list-style: none;
             display: flex; justify-content: space-between; align-items: center;
             color: var(--void); transition: color 0.3s var(--ease-premium); padding: 8px 0;
             min-height: 44px;
+        }
+        .faq-title {
+            font-size: 22px; font-family: 'Outfit', sans-serif; font-weight: 700; font-style: normal;
+            letter-spacing: -0.01em; margin: 0; padding: 0; color: inherit; display: inline-block;
         }
         .faq-item summary:focus-visible, .faq-item summary:active { color: var(--magenta); outline: none; }
         @media (hover: hover) { .faq-item summary:hover { color: var(--magenta); } }
@@ -666,7 +692,7 @@
         @media (hover: hover) {
             .modal-close:hover { opacity: 1; transform: rotate(90deg); background: rgba(0,0,0,0.1); color: var(--magenta); }
         }
-        .modal-content h2 { color: var(--void); font-size: 32px; font-weight: 800; margin-bottom: 40px; letter-spacing: -0.02em; font-family: 'Outfit', sans-serif; }
+        .modal-title { color: var(--void); font-size: 32px; font-weight: 800; margin-bottom: 40px; margin-top: 0; letter-spacing: -0.02em; font-family: 'Outfit', sans-serif; font-style: normal; }
 
         /* === PROCESS GRID === */
         .process-grid {
@@ -674,12 +700,11 @@
             margin-bottom: 40px; padding-bottom: 32px;
             border-bottom: 1px solid rgba(2, 2, 2, 0.1);
         }
-        .process-grid-item strong {
-            display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
-            text-transform: uppercase; color: var(--void); margin-bottom: 4px;
+        .process-title {
+            display: block; font-size: 11px; font-family: 'Inter', sans-serif; font-weight: 700; font-style: normal; letter-spacing: 0.12em; text-transform: uppercase; color: var(--void); margin-bottom: 4px; margin-top: 0;
         }
         .process-grid-item p {
-            font-size: 13px; color: rgba(2, 2, 2, 0.65); line-height: 1.6; font-weight: 400;
+            font-size: 13px; color: rgba(2, 2, 2, 0.65); line-height: 1.6; font-weight: 400; margin: 0;
         }
 
         /* === PRICING CARDS === */
@@ -701,7 +726,7 @@
         }
         .pricing-card-mini.tier-special { border-color: rgba(255, 0, 85, 0.5); box-shadow: inset 0 1px 1px rgba(255,255,255,0.8), 0 16px 40px rgba(255, 0, 85, 0.15); }
         .pricing-card-mini.tier-sub { border-color: rgba(204, 255, 0, 0.6); }
-        .pricing-card-mini h3 { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+        .pricing-title { font-size: 18px; font-family: 'Inter', sans-serif; font-weight: 700; font-style: italic; margin-bottom: 12px; margin-top: 0; letter-spacing: -0.01em; }
         .pricing-card-mini .price-tag {
             display: flex; align-items: baseline; font-size: 32px; font-weight: 800;
             line-height: 1; margin-bottom: 24px; color: var(--void);
@@ -711,7 +736,7 @@
         .pricing-card-mini .price-tag span { font-size: 14px; font-family: 'Inter', sans-serif; font-weight: 500; color: rgba(2, 2, 2, 0.5); text-shadow: none; margin-left: 4px; }
         .pricing-card-mini .feature-list { list-style: none; margin-bottom: 32px; flex-grow: 1; }
         .pricing-card-mini .feature-list li { font-size: 13px; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; color: rgba(2, 2, 2, 0.85); line-height: 1.4; }
-        .pricing-card-mini .feature-list li::before { content: '✓'; color: var(--void); font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; }
+        .pricing-card-mini .feature-list li::before { content: '✓'; color: var(--void); font-family: 'Outfit', sans-serif; font-weight: 800; font-style: normal; font-size: 14px; }
         .pricing-card-mini.tier-special .feature-list li::before { color: var(--magenta); }
         .pricing-card-mini .btn-primary { padding: 16px 20px; font-size: 11px; }
 
@@ -729,7 +754,6 @@
 
         /* === PREVIEW MODAL === */
         #preview-modal .modal-content { max-width: 1200px; height: 90vh; height: 90dvh; padding: 24px; display: flex; flex-direction: column; gap: 20px; background: rgba(255, 255, 255, 0.98); border: 1px solid rgba(2, 2, 2, 0.1); box-shadow: 0 40px 100px -20px rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,1); }
-        #preview-modal h2 { color: var(--void); margin: 0; font-size: 24px; }
         .preview-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(2, 2, 2, 0.1); padding-bottom: 20px; }
         .preview-actions { display: flex; gap: 16px; align-items: center; margin-right: 56px; }
         .preview-iframe-container { flex-grow: 1; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative; box-shadow: inset 0 0 20px rgba(0,0,0,0.05); border: 1px solid rgba(2, 2, 2, 0.1); }
@@ -1051,7 +1075,7 @@
                 <div class="section-header">
                     <div class="section-badge">BNDR's Work</div>
                 </div>
-                <h2 class="lead-text">The BNDR Portfolio, More to come.</h2>
+                <h1 class="lead-text">The BNDR Portfolio, More to come.</h1>
             </div>
             
             <div id="clinical-gallery-container" class="reveal-up delay-2 io-element">
@@ -1067,30 +1091,30 @@
                 <div class="section-header">
                     <div class="section-badge">Visuals</div>
                 </div>
-                <h2 class="lead-text">Art Gallery.</h2>
+                <h1 class="lead-text">Art Gallery.</h1>
             </div>
             <div class="art-grid reveal-up delay-2 io-element">
                 
                 <div class="art-card">
-                    <div class="art-frame frame-square" style="background-image: url('https://dl.dropboxusercontent.com/scl/fi/kfl4hkrx8pzalrybc48wf/u9574564132_Inside_the_Singularity_The_Final_Shot_Your_shot_isn_0defdbda-8daa-4dc9-8093-5c1783344231.png?rlkey=n86clze3ksj3zi5vyahjpu3p8&st=f45yrals&raw=1'); background-size: cover; background-position: center;"></div>
+                    <div class="art-frame frame-square" role="img" aria-label="Artwork: Image 01 Wrpd" style="background-image: url('https://dl.dropboxusercontent.com/scl/fi/kfl4hkrx8pzalrybc48wf/u9574564132_Inside_the_Singularity_The_Final_Shot_Your_shot_isn_0defdbda-8daa-4dc9-8093-5c1783344231.png?rlkey=n86clze3ksj3zi5vyahjpu3p8&st=f45yrals&raw=1'); background-size: cover; background-position: center;"></div>
                     <div class="art-desc">
-                        <strong>Image 01 // Wrpd</strong>
+                        <h2 class="art-title">Image 01 // Wrpd</h2>
                         <p>A swirling vortex of humanity.</p>
                     </div>
                 </div>
 
                 <div class="art-card">
-                    <div class="art-frame frame-wide" style="background-image: url('https://dl.dropboxusercontent.com/scl/fi/b6rj16y4ng0k2x9otxitx/digital_tokyo_A_futuristic_honeycomb_design_with_glowing_neon_o_981cfb04-d986-4e79-96a1-3d079d686659.png?rlkey=hl0k5ed068oahl01xx1wnuhn1&st=utwtjr10&raw=1'); background-size: cover; background-position: center;"></div>
+                    <div class="art-frame frame-wide" role="img" aria-label="Artwork: Image 02 Lava Layer" style="background-image: url('https://dl.dropboxusercontent.com/scl/fi/b6rj16y4ng0k2x9otxitx/digital_tokyo_A_futuristic_honeycomb_design_with_glowing_neon_o_981cfb04-d986-4e79-96a1-3d079d686659.png?rlkey=hl0k5ed068oahl01xx1wnuhn1&st=utwtjr10&raw=1'); background-size: cover; background-position: center;"></div>
                     <div class="art-desc">
-                        <strong>Image 02 // Lava Layer.</strong>
+                        <h2 class="art-title">Image 02 // Lava Layer.</h2>
                         <p>It never settles. It just keeps pushing right. It is restless. It moves in waves.</p>
                     </div>
                 </div>
 
                 <div class="art-card">
-                    <div class="art-frame frame-tall" style="background-image: url('https://dl.dropboxusercontent.com/scl/fi/a9k4suefvhs8ekfkfh7en/redhood.jpeg?rlkey=x8c3r9c6xglnn1p0ybipkln6t&st=71o972pk&raw=1'); background-size: cover; background-position: center;"></div>
+                    <div class="art-frame frame-tall" role="img" aria-label="Artwork: Image 03 Faded System" style="background-image: url('https://dl.dropboxusercontent.com/scl/fi/a9k4suefvhs8ekfkfh7en/redhood.jpeg?rlkey=x8c3r9c6xglnn1p0ybipkln6t&st=71o972pk&raw=1'); background-size: cover; background-position: center;"></div>
                     <div class="art-desc">
-                        <strong>Image 03 // Faded System</strong>
+                        <h2 class="art-title">Image 03 // Faded System</h2>
                         <p>Digital perfection meets urban concrete.</p>
                     </div>
                 </div>
@@ -1106,7 +1130,7 @@
                 <div class="section-header">
                     <div class="section-badge">Profile</div>
                 </div>
-                <h2 class="lead-text">About.</h2>
+                <h1 class="lead-text">About.</h1>
             </div>
             
             <div class="glass-panel reveal-up delay-2 io-element" style="margin-top: 48px; border-radius: 12px; padding: 32px;">
@@ -1132,24 +1156,24 @@
                 <div class="section-header">
                     <div class="section-badge">Information</div>
                 </div>
-                <h2 class="lead-text">Frequently Asked Questions.</h2>
+                <h1 class="lead-text">Frequently Asked Questions.</h1>
             </div>
 
             <div class="glass-panel reveal-up delay-2 io-element" style="margin-top: 48px; border-radius: 12px; padding: 24px;">
                 <details class="faq-item">
-                    <summary>How does the build process work?</summary>
+                    <summary><h2 class="faq-title">How does the build process work?</h2></summary>
                     <p>First we lock the scope and the project price. Once you send over the copy, assets, and branding, I design and build your site. We use the included revision rounds to refine things, then I host and launch the site on my setup for you, or help you launch on your own.</p>
                 </details>
                 <details class="faq-item">
-                    <summary>Do I own the code?</summary>
+                    <summary><h2 class="faq-title">Do I own the code?</h2></summary>
                     <p>Yes. The site is built uniquely for your business and you own the code and the assets unconditionally. You can move the site to your own host whenever you choose.</p>
                 </details>
                 <details class="faq-item">
-                    <summary>How do hosting and care work?</summary>
+                    <summary><h2 class="faq-title">How do hosting and care work?</h2></summary>
                     <p>Hosting is $99 a month. I keep the site live and reachable. That fee covers the environment and the uptime, so I take responsibility for the site being online. This is separate from ongoing labor.</p>
                 </details>
                 <details class="faq-item" style="border-bottom: none;">
-                    <summary>What if I need updates or a new page?</summary>
+                    <summary><h2 class="faq-title">What if I need updates or a new page?</h2></summary>
                     <p>Tweaks and maintenance like text changes or image swaps are $79 an hour with a one hour minimum. If you want to add an entirely new interior page to the site, that is a flat $300.</p>
                 </details>
             </div>
@@ -1163,24 +1187,24 @@
                 <div class="section-header">
                     <div class="section-badge">The Offer</div>
                 </div>
-                <h2 class="lead-text">One partner.<br>Unlimited builds.</h2>
+                <h1 class="lead-text">One partner.<br>Unlimited builds.</h1>
             </div>
 
             <div class="process-grid reveal-up delay-2 io-element" style="margin-top: 48px;">
                 <div class="process-grid-item">
-                    <strong>Start</strong>
+                    <h3 class="process-title">Start</h3>
                     <p>Same day payment clears.</p>
                 </div>
                 <div class="process-grid-item">
-                    <strong>Delivery</strong>
+                    <h3 class="process-title">Delivery</h3>
                     <p>Every request gets a stated window. Large builds ship in checkpoints.</p>
                 </div>
                 <div class="process-grid-item">
-                    <strong>Light revision</strong>
+                    <h3 class="process-title">Light revision</h3>
                     <p>One consolidated round within 7 days of delivery.</p>
                 </div>
                 <div class="process-grid-item">
-                    <strong>Unlimited tier</strong>
+                    <h3 class="process-title">Unlimited tier</h3>
                     <p>Requests queue sequentially. One active at a time. Pause or cancel anytime.</p>
                 </div>
             </div>
@@ -1188,7 +1212,7 @@
             <div class="pricing-drawer-grid">
                 <div class="pricing-card-mini">
                     <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Standard</div></div>
-                    <h3>One-Page Lander™</h3>
+                    <h2 class="pricing-title">One-Page Lander™</h2>
                     <div class="price-tag">$1,500</div>
                     <ul class="feature-list">
                         <li>1 custom page</li>
@@ -1201,7 +1225,7 @@
                 </div>
                 <div class="pricing-card-mini tier-special">
                     <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge" style="background: var(--magenta);">Expanded</div></div>
-                    <h3>Three-Page Custom™</h3>
+                    <h2 class="pricing-title">Three-Page Custom™</h2>
                     <div class="price-tag">$2,400</div>
                     <ul class="feature-list">
                         <li>Up to 3 custom pages</li>
@@ -1213,7 +1237,7 @@
                 </div>
                 <div class="pricing-card-mini">
                     <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Full Scale</div></div>
-                    <h3>Small Business Site™</h3>
+                    <h2 class="pricing-title">Small Business Site™</h2>
                     <div class="price-tag">$3,200</div>
                     <ul class="feature-list">
                         <li>Up to 5 custom pages</li>
@@ -1225,7 +1249,7 @@
                 </div>
                 <div class="pricing-card-mini tier-sub">
                     <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Consulting</div></div>
-                    <h3>AI Consulting</h3>
+                    <h2 class="pricing-title">AI Consulting</h2>
                     <div class="price-tag">$99<span>/hr</span></div>
                     <ul class="feature-list">
                         <li>Live working sessions</li>
@@ -1332,7 +1356,7 @@
     <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contact-title">
         <div class="modal-content">
             <button class="modal-close" aria-label="Close Contact Modal">&times;</button>
-            <h2 id="contact-title">Start Project</h2>
+            <h2 id="contact-title" class="modal-title">Start Project</h2>
             <form id="contact-form">
                 <div class="form-group">
                     <input type="text" id="contact-name" placeholder="Your Name" required aria-label="Your Name">
@@ -1351,7 +1375,7 @@
     <div id="preview-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="preview-title">
         <div class="modal-content">
             <div class="preview-header">
-                <h2 id="preview-title">Project Preview</h2>
+                <h2 id="preview-title" class="modal-title">Project Preview</h2>
                 <div class="preview-actions">
                     <a href="#" id="preview-external-link" data-open="external" class="btn-primary" style="padding: 12px 28px; margin: 0; width: auto;">Open in New Tab</a>
                 </div>
@@ -1520,7 +1544,7 @@
                 a.innerHTML = `
                     <div>
                         <div class="gallery-card-meta">IDX_${numStr} // PREVIEW</div>
-                        <h3>${project.name}</h3>
+                        <h2 class="gallery-title">${project.name}</h2>
                     </div>
                     <div class="gallery-card-arrow">[ VIEW ]</div>
                 `;
@@ -1532,7 +1556,7 @@
         document.querySelectorAll('.gallery-preview-trigger').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
-                document.getElementById('preview-title').textContent = link.querySelector('h3').textContent;
+                document.getElementById('preview-title').textContent = link.querySelector('h2.gallery-title').textContent;
                 document.getElementById('preview-frame').src = link.href;
                 document.getElementById('preview-external-link').href = link.href;
                 SurfaceController.open('preview-modal', link);
