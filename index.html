@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,900;1,900&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
     <noscript><style>body { opacity: 1 !important; }</style></noscript>
     <style>
-        /* --- RESET & TOKENS --- */
+        /* === RESET & TOKENS === */
         * { 
             margin: 0; 
             padding: 0; 
@@ -57,7 +57,7 @@
             min-height: 100vh;
         }
         
-        /* --- TYPOGRAPHY ACCESSIBILITY --- */
+        /* === TYPOGRAPHY ACCESSIBILITY === */
         h1, h2, h3, p, li, address, strong, span {
             user-select: text;
             -webkit-user-select: text;
@@ -83,7 +83,7 @@
 
         @media (pointer: fine) { body { cursor: crosshair; } }
 
-        /* --- 3D BACKGROUND LAYER --- */
+        /* === 3D BACKGROUND LAYER === */
         #webgl-container {
             position: fixed;
             top: 0; left: 0;
@@ -93,13 +93,13 @@
             opacity: 0;
         }
 
-        /* --- UI EFFECTS --- */
+        /* === UI EFFECTS === */
         #ui-flash {
             position: fixed; inset: 0; background: var(--plasma);
             pointer-events: none; opacity: 0; z-index: 10000;
         }
 
-        /* --- REVEAL ANIMATIONS --- */
+        /* === REVEAL ANIMATIONS === */
         .reveal-left { opacity: 0; transform: translate3d(-60px, 0, 0); transition: opacity 1.2s var(--ease-out-expo), transform 1.2s var(--ease-out-expo); will-change: opacity, transform; }
         .reveal-right { opacity: 0; transform: translate3d(60px, 0, 0); transition: opacity 1.2s var(--ease-out-expo), transform 1.2s var(--ease-out-expo); will-change: opacity, transform; }
         .reveal-up { opacity: 0; transform: translate3d(0, 40px, 0); transition: opacity 1.2s var(--ease-out-expo), transform 1.2s var(--ease-out-expo); will-change: opacity, transform; }
@@ -113,7 +113,7 @@
         .is-visible .word-inner { transform: translate3d(0, 0%, 0) rotate(0deg); opacity: 1; }
         .line-wrap { overflow: hidden; display: block; }
 
-        /* --- DOM SCROLL LAYERS --- */
+        /* === DOM SCROLL LAYERS === */
         .page-layer { 
             position: relative; 
             z-index: 10; 
@@ -127,7 +127,7 @@
             padding-bottom: 96px;
         }
 
-        /* --- GALLERY STYLES --- */
+        /* === GALLERY STYLES === */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -188,7 +188,7 @@
         }
 
         .gallery-card h3 {
-            font-size: 24px;
+            font-size: 22px;
             font-family: 'Outfit', sans-serif;
             font-weight: 700;
             letter-spacing: -0.02em;
@@ -220,7 +220,7 @@
             gap: 16px;
         }
 
-        /* --- ART LAYER STYLES --- */
+        /* === ART LAYER STYLES === */
         .art-grid {
             display: flex;
             flex-direction: column;
@@ -279,7 +279,7 @@
             font-size: 15px; color: rgba(2, 2, 2, 0.7); line-height: 1.7; font-weight: 500; margin: 0;
         }
 
-        /* --- GLOBAL NAV --- */
+        /* === GLOBAL NAV === */
         .nav-pill {
             position: fixed;
             top: max(24px, env(safe-area-inset-top));
@@ -316,6 +316,7 @@
             cursor: pointer;
             transition: all 0.4s var(--ease-out-expo);
             position: relative;
+            min-height: 44px; /* Ensure mobile touch target */
         }
         .nav-pill button.route-btn::after, .nav-pill button#nav-contact-btn::after {
             content: ''; position: absolute; top: -8px; left: -8px; right: -8px; bottom: -8px; z-index: -1;
@@ -332,7 +333,7 @@
             }
         }
 
-        /* --- DESKTOP NAVIGATION --- */
+        /* === DESKTOP NAVIGATION === */
         @media (min-width: 800px) {
             .desktop-only { display: inline; }
             .mobile-only { display: none; }
@@ -346,17 +347,20 @@
                 scrollbar-width: none;
                 scroll-snap-type: x mandatory;
                 scroll-padding: 0 6px;
+                padding: 4px;
             }
             .nav-pill button.route-btn, .nav-pill button#nav-contact-btn {
                 flex: 0 0 auto;
                 scroll-snap-align: start;
+                padding: 8px 20px;
+                min-height: unset;
             }
             #mobile-nav-toggle { display: none; }
             .nav-items-wrapper { display: contents; }
             .nav-items-inner { display: contents; }
         }
 
-        /* --- MOBILE MORPHING NAVIGATION --- */
+        /* === MOBILE MORPHING NAVIGATION === */
         @media (max-width: 799px) {
             .desktop-only { display: none; }
             .mobile-only { display: inline; }
@@ -388,18 +392,17 @@
                 justify-content: center;
                 width: 100%;
                 
-                /* Polished Appearance */
                 background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 100%), var(--bone);
                 color: var(--void);
-                padding: 8px 24px; /* Slimmer from top to bottom */
+                padding: 8px 24px;
                 border-radius: 32px;
                 font-family: 'Outfit', sans-serif;
                 font-weight: 800;
                 font-size: 13px;
                 letter-spacing: 0.15em;
                 text-transform: uppercase;
+                min-height: 44px; /* Ensure mobile touch target */
                 
-                /* Shaded Edges & Depth */
                 border: 1px solid rgba(2, 2, 2, 0.1); 
                 box-shadow: 
                     inset 0 1px 2px rgba(255, 255, 255, 0.9), 
@@ -450,17 +453,45 @@
             }
         }
 
-        /* --- LAYOUT GRIDS --- */
+        /* === LAYOUT GRIDS === */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 max(24px, env(safe-area-inset-right)) 0 max(24px, env(safe-area-inset-left)); }
-        .grid-2 { display: grid; grid-template-columns: 1fr; gap: 56px; }
+        
+        /* === SERVICES GRID === */
+        .grid-2-tight { display: grid; grid-template-columns: 1fr; gap: 32px; align-items: start; }
         @media (min-width: 800px) {
-            .grid-2 { grid-template-columns: 1fr 1fr; gap: 104px; }
-            .balance-offset { margin-top: 76px; }
+            .grid-2-tight { grid-template-columns: 1fr 1fr; gap: 64px; }
+        }
+        .service-row {
+            padding: 80px 0;
+            border-bottom: 1px solid rgba(2, 2, 2, 0.1);
+        }
+        .service-row:last-child {
+            border-bottom: none;
+        }
+        .service-header {
+            font-size: clamp(32px, 5vw, 56px); /* Scaled down */
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            color: var(--void);
+            margin: 0;
+        }
+        .service-body {
+            font-size: 17px; /* Scaled down */
+            line-height: 1.6;
+            color: var(--charcoal);
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin: 0;
+            max-width: 500px;
+        }
+        .service-body + .service-body {
+            margin-top: 20px;
         }
 
-        .glass-panel .grid-2 + .grid-2 { margin-top: 96px; }
-
-        /* --- HERO --- */
+        /* === HERO === */
         .hero {
             position: relative;
             min-height: 100vh; min-height: 100dvh;
@@ -471,7 +502,7 @@
         }
         .hero-content { pointer-events: auto; max-width: 780px; }
         .hero h1 {
-            font-size: clamp(48px, 11vw, 104px);
+            font-size: clamp(42px, 9vw, 96px); /* Scaled down */
             letter-spacing: -0.04em;
             line-height: 0.95;
             margin-bottom: 32px;
@@ -485,7 +516,7 @@
             z-index: -1; filter: blur(12px);
         }
         .hero p {
-            font-size: clamp(18px, 3.5vw, 22px);
+            font-size: clamp(16px, 3vw, 20px); /* Scaled down */
             line-height: 1.5;
             color: rgba(2, 2, 2, 0.85);
             font-weight: 500;
@@ -494,7 +525,7 @@
             will-change: transform, opacity;
         }
 
-        /* --- HERO VALUE LIST --- */
+        /* === HERO VALUE LIST === */
         .hero-value-list {
             list-style: none;
             display: grid;
@@ -526,7 +557,7 @@
             text-shadow: 0 0 12px rgba(255, 0, 85, 0.5), 0 0 20px rgba(255, 0, 85, 0.3);
         }
 
-        /* --- SECTIONS --- */
+        /* === SECTIONS === */
         section { padding: 96px 0; position: relative; }
         @media (min-width: 800px) { section { padding: 160px 0; } }
         .section-header { display: flex; align-items: center; margin-bottom: 40px; width: 100%; }
@@ -541,16 +572,21 @@
             background: var(--bone); transform: skewX(-12deg); z-index: -1; border-radius: 3px;
             box-shadow: 0 8px 20px -4px rgba(0,0,0,0.1); border: 1px solid rgba(2, 2, 2, 0.08);
         }
-        @keyframes plasma-pulse { 0%, 100% { box-shadow: 0 0 12px rgba(204, 255, 0, 0.4); opacity: 1; } 50% { box-shadow: 0 0 24px rgba(204, 255, 0, 0.8); opacity: 0.6; } }
-        .section-badge::after {
-            content: ''; width: 6px; height: 6px; background: var(--plasma); border-radius: 50%;
-            box-shadow: 0 0 12px rgba(204, 255, 0, 0.5); order: -1; animation: plasma-pulse 3s infinite ease-in-out;
+        
+        @keyframes magenta-pulse { 
+            0%, 100% { box-shadow: 0 0 12px rgba(255, 0, 85, 0.5), 0 0 20px rgba(255, 0, 85, 0.3); opacity: 1; } 
+            50% { box-shadow: 0 0 16px rgba(255, 0, 85, 0.7), 0 0 28px rgba(255, 0, 85, 0.5); opacity: 0.7; } 
         }
-        button.section-badge { background: none; border: none; font: inherit; color: inherit; cursor: pointer; transition: transform 0.3s var(--ease-premium); }
+        .section-badge::after {
+            content: ''; width: 6px; height: 6px; background: var(--magenta); border-radius: 50%;
+            box-shadow: 0 0 12px rgba(255, 0, 85, 0.5), 0 0 20px rgba(255, 0, 85, 0.3); order: -1; animation: magenta-pulse 3s infinite ease-in-out;
+        }
+        
+        button.section-badge { background: none; border: none; font: inherit; color: inherit; cursor: pointer; transition: transform 0.3s var(--ease-premium); min-height: 44px; }
         button.section-badge:focus-visible, button.section-badge:active { outline: 2px solid var(--plasma); outline-offset: 4px; transform: translateY(-2px); }
         @media (hover: hover) { button.section-badge:hover { transform: translateY(-2px); } }
 
-        /* --- GLASS PANEL --- */
+        /* === GLASS PANEL === */
         .glass-panel {
             background: rgba(255, 255, 255, 0.65);
             border-top: 1px solid rgba(255, 255, 255, 0.4); border-bottom: 1px solid rgba(2, 2, 2, 0.1);
@@ -563,14 +599,14 @@
             opacity: 0.04; pointer-events: none; border-radius: inherit; z-index: -1;
         }
 
-        /* --- COPY BLOCKS --- */
-        .lead-text { font-size: clamp(28px, 5vw, 44px); font-weight: 700; line-height: 1.15; margin-bottom: 32px; letter-spacing: -0.02em; color: var(--void); }
-        .body-text { font-size: 18px; line-height: 1.65; color: rgba(2, 2, 2, 0.85); margin-bottom: 28px; font-weight: 500; }
+        /* === COPY BLOCKS === */
+        .lead-text { font-size: clamp(26px, 4vw, 40px); font-weight: 700; line-height: 1.15; margin-bottom: 32px; letter-spacing: -0.02em; color: var(--void); }
+        .body-text { font-size: 16px; line-height: 1.65; color: rgba(2, 2, 2, 0.85); margin-bottom: 28px; font-weight: 500; }
         .body-text:last-child { margin-bottom: 0; }
-        .body-text-lead { font-size: 20px; line-height: 1.55; color: var(--void); margin-bottom: 28px; font-weight: 600; letter-spacing: -0.015em; }
+        .body-text-lead { font-size: 18px; line-height: 1.55; color: var(--void); margin-bottom: 28px; font-weight: 600; letter-spacing: -0.015em; }
         .body-text-lead:last-child { margin-bottom: 0; }
 
-        /* --- BUTTONS --- */
+        /* === BUTTONS === */
         .btn-primary {
             display: flex; justify-content: center; align-items: center; width: 100%;
             background: var(--plasma); color: var(--void); text-align: center;
@@ -588,10 +624,10 @@
             .btn-primary:active { transform: translateY(-1px); }
         }
 
-        /* --- FAQ --- */
+        /* === FAQ === */
         .faq-item { border-bottom: 1px solid rgba(2, 2, 2, 0.1); padding: 32px 0; transition: background 0.3s; }
         .faq-item summary {
-            font-size: 24px; font-family: 'Outfit', sans-serif; font-weight: 700;
+            font-size: 22px; font-family: 'Outfit', sans-serif; font-weight: 700;
             letter-spacing: -0.01em; cursor: pointer; list-style: none;
             display: flex; justify-content: space-between; align-items: center;
             color: var(--void); transition: color 0.3s var(--ease-premium); padding: 8px 0;
@@ -602,11 +638,11 @@
         .faq-item summary::-webkit-details-marker { display: none; }
         .faq-item summary::after { content: '+'; font-size: 28px; font-weight: 300; transition: transform 0.4s var(--ease-premium); color: var(--void); }
         .faq-item[open] summary::after { transform: rotate(45deg) scale(1.1); color: var(--magenta); }
-        .faq-item p { margin-top: 16px; font-size: 18px; line-height: 1.75; color: rgba(2, 2, 2, 0.85); font-weight: 500; padding-right: 16px; animation: faqReveal 0.4s var(--ease-out-expo) forwards; opacity: 0; transform: translateY(-10px); }
+        .faq-item p { margin-top: 16px; font-size: 16px; line-height: 1.75; color: rgba(2, 2, 2, 0.85); font-weight: 500; padding-right: 16px; animation: faqReveal 0.4s var(--ease-out-expo) forwards; opacity: 0; transform: translateY(-10px); }
         @media (min-width: 768px) { .faq-item p { padding-right: 48px; } }
         @keyframes faqReveal { to { opacity: 1; transform: translateY(0); } }
 
-        /* --- MODAL SYSTEM --- */
+        /* === MODAL SYSTEM === */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh; height: 100dvh;
             background: rgba(255, 255, 255, 0.95);
@@ -639,7 +675,7 @@
         }
         .modal-content h2 { color: var(--void); font-size: 32px; font-weight: 800; margin-bottom: 40px; letter-spacing: -0.02em; font-family: 'Outfit', sans-serif; }
 
-        /* --- PROCESS GRID --- */
+        /* === PROCESS GRID === */
         .process-grid {
             display: grid; grid-template-columns: 1fr 1fr; gap: 12px 32px;
             margin-bottom: 40px; padding-bottom: 32px;
@@ -653,7 +689,7 @@
             font-size: 13px; color: rgba(2, 2, 2, 0.65); line-height: 1.6; font-weight: 400;
         }
 
-        /* --- PRICING CARDS --- */
+        /* === PRICING CARDS === */
         .pricing-drawer-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 32px; }
         @media (min-width: 768px) { .pricing-drawer-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (min-width: 1024px) { .pricing-drawer-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -672,21 +708,21 @@
         }
         .pricing-card-mini.tier-special { border-color: rgba(255, 0, 85, 0.5); box-shadow: inset 0 1px 1px rgba(255,255,255,0.8), 0 16px 40px rgba(255, 0, 85, 0.15); }
         .pricing-card-mini.tier-sub { border-color: rgba(204, 255, 0, 0.6); }
-        .pricing-card-mini h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+        .pricing-card-mini h3 { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
         .pricing-card-mini .price-tag {
-            display: flex; align-items: baseline; font-size: 36px; font-weight: 800;
+            display: flex; align-items: baseline; font-size: 32px; font-weight: 800;
             line-height: 1; margin-bottom: 24px; color: var(--void);
             text-shadow: none;
         }
         .pricing-card-mini.tier-special .price-tag { color: var(--magenta); }
         .pricing-card-mini .price-tag span { font-size: 14px; font-family: 'Inter', sans-serif; font-weight: 500; color: rgba(2, 2, 2, 0.5); text-shadow: none; margin-left: 4px; }
         .pricing-card-mini .feature-list { list-style: none; margin-bottom: 32px; flex-grow: 1; }
-        .pricing-card-mini .feature-list li { font-size: 14px; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; color: rgba(2, 2, 2, 0.85); line-height: 1.4; }
+        .pricing-card-mini .feature-list li { font-size: 13px; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; color: rgba(2, 2, 2, 0.85); line-height: 1.4; }
         .pricing-card-mini .feature-list li::before { content: '✓'; color: var(--void); font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; }
         .pricing-card-mini.tier-special .feature-list li::before { color: var(--magenta); }
         .pricing-card-mini .btn-primary { padding: 16px 20px; font-size: 11px; }
 
-        /* --- FORM INPUTS --- */
+        /* === FORM INPUTS === */
         .form-group input, .form-group textarea {
             width: 100%; background: rgba(255,255,255,0.8); border: 1px solid rgba(2, 2, 2, 0.2);
             padding: 16px; margin-bottom: 24px; font-size: 16px; font-family: inherit;
@@ -698,7 +734,7 @@
             box-shadow: 0 0 0 4px rgba(255,0,85,0.1), inset 0 1px 2px rgba(0,0,0,0.02);
         }
 
-        /* --- PREVIEW MODAL --- */
+        /* === PREVIEW MODAL === */
         #preview-modal .modal-content { max-width: 1200px; height: 90vh; height: 90dvh; padding: 24px; display: flex; flex-direction: column; gap: 20px; background: rgba(255, 255, 255, 0.98); border: 1px solid rgba(2, 2, 2, 0.1); box-shadow: 0 40px 100px -20px rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,1); }
         #preview-modal h2 { color: var(--void); margin: 0; font-size: 24px; }
         .preview-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(2, 2, 2, 0.1); padding-bottom: 20px; }
@@ -706,7 +742,7 @@
         .preview-iframe-container { flex-grow: 1; background: #ffffff; border-radius: 8px; overflow: hidden; position: relative; box-shadow: inset 0 0 20px rgba(0,0,0,0.05); border: 1px solid rgba(2, 2, 2, 0.1); }
         .preview-iframe-container iframe { width: 100%; height: 100%; border: none; background: transparent; }
 
-        /* --- FORENSIC COMPRESSED FOOTER --- */
+        /* === COMPRESSED FOOTER === */
         footer { 
             background: var(--void); 
             color: var(--bone); 
@@ -773,6 +809,7 @@
             box-sizing: border-box;
             padding: 10px 16px; font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
             text-transform: uppercase; color: var(--bone); text-decoration: none;
+            min-height: 44px; /* Ensure mobile touch target */
             
             /* High-Visibility 3D Glass Morphism */
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
@@ -834,7 +871,7 @@
         .footer-policy-links { display: flex; flex-wrap: wrap; gap: 24px; }
         
         /* Safely isolated styling */
-        footer .footer-policy-links a { color: var(--bone); text-decoration: none; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s; opacity: 0.6; }
+        footer .footer-policy-links a { color: var(--bone); text-decoration: none; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s; opacity: 0.6; padding: 12px 0; display: inline-block; }
         footer .footer-policy-links a:hover { color: var(--plasma); opacity: 1; }
         
         .legal-notice { font-size: 10px; font-weight: 400; color: var(--bone); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; }
@@ -848,7 +885,7 @@
             .footer-brand { align-items: stretch; }
         }
 
-        /* --- FLOATING CONTACT ANIMATION --- */
+        /* === FLOATING CONTACT ANIMATION === */
         .float-contact-btn {
             position: absolute;
             top: -72px;
@@ -873,6 +910,7 @@
             opacity: 0;
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s, background 0.3s;
             pointer-events: none;
+            min-height: 44px; /* Ensure mobile touch target */
         }
         .float-contact-btn.is-active {
             transform: translateX(-50%) translateY(0) scale(1);
@@ -961,68 +999,56 @@
         <section class="hero container">
             <div class="hero-content reveal-left delay-1 io-element">
                 <h1 id="hero-title">BNDR<span class="dot">.</span></h1>
-                <p id="hero-desc">You get the code. The assets. All of it. Host it anywhere. Hand it to anyone. Tear it apart. It is yours unconditionally.</p>
+                <p id="hero-desc">Custom websites, AI consulting, and group trainings for businesses that want stronger presentation and clearer methods.</p>
                 <ul class="hero-value-list reveal-up delay-2 io-element">
-                    <li>Zero platform lock-in.</li>
-                    <li>Production-grade codebase.</li>
-                    <li>Applied retail psychology.</li>
-                    <li>Sovereign asset ownership.</li>
+                    <li>Custom-coded sites</li>
+                    <li>Help using AI more effectively</li>
+                    <li>Practical group trainings</li>
+                    <li>Behavioral AI Engineering</li>
                 </ul>
             </div>
         </section>
 
-        <section id="work" class="glass-panel">
-            <div class="container grid-2">
-                <div class="reveal-left delay-1 io-element">
-                    <div class="section-header">
-                        <div class="section-badge">What I Build</div>
+        <section id="work" class="glass-panel" style="padding: 0;">
+            <div class="service-row">
+                <div class="container grid-2-tight">
+                    <div class="reveal-left delay-1 io-element">
+                        <div class="section-header">
+                            <div class="section-badge">The Build</div>
+                        </div>
+                        <h2 class="service-header">Custom Websites</h2>
                     </div>
-                    <p class="lead-text" id="work-lead">Custom sites built on real retail psychology and direct floor experience.</p>
-                </div>
-                <div class="reveal-right delay-2 io-element balance-offset">
-                    <p class="body-text-lead">Sites that feel alive — little motion details, spacing that breathes, compelling people to scroll and engage.</p>
-                    <p class="body-text">Landing pages that punch above their weight, relying on layout and motion to do the heavy lifting.</p>
-                    <p class="body-text">Custom tools that understand how your shop works — built to solve the bottlenecks you deal with daily.</p>
-                    <p class="body-text">Design following how your customers actually think online. Twenty years of watching people in stores clarifies what feels right.</p>
+                    <div class="reveal-right delay-2 io-element">
+                        <p class="service-body">I build custom sites with strong visual effects and distinct design targets so people understand who you are in seconds. Intentional motion and mobile optimization are part of the deal. You need your digital presence to match the level of service that you offer. I focus on strong visual direction and asymmetric structure that puts you in a different league than the rest. My sites are designed so that people will understand who you are, and what you do in just a few seconds.</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="container grid-2">
-                <div class="reveal-left delay-1 io-element">
-                    <div class="section-header">
-                        <div class="section-badge">Marketing & Creative</div>
+            <div class="service-row">
+                <div class="container grid-2-tight">
+                    <div class="reveal-left delay-1 io-element">
+                        <div class="section-header">
+                            <div class="section-badge">The Workflows</div>
+                        </div>
+                        <h2 class="service-header">Practical AI & Training</h2>
                     </div>
-                    <p class="lead-text">QR campaigns and social that carry your authentic voice.</p>
-                </div>
-                <div class="reveal-right delay-2 io-element balance-offset">
-                    <p class="body-text-lead">Custom graphics: product shots, menus, flyers, team photos — tuned strictly to what your actual customers respond to.</p>
-                    <p class="body-text">Marketing plans forged on real selling floors. Watching someone hesitate at the counter is the data I use.</p>
+                    <div class="reveal-right delay-2 io-element">
+                        <p class="service-body">Over 2025 I ran more than 7,000 AI chat sessions and over 180,000 messages, and I use that pattern-level experience to shape prompts and systems that work in business contexts. To put that in perspective, if you spent just one minute reading each message, you’d be reading non-stop for over four months. I don't know if that's a bragging point, but it's the truth.</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="container grid-2">
-                <div class="reveal-left delay-1 io-element">
-                    <div class="section-header">
-                        <div class="section-badge">Help When Things Get Messy</div>
+            <div class="service-row">
+                <div class="container grid-2-tight">
+                    <div class="reveal-left delay-1 io-element">
+                        <div class="section-header">
+                            <div class="section-badge">The Background</div>
+                        </div>
+                        <h2 class="service-header">Twenty Years in Sales</h2>
                     </div>
-                    <p class="lead-text">Straight talk on new tools — establishing real value when you count your time.</p>
-                </div>
-                <div class="reveal-right delay-2 io-element balance-offset">
-                    <p class="body-text-lead">Training that makes your best person's instinct teachable — cementing knowledge internally.</p>
-                    <p class="body-text">Workshops on integrating modern tooling, keeping your operation lean and highly functional.</p>
-                </div>
-            </div>
-
-            <div class="container grid-2">
-                <div class="reveal-left delay-1 io-element">
-                    <div class="section-header">
-                        <div class="section-badge">The difference —</div>
+                    <div class="reveal-right delay-2 io-element">
+                        <p class="service-body">I spent over a decade selling cell phones, managed training and starting up & training new store locations for our company, then moved into a more consultative approach selling vehicles. I've made it to the national leaderboard in sales with corporate giants, and I've worked side-by-side with presidents of small businesses as they grew into larger ones, witnessing what worked and what fell apart with my own eyes and ears. I’m always observing the psychology of humans and what makes us who we are. I use that deep understanding and connection to make communication smoother, and more enjoyable for everyone involved.</p>
                     </div>
-                    <p class="lead-text">Twenty years of direct retail experience — standing with owners, hearing their gut calls, observing which ones pay off.</p>
-                </div>
-                <div class="reveal-right delay-2 io-element balance-offset">
-                    <p class="body-text-lead">Every site I build, every recommendation I give carries that insight. Built on proven outcomes from real interactions on the hardest days.</p>
-                    <p class="body-text">That is the insight missing from standard pitches.</p>
                 </div>
             </div>
         </section>
@@ -1034,7 +1060,7 @@
             <div class="section-header is-visible">
                 <div class="section-badge">The Roster</div>
             </div>
-            <h2 class="lead-text">Clinical Execution Index.</h2>
+            <h2 class="lead-text">Clinical Build Index.</h2>
             
             <div id="clinical-gallery-container">
                 <!-- Javascript will inject categorized grids here -->
@@ -1090,14 +1116,14 @@
             <div class="glass-panel" style="margin-top: 48px; border-radius: 12px; padding: 32px;">
                 <div class="about-content">
                     <img src="https://dl.dropboxusercontent.com/scl/fi/rw1qu6k4baqs982psgc6u/QResetsBanner.jpeg?rlkey=oh65jx6gujw0epe2m95lt3ejx&st=0zf7f3oz&raw=1" alt="QuickResets" style="width: 100%; height: auto; display: block; border-radius: 8px; margin-bottom: 24px; border: 1px solid rgba(2,2,2,0.1);">
-                    <p class="body-text-lead">I'm Scott, the guy behind BNDR. What I really want to do is fill a forgotten gap for people who fall completely off the radar.</p>
+                    <p class="body-text-lead">I'm Scott, the guy behind BNDR. What I want to do is fill a forgotten gap for people who fall completely off the radar.</p>
                     <p class="body-text">It's a project called QuickResets. A QR code and a single dollar.</p>
                     <p class="body-text">You spot a code on a bus stop or a bulletin board. You scan it, give one buck, and that money moves straight to someone in a critical situation. Just a clean line from you to them.</p>
-                    <p class="body-text">Early on, a little of that might need to cover the secure payment systems just to keep things running right. The ultimate plan is to have company revenue pay for all that overhead so every single cent goes to the need. We just want to use micro-donations to actually change things in the community. You start by helping one person.</p>
-                    <p class="body-text">This is for people who lost their support system fast and need help just as quickly. It hits that same feeling of total, unfair collapse. You do everything right and still watch your world get dismantled in a day. A parent out of groceries. Someone staring down their first night on the street after a string of bad luck. Capable people drowning quietly because they don't know how to ask for help or they think they'll be judged. We aren't just talking about hypotheticals here.</p>
-                    <p class="body-text">Cash matters right away. But they need more than that. We want to connect them with advocates who can bridge the gap to the right agencies. When life hits you that hard, you don't need a stack of forms to fill out alone. Capable people can spiral from bad to worse in total silence without real support. The reset needs to be a real path forward.</p>
-                    <p class="body-text">We're in the building phase now. Working on the payment rail and the landing page so every dollar moves without a detour. Then we'll print the first codes and get them up around Phoenix Metro, Sedona, wherever they make sense. We also need to build up the quiet outreach that actually finds people before they fall deeper.</p>
-                    <p class="body-text">If you want to help or you've built something like this before, get in touch. I'd love to talk about it.</p>
+                    <p class="body-text">Early on, a little of that might need to cover the secure payment systems just to keep things running right. The ultimate plan is to have company revenue pay for all that overhead so every single cent goes to the need. We just want to use micro-donations to change things in the community. You start by helping one person.</p>
+                    <p class="body-text">This is for people whose world just collapsed. Maybe false accusations ruined their reputation overnight. A parent out of groceries. Someone staring down their first night on the street after a string of bad luck. Capable people drowning quietly because they don't know how to ask for help or they think they'll be judged. We aren't just talking about hypotheticals here.</p>
+                    <p class="body-text">Cash matters right away. But they need more than that. We want to connect them with advocates who can bridge the gap to the right agencies. When life hits you that hard, you don't need a stack of forms to fill out alone. Capable people can spiral from bad to worse in total silence without support. The reset needs to be a path forward.</p>
+                    <p class="body-text">We're in the building phase now. Working on the payment rail and the landing page so every dollar moves without a detour. Then we'll print the first codes and get them up around Phoenix Metro, Sedona, wherever they make sense. We also need to build up the quiet outreach that finds people before they fall deeper.</p>
+                    <p class="body-text">If you want to be a part of this, or you've built something like this before, get in touch. I'd love to talk about it.</p>
                 </div>
             </div>
         </div>
@@ -1113,24 +1139,20 @@
 
             <div class="glass-panel" style="margin-top: 48px; border-radius: 12px; padding: 24px;">
                 <details class="faq-item">
-                    <summary>Do you build in Webflow or a platform?</summary>
-                    <p>Fully custom, production-grade code. You own everything outright — host it anywhere, hand it to anyone, or tear it apart. Full ownership and sovereign control.</p>
+                    <summary>How does the build process work?</summary>
+                    <p>First we lock the scope and the project price. Once you send over the copy, assets, and branding, I design and build your site. We use the included revision rounds to refine things, then I host and launch the site on my setup for you, or help you launch on your own.</p>
                 </details>
                 <details class="faq-item">
-                    <summary>Do you use standard visual tooling?</summary>
-                    <p>Yes, with a heavy human hand on every output. Every asset is reviewed, shaped, and backed by human judgment. You are paying for expertise.</p>
+                    <summary>Do I own the code?</summary>
+                    <p>Yes. The site is built uniquely for your business and you own the code and the assets unconditionally. You can move the site to your own host whenever you choose.</p>
                 </details>
                 <details class="faq-item">
-                    <summary>How do we communicate?</summary>
-                    <p>Call, email, text — whatever is easiest for you. A shared board can be added on request. Direct, immediate communication with the builder.</p>
-                </details>
-                <details class="faq-item">
-                    <summary>What about images and visual assets?</summary>
-                    <p>Brand-matched visuals can be created and tailored to your style. Third-party assets can be licensed with the details passed through to you directly.</p>
+                    <summary>How do hosting and care work?</summary>
+                    <p>Hosting is $99 a month. I keep the site live and reachable. That fee covers the environment and the uptime, so I take responsibility for the site being online. This is separate from ongoing labor.</p>
                 </details>
                 <details class="faq-item" style="border-bottom: none;">
-                    <summary>What's the refund policy?</summary>
-                    <p>30-Day BNDR Unlimited™ includes a 1-week 75% money-back guarantee. After week one the month runs through day 30 and is non-refundable. Standard projects are non-refundable due to the custom nature of the work. Client satisfaction is the primary force behind everything I deliver.</p>
+                    <summary>What if I need updates or a new page?</summary>
+                    <p>Tweaks and maintenance like text changes or image swaps are $79 an hour with a one hour minimum. If you want to add an entirely new interior page to the site, that is a flat $300.</p>
                 </details>
             </div>
         </div>
@@ -1164,49 +1186,54 @@
             </div>
 
             <div class="pricing-drawer-grid">
-                <div class="pricing-card-mini tier-special">
-                    <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge" style="background: var(--magenta);">First 3 Clients</div></div>
-                    <h3>Three-Page Cut™</h3>
-                    <div class="price-tag">$1,050</div>
-                    <ul class="feature-list">
-                        <li>Custom three-page site</li>
-                        <li>1 light revision</li>
-                        <li>Applied sales psychology</li>
-                    </ul>
-                    <a href="https://buy.stripe.com/eVq6oH3RVdAKckk82I0oM0f" data-open="external" class="btn-primary" style="background: var(--magenta); color: var(--bone);">Secure Offer</a>
-                </div>
                 <div class="pricing-card-mini">
                     <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Standard</div></div>
                     <h3>One-Page Lander™</h3>
-                    <div class="price-tag">$1,900</div>
+                    <div class="price-tag">$1,500</div>
                     <ul class="feature-list">
-                        <li>Custom one-page site</li>
+                        <li>1 custom page</li>
+                        <li>Custom design from scratch</li>
+                        <li>Mobile optimization</li>
+                        <li>1 main action path</li>
                         <li>1 light revision</li>
-                        <li>Applied sales psychology</li>
                     </ul>
-                    <a href="https://buy.stripe.com/7sY28r88b9kudoobeU0oM0c" data-open="external" class="btn-primary">Start Project</a>
+                    <a href="#" class="btn-primary">Start Project</a>
+                </div>
+                <div class="pricing-card-mini tier-special">
+                    <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge" style="background: var(--magenta);">Expanded</div></div>
+                    <h3>Three-Page Custom™</h3>
+                    <div class="price-tag">$2,400</div>
+                    <ul class="feature-list">
+                        <li>Up to 3 custom pages</li>
+                        <li>Cohesive visual direction</li>
+                        <li>Motion tuned to your content</li>
+                        <li>Up to 2 light revisions</li>
+                    </ul>
+                    <a href="#" class="btn-primary" style="background: var(--magenta); color: var(--bone);">Secure Offer</a>
                 </div>
                 <div class="pricing-card-mini">
-                    <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Expanded</div></div>
-                    <h3>Five-Page TakeOff™</h3>
-                    <div class="price-tag">$2,900<span>.00</span></div>
+                    <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Full Scale</div></div>
+                    <h3>Small Business Site™</h3>
+                    <div class="price-tag">$3,200</div>
                     <ul class="feature-list">
-                        <li>Up to a 5 page, custom-coded website</li>
-                        <li>3 light revisions within 30 days</li>
-                        <li>Applied sales psychology</li>
+                        <li>Up to 5 custom pages</li>
+                        <li>Consistent visual system</li>
+                        <li>Full mobile optimization</li>
+                        <li>Up to 2 light revisions</li>
                     </ul>
-                    <a href="#" data-open="external" class="btn-primary">Start Project</a>
+                    <a href="#" class="btn-primary">Start Project</a>
                 </div>
                 <div class="pricing-card-mini tier-sub">
-                    <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Subscription</div></div>
-                    <h3>30-Day BNDR Unlimited™</h3>
-                    <div class="price-tag">$3,900<span>/mo</span></div>
+                    <div class="section-header" style="margin-bottom: 16px;"><div class="section-badge">Consulting</div></div>
+                    <h3>AI Consulting</h3>
+                    <div class="price-tag">$99<span>/hr</span></div>
                     <ul class="feature-list">
-                        <li>Unlimited requests (1 active)</li>
-                        <li>Unlimited revisions</li>
-                        <li>Pause or cancel anytime</li>
+                        <li>Live working sessions</li>
+                        <li>Prompt development</li>
+                        <li>Workflow design</li>
+                        <li>Team training available</li>
                     </ul>
-                    <a href="https://buy.stripe.com/eVq28r0FJ2W6988aaQ0oM0e" data-open="external" class="btn-primary">Start Project</a>
+                    <a href="#" class="btn-primary">Start Project</a>
                 </div>
             </div>
         </div>
@@ -1217,7 +1244,7 @@
         <!-- [FLOATING CONTACT ACTION] -->
         <button id="floating-contact-btn" class="float-contact-btn" aria-controls="contact-modal">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-            <span>Initiate Build</span>
+            <span>Start Build</span>
         </button>
 
         <div class="container">
@@ -1242,7 +1269,7 @@
                             <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; flex-shrink: 0; fill: currentColor;"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>
                             Substack
                         </a>
-                        <a href="https://github.com/BNDRBOTS" data-open="external" class="connect-btn">
+                        <a href="https://github.com/bndrbots" data-open="external" class="connect-btn">
                             <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; flex-shrink: 0; fill: currentColor;"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113-.82-.258-.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
                             GitHub
                         </a>
@@ -1338,8 +1365,8 @@
 
 <script>
     const AppState = {
-        init: false,
-        targetScrollProgress: 0,
+        ready: false,
+        goalScrollProgress: 0,
         currentScrollProgress: 0,
         isScrolling: false
     };
@@ -1348,7 +1375,7 @@
         activeSurface: null,
         lastFocus: null,
         savedScrollY: 0,
-        init() {
+        setup() {
             document.querySelectorAll('.modal-close, .modal-overlay').forEach(el => {
                 el.addEventListener('click', (e) => {
                     if (e.target === el || e.currentTarget.classList.contains('modal-close')) {
@@ -1370,7 +1397,6 @@
 
             this.savedScrollY = window.scrollY;
             
-            // Dynamically lock whichever page layer is currently rendered
             const activeLayer = document.querySelector('.page-layer[style*="display: block"]') || document.getElementById('home-layer');
 
             if (activeLayer) {
@@ -1383,7 +1409,7 @@
             this.activeSurface.classList.add('active');
             document.body.style.overflow = 'hidden';
 
-            flashSystem();
+            flashUI();
             const firstFocusable = this.activeSurface.querySelector('button, input, textarea, a');
             if (firstFocusable) {
                 setTimeout(() => firstFocusable.focus(), 50);
@@ -1394,7 +1420,6 @@
             this.activeSurface.classList.remove('active');
             document.body.style.overflow = '';
 
-            // Unfreeze active layer
             const activeLayer = document.querySelector('.page-layer[style*="display: block"]') || document.getElementById('home-layer');
             if (activeLayer) {
                 activeLayer.style.position = '';
@@ -1423,10 +1448,9 @@
         }
     };
 
-    // Refactored Data Payload: Hierarchical UI Sorting
     const galleryCategories = [
         {
-            title: "Brand & Architecture",
+            title: "Brand & Design",
             items: [
                 { name: "Business SaaS Demo", url: "https://bndrbots.github.io/raydeo/" },
                 { name: "Voss", url: "https://bndrbots.github.io/Voss/" },
@@ -1447,7 +1471,7 @@
             ]
         },
         {
-            title: "Games & Kinetics",
+            title: "Games & Motion",
             items: [
                 { name: "Rogue Rita Boss Pack", url: "https://bndrbots.github.io/RogueRita_CyberArena_BossPack/" },
                 { name: "Rogue Rita Vaporwave", url: "https://bndrbots.github.io/RogueRita_Vaporwave/" },
@@ -1470,7 +1494,7 @@
         }
     ];
 
-    function renderGalleryNodes() {
+    function renderGalleryItems() {
         const container = document.getElementById('clinical-gallery-container');
         if (!container) return;
         
@@ -1505,7 +1529,6 @@
             container.appendChild(grid);
         });
 
-        // Initialize high-efficiency preview logic
         document.querySelectorAll('.gallery-preview-trigger').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -1529,24 +1552,19 @@
         const webgl = document.getElementById('webgl-container');
 
         function navigateTo(path, push = true) {
-            // Validate Path
             if (!layers[path]) path = '/home';
             
-            // Toggle Display State
             Object.values(layers).forEach(layer => {
                 if(layer) layer.style.display = 'none';
             });
             if (layers[path]) layers[path].style.display = 'block';
             
-            // Opacity shift for WebGL background based on context density
             if (webgl) {
                 webgl.style.opacity = path === '/home' ? '1' : '0.05';
             }
             
-            // Scroll reset to mimic fresh page load
             window.scrollTo(0, 0);
             
-            // Push State for accurate URL and History tracking
             if (push) {
                 try {
                     history.pushState({ path: path }, '', path);
@@ -1556,7 +1574,6 @@
             }
         }
 
-        // Bind Nav Buttons
         document.querySelectorAll('.route-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -1564,7 +1581,6 @@
             });
         });
 
-        // Intercept Browser Back/Forward navigation
         window.addEventListener('popstate', (e) => {
             if (e.state && e.state.path) {
                 navigateTo(e.state.path, false);
@@ -1573,10 +1589,9 @@
             }
         });
 
-        // Init Load Path Logic
-        let initialPath = window.location.pathname;
-        if(initialPath === '/' || initialPath === '') initialPath = '/home';
-        navigateTo(initialPath, false);
+        let startPath = window.location.pathname;
+        if(startPath === '/' || startPath === '') startPath = '/home';
+        navigateTo(startPath, false);
     }
 
     function applyTextStagger(selector) {
@@ -1600,19 +1615,17 @@
     document.addEventListener('DOMContentLoaded', () => {
         applyTextStagger('#hero-desc');
         applyTextStagger('#work-lead');
-        renderGalleryNodes();
+        renderGalleryItems();
         setupRouting();
         
         document.querySelectorAll('[data-open="external"]').forEach(el => {
             el.addEventListener('click', e => {
-                // Ignore programmatic preview triggers
                 if (el.classList.contains('gallery-preview-trigger')) return; 
                 e.preventDefault();
                 window.open(el.href, '_blank', 'noopener,noreferrer');
             });
         });
 
-        // Morphing Nav Logic
         const navPill = document.getElementById('main-nav');
         const mobileToggle = document.getElementById('mobile-nav-toggle');
         
@@ -1632,12 +1645,12 @@
     });
 
     function bootloader() {
-        if (AppState.init) return;
+        if (AppState.ready) return;
         if (typeof THREE !== 'undefined') {
-            AppState.init = true;
-            initThreeJS();
+            AppState.ready = true;
+            setupThreeJS();
             runEntranceAnimation();
-            initDOM();
+            setupDOM();
         } else {
             requestAnimationFrame(bootloader);
         }
@@ -1649,7 +1662,7 @@
         bootloader();
     }
 
-    function initDOM() {
+    function setupDOM() {
         const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -1661,7 +1674,7 @@
         }, observerOptions);
         document.querySelectorAll('.io-element').forEach(el => observer.observe(el));
 
-        SurfaceController.init();
+        SurfaceController.setup();
 
         document.getElementById('nav-contact-btn').addEventListener('click', function() { SurfaceController.open('contact-modal', this); });
         document.querySelectorAll('.connect-section-trigger').forEach(btn => btn.addEventListener('click', function() { SurfaceController.open('contact-modal', this); }));
@@ -1758,11 +1771,11 @@
             }
             lastScroll = currentScroll;
 
-            AppState.targetScrollProgress = Math.min(1, Math.max(0, currentScroll / cachedMaxScroll));
+            AppState.goalScrollProgress = Math.min(1, Math.max(0, currentScroll / cachedMaxScroll));
         }, { passive: true });
     }
 
-    function flashSystem() {
+    function flashUI() {
         const flash = document.getElementById('ui-flash');
         if(!flash) return;
         flash.style.opacity = '1';
@@ -1790,7 +1803,7 @@
         }
     }
 
-    function initThreeJS() {
+    function setupThreeJS() {
         const container = document.getElementById('webgl-container');
         if (!container) return;
 
@@ -1904,7 +1917,7 @@
         let isDragging = false;
         let dragHistory = [];
         let vel = new THREE.Vector3(0, 0, 0);
-        let gyroTarget = { x: 0, y: 0 };
+        let gyroGoal = { x: 0, y: 0 };
         let currentGyroOffset = { x: 0, y: 0 };
         let isGyroActive = false;
 
@@ -1916,7 +1929,7 @@
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth < 800 ? 1.0 : 2));
         });
 
-        function handleInteractionInit(e) {
+        function handleInteractionStart(e) {
             if(e && e.target && e.target.closest('.page-layer, .drawer, .modal-overlay, .nav-pill')) return;
             if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
                 DeviceOrientationEvent.requestPermission()
@@ -1925,11 +1938,11 @@
             } else {
                 window.addEventListener('deviceorientation', gyroHandler);
             }
-            window.removeEventListener('mousedown', handleInteractionInit);
-            window.removeEventListener('touchstart', handleInteractionInit);
+            window.removeEventListener('mousedown', handleInteractionStart);
+            window.removeEventListener('touchstart', handleInteractionStart);
         }
-        window.addEventListener('mousedown', handleInteractionInit);
-        window.addEventListener('touchstart', handleInteractionInit, { passive: true });
+        window.addEventListener('mousedown', handleInteractionStart);
+        window.addEventListener('touchstart', handleInteractionStart, { passive: true });
 
         function startDrag(clientX, clientY) { isDragging = true; dragHistory = [{ x: clientX, y: clientY, time: Date.now() }]; }
         function trackDrag(clientX, clientY) {
@@ -1963,8 +1976,8 @@
         function gyroHandler(e) {
             if (!e.beta || !e.gamma) return;
             isGyroActive = true;
-            gyroTarget.x = THREE.MathUtils.degToRad(Math.max(-90, Math.min(90, e.beta)) - 45) * 0.8;
-            gyroTarget.y = THREE.MathUtils.degToRad(Math.max(-90, Math.min(90, e.gamma))) * 0.8;
+            gyroGoal.x = THREE.MathUtils.degToRad(Math.max(-90, Math.min(90, e.beta)) - 45) * 0.8;
+            gyroGoal.y = THREE.MathUtils.degToRad(Math.max(-90, Math.min(90, e.gamma))) * 0.8;
         }
 
         const clock = new THREE.Clock();
@@ -1972,15 +1985,15 @@
         function animate() {
             requestAnimationFrame(animate);
 
-            AppState.currentScrollProgress += (AppState.targetScrollProgress - AppState.currentScrollProgress) * 0.15;
+            AppState.currentScrollProgress += (AppState.goalScrollProgress - AppState.currentScrollProgress) * 0.15;
 
             doors.forEach(door => {
-                const targetAngle = (Math.PI / 1.6) * door.dir * AppState.currentScrollProgress;
-                door.parentHinge.rotation[door.axis] += (targetAngle - door.parentHinge.rotation[door.axis]) * 0.2;
+                const goalAngle = (Math.PI / 1.6) * door.dir * AppState.currentScrollProgress;
+                door.parentHinge.rotation[door.axis] += (goalAngle - door.parentHinge.rotation[door.axis]) * 0.2;
                 const fractureAmount = AppState.currentScrollProgress * 2.5;
                 const origPos = door.pivotGroup.userData.origPos;
-                const targetPos = origPos.clone().multiplyScalar(1 + fractureAmount);
-                door.pivotGroup.position.lerp(targetPos, 0.2);
+                const goalPos = origPos.clone().multiplyScalar(1 + fractureAmount);
+                door.pivotGroup.position.lerp(goalPos, 0.2);
             });
 
             innerMaterial.emissiveIntensity = 0.25 + (AppState.currentScrollProgress * 2.5);
@@ -2011,8 +2024,8 @@
 
             if (isGyroActive) {
                 if (!AppState.isScrolling) {
-                    currentGyroOffset.x += (gyroTarget.x - currentGyroOffset.x) * 0.1;
-                    currentGyroOffset.y += (gyroTarget.y - currentGyroOffset.y) * 0.1;
+                    currentGyroOffset.x += (gyroGoal.x - currentGyroOffset.x) * 0.1;
+                    currentGyroOffset.y += (gyroGoal.y - currentGyroOffset.y) * 0.1;
                 } else {
                     currentGyroOffset.x *= 0.9;
                     currentGyroOffset.y *= 0.9;
