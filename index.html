@@ -433,13 +433,6 @@
             }
             
             .nav-items-inner {
-                overflow: hidden;
-                display: flex;
-                flex-direction: column;
-                gap: 4px;
-                padding: 0 4px;
-            }
-            .nav-pill.is-open .nav-items-inner {
                 padding-bottom: 8px;
             }
             
@@ -600,7 +593,7 @@
         }
 
         /* === COPY BLOCKS === */
-        .lead-text { font-size: clamp(26px, 4vw, 40px); font-weight: 700; line-height: 1.15; margin-bottom: 32px; letter-spacing: -0.02em; color: var(--void); }
+        .lead-text { font-size: clamp(26px, 4vw, 40px); font-family: 'Inter', sans-serif; font-style: italic; font-weight: 900; line-height: 1.15; margin-bottom: 32px; letter-spacing: -0.02em; color: var(--void); }
         .body-text { font-size: 16px; line-height: 1.65; color: rgba(2, 2, 2, 0.85); margin-bottom: 28px; font-weight: 500; }
         .body-text:last-child { margin-bottom: 0; }
         .body-text-lead { font-size: 18px; line-height: 1.55; color: var(--void); margin-bottom: 28px; font-weight: 600; letter-spacing: -0.015em; }
@@ -980,11 +973,8 @@
         </button>
         <div class="nav-items-wrapper">
             <div class="nav-items-inner">
-                <button class="route-btn" data-route="/home">Index</button>
-                <button class="route-btn" data-route="/gallery">
-                    <span class="desktop-only">Site Gallery</span>
-                    <span class="mobile-only">Website Gallery</span>
-                </button>
+                <button class="route-btn" data-route="/home">Home</button>
+                <button class="route-btn" data-route="/gallery">Website Gallery</button>
                 <button class="route-btn" data-route="/art">Art Gallery</button>
                 <button class="route-btn" data-route="/about">About</button>
                 <button class="route-btn" data-route="/pricing">Pricing</button>
@@ -1047,7 +1037,7 @@
                         <h2 class="service-header">Twenty Years in Sales</h2>
                     </div>
                     <div class="reveal-right delay-2 io-element">
-                        <p class="service-body">"I really just get how people tick. I'm always watching human psychology and figuring out what makes us who we are, and I use that connection to make communication smoother and just more enjoyable for everyone.\n\nIt comes from a lot of years doing the work. I spent over a decade in cell phones. I sold them, managed the training, and got new store locations off the ground. After that I moved into selling cars with a much more consultative approach.\n\nI've hit the national sales leaderboards working for corporate giants. But I've also worked right alongside small business presidents as they scaled up. Being in those rooms, you see exactly what works and what completely falls apart."</p>
+                        <p class="service-body">I spent over a decade selling cell phones, managed training and starting up & training new store locations for our company, then moved into a more consultative approach selling vehicles. I've made it to the national leaderboard in sales with corporate giants, and I've worked side-by-side with presidents of small businesses as they grew into larger ones, witnessing what worked and what fell apart with my own eyes and ears. I’m always observing the psychology of humans and what makes us who we are. I use that deep understanding and connection to make communication smoother, and more enjoyable for everyone involved.</p>
                     </div>
                 </div>
             </div>
@@ -1057,12 +1047,14 @@
     <!-- [LAYER 2: GALLERY PAGE] -->
     <main id="gallery-layer" class="page-layer">
         <div class="container">
-            <div class="section-header is-visible">
-                <div class="section-badge">The Roster</div>
+            <div class="reveal-left delay-1 io-element">
+                <div class="section-header">
+                    <div class="section-badge">BNDR's Work</div>
+                </div>
+                <h2 class="lead-text">The BNDR Portfolio, More to come.</h2>
             </div>
-            <h2 class="lead-text">Clinical Build Index.</h2>
             
-            <div id="clinical-gallery-container">
+            <div id="clinical-gallery-container" class="reveal-up delay-2 io-element">
                 <!-- Javascript will inject categorized grids here -->
             </div>
         </div>
@@ -1071,33 +1063,35 @@
     <!-- [LAYER 3: ART PAGE] -->
     <main id="art-layer" class="page-layer">
         <div class="container">
-            <div class="section-header is-visible">
-                <div class="section-badge">Visuals</div>
+            <div class="reveal-left delay-1 io-element">
+                <div class="section-header">
+                    <div class="section-badge">Visuals</div>
+                </div>
+                <h2 class="lead-text">Art Gallery.</h2>
             </div>
-            <h2 class="lead-text">Art Gallery.</h2>
-            <div class="art-grid">
+            <div class="art-grid reveal-up delay-2 io-element">
                 
                 <div class="art-card">
                     <div class="art-frame frame-square" style="background-image: url('https://dl.dropboxusercontent.com/scl/fi/kfl4hkrx8pzalrybc48wf/u9574564132_Inside_the_Singularity_The_Final_Shot_Your_shot_isn_0defdbda-8daa-4dc9-8093-5c1783344231.png?rlkey=n86clze3ksj3zi5vyahjpu3p8&st=f45yrals&raw=1'); background-size: cover; background-position: center;"></div>
                     <div class="art-desc">
-                        <strong>Project 01 // Singularity</strong>
-                        <p>Dimensional focal composition. Encapsulated within a strict 1:1 footprint to maintain terminal visual gravity.</p>
+                        <strong>Image 01 // Wrpd</strong>
+                        <p>A swirling vortex of humanity.</p>
                     </div>
                 </div>
 
                 <div class="art-card">
                     <div class="art-frame frame-wide" style="background-image: url('https://dl.dropboxusercontent.com/scl/fi/b6rj16y4ng0k2x9otxitx/digital_tokyo_A_futuristic_honeycomb_design_with_glowing_neon_o_981cfb04-d986-4e79-96a1-3d079d686659.png?rlkey=hl0k5ed068oahl01xx1wnuhn1&st=utwtjr10&raw=1'); background-size: cover; background-position: center;"></div>
                     <div class="art-desc">
-                        <strong>Project 02 // Agency Profile</strong>
-                        <p>Expanded 16:9 cinematic baseline. Optically balanced for horizontal sweep and rigorous grid conformity.</p>
+                        <strong>Image 02 // Lava Layer.</strong>
+                        <p>It never settles. It just keeps pushing right. It is restless. It moves in waves.</p>
                     </div>
                 </div>
 
                 <div class="art-card">
                     <div class="art-frame frame-tall" style="background-image: url('https://dl.dropboxusercontent.com/scl/fi/a9k4suefvhs8ekfkfh7en/redhood.jpeg?rlkey=x8c3r9c6xglnn1p0ybipkln6t&st=71o972pk&raw=1'); background-size: cover; background-position: center;"></div>
                     <div class="art-desc">
-                        <strong>Project 03 // Red Hood</strong>
-                        <p>Vertical dominance protocol. Anchored to a 3:4 ratio for intense character scaling and mobile-first ocular tracking.</p>
+                        <strong>Image 03 // Faded System</strong>
+                        <p>Digital perfection meets urban concrete.</p>
                     </div>
                 </div>
                 
@@ -1108,12 +1102,14 @@
     <!-- [LAYER 4: ABOUT PAGE] -->
     <main id="about-layer" class="page-layer">
         <div class="container" style="max-width: 720px;">
-            <div class="section-header is-visible">
-                <div class="section-badge">Profile</div>
+            <div class="reveal-left delay-1 io-element">
+                <div class="section-header">
+                    <div class="section-badge">Profile</div>
+                </div>
+                <h2 class="lead-text">About.</h2>
             </div>
-            <h2 class="lead-text">About.</h2>
             
-            <div class="glass-panel" style="margin-top: 48px; border-radius: 12px; padding: 32px;">
+            <div class="glass-panel reveal-up delay-2 io-element" style="margin-top: 48px; border-radius: 12px; padding: 32px;">
                 <div class="about-content">
                     <img src="https://dl.dropboxusercontent.com/scl/fi/rw1qu6k4baqs982psgc6u/QResetsBanner.jpeg?rlkey=oh65jx6gujw0epe2m95lt3ejx&st=0zf7f3oz&raw=1" alt="QuickResets" style="width: 100%; height: auto; display: block; border-radius: 8px; margin-bottom: 24px; border: 1px solid rgba(2,2,2,0.1);">
                     <p class="body-text-lead">I'm Scott, the guy behind BNDR. What I want to do is fill a forgotten gap for people who fall completely off the radar.</p>
@@ -1132,12 +1128,14 @@
     <!-- [LAYER 5: FAQ PAGE] -->
     <main id="faq-layer" class="page-layer">
         <div class="container" style="max-width: 720px;">
-            <div class="section-header is-visible">
-                <div class="section-badge">Information</div>
+            <div class="reveal-left delay-1 io-element">
+                <div class="section-header">
+                    <div class="section-badge">Information</div>
+                </div>
+                <h2 class="lead-text">Frequently Asked Questions.</h2>
             </div>
-            <h2 class="lead-text">Frequently Asked Questions.</h2>
 
-            <div class="glass-panel" style="margin-top: 48px; border-radius: 12px; padding: 24px;">
+            <div class="glass-panel reveal-up delay-2 io-element" style="margin-top: 48px; border-radius: 12px; padding: 24px;">
                 <details class="faq-item">
                     <summary>How does the build process work?</summary>
                     <p>First we lock the scope and the project price. Once you send over the copy, assets, and branding, I design and build your site. We use the included revision rounds to refine things, then I host and launch the site on my setup for you, or help you launch on your own.</p>
@@ -1161,12 +1159,14 @@
     <!-- [LAYER 6: PRICING PAGE] -->
     <main id="pricing-layer" class="page-layer">
         <div class="container" style="max-width: 1200px;">
-            <div class="section-header is-visible">
-                <div class="section-badge">The Offer</div>
+            <div class="reveal-left delay-1 io-element">
+                <div class="section-header">
+                    <div class="section-badge">The Offer</div>
+                </div>
+                <h2 class="lead-text">One partner.<br>Unlimited builds.</h2>
             </div>
-            <h2 class="lead-text">One partner.<br>Unlimited builds.</h2>
 
-            <div class="process-grid" style="margin-top: 48px;">
+            <div class="process-grid reveal-up delay-2 io-element" style="margin-top: 48px;">
                 <div class="process-grid-item">
                     <strong>Start</strong>
                     <p>Same day payment clears.</p>
