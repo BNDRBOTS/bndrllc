@@ -334,6 +334,8 @@
 
         /* --- DESKTOP NAVIGATION --- */
         @media (min-width: 800px) {
+            .desktop-only { display: inline; }
+            .mobile-only { display: none; }
             .nav-pill {
                 max-width: calc(100vw - 48px);
                 overflow-x: auto;
@@ -356,6 +358,8 @@
 
         /* --- MOBILE MORPHING NAVIGATION --- */
         @media (max-width: 799px) {
+            .desktop-only { display: none; }
+            .mobile-only { display: inline; }
             .nav-pill {
                 right: auto;
                 left: 50%;
@@ -939,7 +943,10 @@
         <div class="nav-items-wrapper">
             <div class="nav-items-inner">
                 <button class="route-btn" data-route="/home">Index</button>
-                <button class="route-btn" data-route="/gallery">Site Gallery</button>
+                <button class="route-btn" data-route="/gallery">
+                    <span class="desktop-only">Site Gallery</span>
+                    <span class="mobile-only">Website Gallery</span>
+                </button>
                 <button class="route-btn" data-route="/art">Art Gallery</button>
                 <button class="route-btn" data-route="/about">About</button>
                 <button class="route-btn" data-route="/pricing">Pricing</button>
@@ -1082,9 +1089,15 @@
             
             <div class="glass-panel" style="margin-top: 48px; border-radius: 12px; padding: 32px;">
                 <div class="about-content">
-                    <div style="width: 100%; aspect-ratio: 21/9; background: rgba(2,2,2,0.05); border-radius: 8px; margin-bottom: 24px; border: 1px solid rgba(2,2,2,0.1);"></div>
-                    <p class="body-text-lead">[About content injection sector]</p>
-                    <p class="body-text">[Markdown ready. Replace this text with the finalized biography or studio origin material. Maintain clinical formatting standards.]</p>
+                    <img src="https://dl.dropboxusercontent.com/scl/fi/rw1qu6k4baqs982psgc6u/QResetsBanner.jpeg?rlkey=oh65jx6gujw0epe2m95lt3ejx&st=0zf7f3oz&raw=1" alt="QuickResets" style="width: 100%; height: auto; display: block; border-radius: 8px; margin-bottom: 24px; border: 1px solid rgba(2,2,2,0.1);">
+                    <p class="body-text-lead">I'm Scott, the guy behind BNDR. What I really want to do is fill a forgotten gap for people who fall completely off the radar.</p>
+                    <p class="body-text">It's a project called QuickResets. A QR code and a single dollar.</p>
+                    <p class="body-text">You spot a code on a bus stop or a bulletin board. You scan it, give one buck, and that money moves straight to someone in a critical situation. Just a clean line from you to them.</p>
+                    <p class="body-text">Early on, a little of that might need to cover the secure payment systems just to keep things running right. The ultimate plan is to have company revenue pay for all that overhead so every single cent goes to the need. We just want to use micro-donations to actually change things in the community. You start by helping one person.</p>
+                    <p class="body-text">This is for people who lost their support system fast and need help just as quickly. It hits that same feeling of total, unfair collapse. You do everything right and still watch your world get dismantled in a day. A parent out of groceries. Someone staring down their first night on the street after a string of bad luck. Capable people drowning quietly because they don't know how to ask for help or they think they'll be judged. We aren't just talking about hypotheticals here.</p>
+                    <p class="body-text">Cash matters right away. But they need more than that. We want to connect them with advocates who can bridge the gap to the right agencies. When life hits you that hard, you don't need a stack of forms to fill out alone. Capable people can spiral from bad to worse in total silence without real support. The reset needs to be a real path forward.</p>
+                    <p class="body-text">We're in the building phase now. Working on the payment rail and the landing page so every dollar moves without a detour. Then we'll print the first codes and get them up around Phoenix Metro, Sedona, wherever they make sense. We also need to build up the quiet outreach that actually finds people before they fall deeper.</p>
+                    <p class="body-text">If you want to help or you've built something like this before, get in touch. I'd love to talk about it.</p>
                 </div>
             </div>
         </div>
