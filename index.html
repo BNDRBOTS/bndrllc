@@ -86,13 +86,14 @@
             letter-spacing: -0.01em;
         }
 
-        .nav-pill, button, .btn-primary, summary, .modal-close, .connect-btn, .footer-policy-links a, .section-badge, .footer-title-btn {
+        .nav-pill, button, .btn-primary, summary, .modal-close, .connect-btn, .footer-policy-links a, .section-badge, .footer-title-btn, .gallery-card, .qr-code-footer {
             user-select: none;
             -webkit-user-select: none;
             touch-action: manipulation;
         }
 
         @media (pointer: fine) { body { cursor: crosshair; } }
+        @media (pointer: coarse) { *, a, button { cursor: default !important; } }
 
         /* === 3D BACKGROUND LAYER === */
         #webgl-container {
@@ -141,7 +142,7 @@
         /* === GALLERY STYLES === */
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
             gap: 24px;
             margin-bottom: 48px;
         }
@@ -237,7 +238,7 @@
         .art-grid {
             display: flex;
             flex-direction: column;
-            gap: 96px;
+            gap: 64px;
             margin-top: 64px;
         }
         .art-card {
@@ -246,6 +247,7 @@
             gap: 24px;
         }
         @media (min-width: 800px) {
+            .art-grid { gap: 96px; }
             .art-card {
                 grid-template-columns: repeat(12, 1fr);
                 align-items: center;
@@ -700,6 +702,9 @@
             margin-bottom: 40px; padding-bottom: 32px;
             border-bottom: 1px solid rgba(2, 2, 2, 0.1);
         }
+        @media (max-width: 599px) {
+            .process-grid { grid-template-columns: 1fr; gap: 16px; }
+        }
         .process-title {
             display: block; font-size: 11px; font-family: 'Inter', sans-serif; font-weight: 700; font-style: normal; letter-spacing: 0.12em; text-transform: uppercase; color: var(--void); margin-bottom: 4px; margin-top: 0;
         }
@@ -888,7 +893,7 @@
         .footer-policy-links { display: flex; flex-wrap: wrap; gap: 24px; }
         
         /* Safely isolated styling */
-        footer .footer-policy-links a { color: var(--bone); text-decoration: none; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s; opacity: 0.6; padding: 12px 0; display: inline-block; }
+        footer .footer-policy-links a { color: var(--bone); text-decoration: none; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s; opacity: 0.6; padding: 0 8px; margin: -8px 0; min-height: 44px; display: inline-flex; align-items: center; }
         footer .footer-policy-links a:hover { color: var(--plasma); opacity: 1; }
         
         .legal-notice { font-size: 10px; font-weight: 400; color: var(--bone); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; }
@@ -967,7 +972,6 @@
             .modal-content { width: 100%; margin: 0; margin-top: auto; border-radius: 24px 24px 0 0; border: none; border-top: 1px solid rgba(2, 2, 2, 0.1); padding: 40px 24px max(40px, env(safe-area-inset-bottom)); transform: translateY(100%); }
             .modal-overlay.active .modal-content { transform: translateY(0); }
             .modal-close { top: 16px; right: 16px; width: 44px; height: 44px; background: rgba(0, 0, 0, 0.05); display: flex; align-items: center; justify-content: center; }
-            .process-grid { grid-template-columns: 1fr; gap: 16px; }
             .btn-primary { min-height: 48px; }
         }
     </style>
@@ -1013,12 +1017,12 @@
         <section class="hero container">
             <div class="hero-content reveal-left delay-1 io-element">
                 <h1 id="hero-title">BNDR<span class="dot">.</span></h1>
-                <p id="hero-desc">Custom websites, AI consulting, and group trainings for businesses that want stronger presentation and clearer methods.</p>
+                <p id="hero-desc">Custom sites, consulting, and practical trainings for businesses building stronger presentation and clearer methods.</p>
                 <ul class="hero-value-list reveal-up delay-2 io-element">
                     <li>Custom-coded sites</li>
                     <li>Help using AI more effectively</li>
                     <li>Practical group trainings</li>
-                    <li>Behavioral AI Engineering</li>
+                    <li>Behavioral Prompt Design</li>
                 </ul>
             </div>
         </section>
@@ -1028,12 +1032,12 @@
                 <div class="container grid-2-tight">
                     <div class="reveal-left delay-1 io-element">
                         <div class="section-header">
-                            <div class="section-badge">The Build</div>
+                            <div class="section-badge">What I Make</div>
                         </div>
                         <h2 class="service-header">Custom Websites</h2>
                     </div>
                     <div class="reveal-right delay-2 io-element">
-                        <p class="service-body">I build custom sites with strong visual effects and distinct design targets so people understand who you are in seconds. Intentional motion and mobile optimization are part of the deal. You need your digital presence to match the level of service that you offer. I focus on strong visual direction and asymmetric structure that puts you in a different league than the rest. My sites are designed so that people will understand who you are, and what you do in just a few seconds.</p>
+                        <p class="service-body">I build custom sites with strong visual effects and distinct design direction so people understand who you are in seconds. Intentional motion and mobile responsiveness are part of the deal. You need your digital presence to match the level of service you offer. I focus on strong visual direction and asymmetric layout that puts you in a different league than the rest. My sites show people exactly who you are and what you do in seconds.</p>
                     </div>
                 </div>
             </div>
@@ -1042,12 +1046,12 @@
                 <div class="container grid-2-tight">
                     <div class="reveal-left delay-1 io-element">
                         <div class="section-header">
-                            <div class="section-badge">The Workflows</div>
+                            <div class="section-badge">Why BNDR</div>
                         </div>
                         <h2 class="service-header">Practical AI & Training</h2>
                     </div>
                     <div class="reveal-right delay-2 io-element">
-                        <p class="service-body">Over 2025 I ran more than 7,000 AI chat sessions and over 180,000 messages, and I use that pattern-level experience to shape prompts and systems that work in business contexts. To put that in perspective, if you spent just one minute reading each message, you’d be reading non-stop for over four months. I don't know if that's a bragging point, but it's the truth.</p>
+                        <p class="service-body">Over 2025 I ran more than 10,000 AI chat sessions and over 200,000 messages, and I use that lived and learned experience to shape the way that I work in business contexts, applying my experience in sales and apply it to tech. To put those numbers in perspective, if you spent just one minute reading each message, you’d be reading non-stop for over four months. I don't know if that's a bragging point, but it's the truth.</p>
                     </div>
                 </div>
             </div>
@@ -1056,7 +1060,7 @@
                 <div class="container grid-2-tight">
                     <div class="reveal-left delay-1 io-element">
                         <div class="section-header">
-                            <div class="section-badge">The Background</div>
+                            <div class="section-badge">Who I Am</div>
                         </div>
                         <h2 class="service-header">Twenty Years in Sales</h2>
                     </div>
@@ -1112,9 +1116,9 @@
                 </div>
 
                 <div class="art-card">
-                    <div class="art-frame frame-tall" role="img" aria-label="Artwork: Image 03 Faded System" style="background-image: url('https://dl.dropboxusercontent.com/scl/fi/a9k4suefvhs8ekfkfh7en/redhood.jpeg?rlkey=x8c3r9c6xglnn1p0ybipkln6t&st=71o972pk&raw=1'); background-size: cover; background-position: center;"></div>
+                    <div class="art-frame frame-tall" role="img" aria-label="Artwork: Image 03 Faded Circuit" style="background-image: url('https://dl.dropboxusercontent.com/scl/fi/a9k4suefvhs8ekfkfh7en/redhood.jpeg?rlkey=x8c3r9c6xglnn1p0ybipkln6t&st=71o972pk&raw=1'); background-size: cover; background-position: center;"></div>
                     <div class="art-desc">
-                        <h2 class="art-title">Image 03 // Faded System</h2>
+                        <h2 class="art-title">Image 03 // Faded Circuit</h2>
                         <p>Digital perfection meets urban concrete.</p>
                     </div>
                 </div>
@@ -1139,7 +1143,7 @@
                     <p class="body-text-lead">I'm Scott, the guy behind BNDR. What I want to do is fill a forgotten gap for people who fall completely off the radar.</p>
                     <p class="body-text">It's a project called QuickResets. A QR code and a single dollar.</p>
                     <p class="body-text">You spot a code on a bus stop or a bulletin board. You scan it, give one buck, and that money moves straight to someone in a critical situation. Just a clean line from you to them.</p>
-                    <p class="body-text">Early on, a little of that might need to cover the secure payment systems just to keep things running right. The ultimate plan is to have company revenue pay for all that overhead so every single cent goes to the need. We just want to use micro-donations to change things in the community. You start by helping one person.</p>
+                    <p class="body-text">Early on, a little of that might need to cover the secure payment methods just to keep things running right. The ultimate plan is to have company revenue pay for all that overhead so every single cent goes to the need. We just want to use micro-donations to change things in the community. You start by helping one person.</p>
                     <p class="body-text">This is for people whose world just collapsed. Maybe false accusations ruined their reputation overnight. A parent out of groceries. Someone staring down their first night on the street after a string of bad luck. Capable people drowning quietly because they don't know how to ask for help or they think they'll be judged. We aren't just talking about hypotheticals here.</p>
                     <p class="body-text">Cash matters right away. But they need more than that. We want to connect them with advocates who can bridge the gap to the right agencies. When life hits you that hard, you don't need a stack of forms to fill out alone. Capable people can spiral from bad to worse in total silence without support. The reset needs to be a path forward.</p>
                     <p class="body-text">We're in the building phase now. Working on the payment rail and the landing page so every dollar moves without a detour. Then we'll print the first codes and get them up around Phoenix Metro, Sedona, wherever they make sense. We also need to build up the quiet outreach that finds people before they fall deeper.</p>
@@ -1217,7 +1221,7 @@
                     <ul class="feature-list">
                         <li>1 custom page</li>
                         <li>Custom design from scratch</li>
-                        <li>Mobile optimization</li>
+                        <li>Mobile responsiveness</li>
                         <li>1 main action path</li>
                         <li>1 light revision</li>
                     </ul>
@@ -1241,8 +1245,8 @@
                     <div class="price-tag">$3,200</div>
                     <ul class="feature-list">
                         <li>Up to 5 custom pages</li>
-                        <li>Consistent visual system</li>
-                        <li>Full mobile optimization</li>
+                        <li>Consistent visual language</li>
+                        <li>Full mobile responsiveness</li>
                         <li>Up to 2 light revisions</li>
                     </ul>
                     <a href="#" class="btn-primary">Start Project</a>
@@ -1357,16 +1361,20 @@
         <div class="modal-content">
             <button class="modal-close" aria-label="Close Contact Modal">&times;</button>
             <h2 id="contact-title" class="modal-title">Start Project</h2>
-            <form id="contact-form">
+            <iframe name="formsubmit_target" id="formsubmit_target" style="display:none;" title="FormSubmit Target"></iframe>
+            <form id="contact-form" action="https://formsubmit.co/bndr.labs@gmail.com" method="POST" target="formsubmit_target">
                 <div class="form-group">
-                    <input type="text" id="contact-name" placeholder="Your Name" required aria-label="Your Name">
+                    <input type="text" id="contact-name" name="name" placeholder="Your Name" required aria-label="Your Name">
                 </div>
                 <div class="form-group">
-                    <input type="email" id="contact-email" placeholder="Email Address" required aria-label="Email Address">
+                    <input type="email" id="contact-email" name="email" placeholder="Email Address" required aria-label="Email Address">
                 </div>
                 <div class="form-group">
-                    <textarea id="contact-message" placeholder="Briefly describe your objective..." rows="4" required aria-label="Briefly describe your objective"></textarea>
+                    <textarea id="contact-message" name="message" placeholder="Briefly describe your objective..." rows="4" required aria-label="Briefly describe your objective"></textarea>
                 </div>
+                <input type="hidden" name="_captcha" value="false">
+                <input type="text" name="_honey" style="display:none">
+                <input type="hidden" name="_template" value="box">
                 <button type="submit" class="btn-primary">Send Request</button>
             </form>
         </div>
@@ -1723,30 +1731,20 @@
             });
         }
 
-        const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORMSPREE_ID';
-
+        let isFormSubmitted = false;
         const contactForm = document.getElementById('contact-form');
-        if (contactForm) {
-            contactForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const btn = e.target.querySelector('button[type="submit"]');
+        const hiddenIframe = document.getElementById('formsubmit_target');
+        
+        if (contactForm && hiddenIframe) {
+            contactForm.addEventListener('submit', () => {
+                isFormSubmitted = true;
+                const btn = contactForm.querySelector('button[type="submit"]');
                 const originalText = btn.textContent;
-
-                const name = document.getElementById('contact-name').value;
-                const email = document.getElementById('contact-email').value;
-                const message = document.getElementById('contact-message').value;
-
                 btn.textContent = 'Sending...';
                 btn.disabled = true;
 
-                try {
-                    const response = await fetch(FORMSPREE_ENDPOINT, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                        body: JSON.stringify({ name, email, message })
-                    });
-
-                    if (response.ok) {
+                hiddenIframe.onload = function() {
+                    if (isFormSubmitted) {
                         btn.textContent = 'Request Sent';
                         btn.style.backgroundColor = 'var(--bone)';
                         btn.style.color = 'var(--charcoal)';
@@ -1757,19 +1755,12 @@
                                 btn.style.backgroundColor = '';
                                 btn.style.color = '';
                                 btn.disabled = false;
-                                e.target.reset();
+                                contactForm.reset();
+                                isFormSubmitted = false;
                             }, 600);
                         }, 1200);
-                    } else {
-                        btn.textContent = 'Try Again';
-                        btn.disabled = false;
-                        setTimeout(() => { btn.textContent = originalText; }, 2000);
                     }
-                } catch (err) {
-                    btn.textContent = 'Try Again';
-                    btn.disabled = false;
-                    setTimeout(() => { btn.textContent = originalText; }, 2000);
-                }
+                };
             });
         }
 
