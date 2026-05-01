@@ -1130,7 +1130,7 @@
                         <h2 class="service-header">Custom Websites</h2>
                     </div>
                     <div class="reveal-right delay-2 io-element">
-                        <p class="service-body">I build custom sites with strong visual effects and distinct design direction so people understand who you are in seconds. Intentional motion and mobile responsiveness are part of the deal. You need your digital presence to match the level of service you offer. I focus on strong visual direction and asymmetric layout that puts you in a different league than the rest. My sites show people exactly who you are and what you do in seconds.</p>
+                        <p class="service-body">I focus on tailored custom sites with strong, dopamine-driven effects and distinct design direction so people understand who you are in seconds. Intentional motion and mobile responsiveness are part of the deal. You need your digital presence to match the level of service you offer. I focus on strong visual direction and asymmetric layout that puts you in a different league than the rest. My sites show people exactly who you are and what you do in seconds.</p>
                     </div>
                 </div>
             </div>
@@ -1354,90 +1354,204 @@
         </div>
     </main>
 
-    <footer id="contact">
-        <button id="floating-contact-btn" class="float-contact-btn" aria-controls="contact-modal">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-            <span>Start Build</span>
-        </button>
+<!-- <BNDR_PRODUCTION_CORE: UNIFIED_MOBILE_DESKTOP_V5> -->
+<style>
+    :root {
+        /* Brand Color Registry */
+        --c-li: #0077b5; --c-ss: #ff6719; --c-gh: #ffffff; --c-ig: #e4405f;
+        --c-fb: #1877f2; --c-bc: #FFDD00; --c-gr: #ff0055; --c-pb: #3b82f6;
+        
+        /* Layout Tokens - MAX COMPRESSION */
+        --f-h: 56px; /* Highly compressed desktop height ~1inch */
+        --f-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
 
-        <div class="container">
-            <div class="footer-grid">
-                
-                <div class="footer-brand reveal-left delay-1 io-element">
-                    <img src="https://www.dropbox.com/scl/fi/t1zxkjm4lq4sfveedn119/bndr26.png?rlkey=mc6decn5olct67crw7zmqp89g&st=cj5uqif6&raw=1" alt="BNDR LLC Logo" class="footer-logo" onerror="this.style.display='none';">
-                    <address class="footer-address">
-                        1896 East Innovation Park Drive, STE 100<br>
-                        Oro Valley, AZ 85755
-                    </address>
-                </div>
+    /* === 01: CURSOR STABILIZATION === */
+    /* Only render on desktop to prevent mobile interaction lag */
+    @media (pointer: fine) {
+        #point-cursor-container {
+            position: fixed; top: 0; left: 0;
+            pointer-events: none; z-index: 999999;
+            mix-blend-mode: difference;
+            will-change: transform;
+            display: block !important;
+        }
+        * { cursor: none !important; }
+    }
+    @media (pointer: coarse) {
+        #point-cursor-container { display: none !important; }
+        * { cursor: auto !important; -webkit-tap-highlight-color: transparent; }
+    }
 
-                <div class="footer-links reveal-up delay-2 io-element">
-                    <div class="connect-grid">
-                        <a href="https://www.linkedin.com/in/bndrtech/" data-open="external" class="connect-btn">
-                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; flex-shrink: 0; fill: currentColor;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zM7.119 20.452H3.554V9h3.565v11.452z"/></svg>
-                            LinkedIn
-                        </a>
-                        <a href="https://substack.com/@bndrllc" data-open="external" class="connect-btn">
-                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; flex-shrink: 0; fill: currentColor;"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>
-                            Substack
-                        </a>
-                        <a href="https://github.com/bndrbots" data-open="external" class="connect-btn">
-                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; flex-shrink: 0; fill: currentColor;"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113-.82-.258-.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-                            GitHub
-                        </a>
-                        <a href="https://www.instagram.com/bndrllc" data-open="external" class="connect-btn">
-                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; flex-shrink: 0; fill: currentColor;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm3.98-10.98a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                            Instagram
-                        </a>
-                        <a href="https://www.facebook.com/BNDRLLC" data-open="external" class="connect-btn">
-                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; flex-shrink: 0; fill: currentColor;"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                            Facebook
-                        </a>
-                        <a href="https://buymeacoffee.com/bndr" data-open="external" class="connect-btn">
-                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; flex-shrink: 0; fill: currentColor;"><path d="M20.216 10.372c-.08-.43-.464-.741-.9-.741h-1.576V6.155c0-1.283-1.042-2.325-2.325-2.325H4.557C3.275 3.83 2.233 4.872 2.233 6.155v7.26c0 2.41 1.957 4.367 4.367 4.367h6.634c2.25 0 4.108-1.71 4.336-3.905h1.218c1.378 0 2.502-1.124 2.502-2.502.001-1.037-.803-1.886-1.074-2.003zM15.415 15.61H6.6c-1.21 0-2.195-.985-2.195-2.195V6.155c0-.085.068-.153.153-.153h10.858c.085 0 .153.068.153.153v9.455zm2.934-2.906h-1.173V11.8h1.173c.18 0 .327.147.327.327 0 .314-.262.578-.327.578zM10.15 2.115c.29-.29.29-.757 0-1.047-.29-.29-.757-.29-1.047 0-.29.29-.29.757 0 1.047.29.29.756.29 1.047 0zm3.87 0c.29-.29.29-.757 0-1.047-.29-.29-.757-.29-1.047 0-.29.29-.29.757 0 1.047.29.29.756.29 1.047 0z"/></svg>
-                            Coffee
-                        </a>
-                        <a href="https://bndrllc.gumroad.com/" data-open="external" class="connect-btn">
-                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; flex-shrink: 0; fill: currentColor;"><path d="M18.8 8.43c0 2.84-2.28 5.16-5.12 5.16-2.85 0-5.17-2.32-5.17-5.16 0-2.85 2.32-5.17 5.17-5.17 2.84 0 5.12 2.32 5.12 5.17zm-10.29 0c0-1.93-1.44-3.52-3.32-3.76v7.52c1.88-.24 3.32-1.83 3.32-3.76zM13.68 20.8v-5.63c-2.3-.4-4.14-2.19-4.63-4.46H3.45c.44 5.33 4.9 9.55 10.23 10.09z"/></svg>
-                            Gumroad
-                        </a>
-                        <a href="https://promptbase.com/profile/bndrllc" data-open="external" class="connect-btn">
-                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; flex-shrink: 0; fill: currentColor;"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                            PromptBase
-                        </a>
-                    </div>
-                    </div>
-                
-                <div class="footer-direct reveal-right delay-3 io-element">
-                    <div class="direct-grid">
-                        <button type="button" class="connect-btn connect-section-trigger" aria-controls="contact-modal">
-                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; flex-shrink: 0; fill: currentColor; pointer-events: none;"><path d="M13 3L4 14h7v7l9-11h-7V3z"/></svg>
-                            Start Project
-                        </button>
-                        <a href="mailto:bndr.labs@gmail.com" class="connect-btn">
-                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; flex-shrink: 0; fill: currentColor; pointer-events: none;"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                            Email
-                        </a>
-                        <a href="tel:7179197731" class="connect-btn">
-                            <svg viewBox="0 0 24 24" width="14" height="14" style="margin-right: 8px; flex-shrink: 0; fill: currentColor; pointer-events: none;"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-                            Phone
-                        </a>
-                    </div>
-                    <a href="https://propps.me/bndrllc" data-open="external" class="qr-code-footer">
-                        <img src="https://www.dropbox.com/scl/fi/e9o6rynw1j50qp765rhqu/propps.me.bndrllc.png?rlkey=taitw7sji8z7p21nuaw9inrwm&st=yudzfww7&raw=1" alt="BNDR Propps">
-                    </a>
-                </div>
+    /* === 02: FOOTER ARCHITECTURE === */
+    #bndr-core-footer {
+        background: var(--void);
+        color: var(--bone);
+        border-top: 1px solid rgba(255,255,255,0.08);
+        font-family: 'Inter', -apple-system, sans-serif;
+        position: relative;
+        z-index: 9998;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .f-layout {
+        max-width: 1300px;
+        margin: 0 auto;
+        height: var(--f-h);
+        padding: 0 24px;
+        display: grid;
+        grid-template-columns: 1.2fr 3.2fr 1.6fr 1fr;
+        align-items: center;
+        gap: 16px;
+    }
+
+    /* Axis 1: Legal + Mail */
+    .f-axis-legal { display: flex; flex-direction: column; gap: 2px; }
+    .f-row { display: flex; gap: 12px; }
+    .f-axis-legal a { 
+        font-size: 9px; font-weight: 700; color: var(--bone); 
+        text-decoration: none; opacity: 0.5; transition: 0.2s var(--f-ease);
+    }
+    .f-axis-legal a:hover { opacity: 1; color: var(--plasma); }
+
+    /* Axis 2: High-Density Social Belt */
+    .f-belt { display: flex; gap: 16px; justify-content: center; }
+    .f-belt a {
+        display: flex; align-items: center; justify-content: center;
+        width: 32px; height: 32px; /* Optimized hit-box */
+        transition: transform 0.2s var(--f-ease);
+    }
+    .f-belt svg { width: 16px; height: 16px; transition: 0.3s; opacity: 0.85; }
+    
+    .f-belt a:hover { transform: translateY(-2px); }
+    .f-belt a:hover svg { opacity: 1; filter: url(#fizzle-physics); }
+    
+    .f-belt .li svg { fill: var(--c-li); }
+    .f-belt .ss svg { fill: var(--c-ss); }
+    .f-belt .gh svg { fill: var(--c-gh); }
+    .f-belt .ig svg { fill: var(--c-ig); }
+    .f-belt .fb svg { fill: var(--c-fb); }
+    .f-belt .bc svg { fill: var(--c-bc); }
+    .f-belt .gr svg { fill: var(--c-gr); }
+    .f-belt .pb svg { fill: var(--c-pb); }
+
+    /* Axis 3: Clinical Actions */
+    .f-actions { display: flex; gap: 12px; justify-content: flex-end; }
+    .f-util {
+        font-size: 10px; font-weight: 800; letter-spacing: 0.05em;
+        text-decoration: none; color: var(--bone);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 6px 12px; border-radius: 4px;
+        transition: 0.2s; cursor: pointer; background: transparent;
+        white-space: nowrap; text-transform: uppercase;
+    }
+    .f-util:hover, .f-util:active { background: var(--bone); color: var(--void); }
+
+    /* Axis 4: Metrics */
+    .f-meta { text-align: right; }
+    .f-time { font-family: monospace; font-size: 10px; font-weight: 700; color: var(--bone); margin-bottom: 2px; }
+    .f-copy { font-size: 8px; font-weight: 600; opacity: 0.3; text-transform: uppercase; }
+
+    /* === 03: CROSS-PLATFORM MOBILE OVERRIDES === */
+    @media (max-width: 1100px) {
+        #bndr-core-footer { height: auto; padding-bottom: calc(16px + env(safe-area-inset-bottom)); }
+        .f-layout { 
+            grid-template-columns: 1fr; height: auto; 
+            padding: 20px 16px; gap: 20px; 
+        }
+        .f-belt { flex-wrap: wrap; gap: 16px; order: 1; justify-content: space-evenly; }
+        .f-belt a { width: 36px; height: 36px; } 
+        .f-belt svg { width: 18px; height: 18px; }
+        
+        .f-axis-legal { order: 2; align-items: center; text-align: center; gap: 4px; }
+        .f-actions { order: 3; justify-content: center; gap: 12px; }
+        .f-util { padding: 8px 16px; font-size: 10px; }
+        
+        .f-meta { order: 4; text-align: center; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); }
+    }
+</style>
+
+<!-- SVG DISTORTION ENGINE -->
+<svg style="position: absolute; width: 0; height: 0;" aria-hidden="true">
+    <filter id="fizzle-physics">
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="1">
+            <animate attributeName="seed" from="1" to="100" dur="0.5s" repeatCount="indefinite" />
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" scale="4" />
+    </filter>
+</svg>
+
+<footer id="bndr-core-footer">
+    <!-- [FLOATING CONTACT ACTION RESTORED] -->
+    <button id="floating-contact-btn" class="float-contact-btn" aria-controls="contact-modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        <span>Start Build</span>
+    </button>
+
+    <div class="f-layout">
+        <!-- 01: COMPLIANCE -->
+        <div class="f-axis-legal">
+            <div class="f-row">
+                <a href="https://www.dropbox.com/scl/fi/um6xi0vfzj0w03kgxtrq2/privacy.html?rlkey=6ylhioa276mrynqylvxc19u7v&st=dgn3s7uz&dl=0" target="_blank">PRIVACY</a>
+                <a href="https://www.dropbox.com/scl/fi/kojw24oymxcuku5r2nupj/terms.html?rlkey=zlta95mcdxzqd9qjkbk38alhl&st=af3kun5i&dl=0" target="_blank">TERMS</a>
             </div>
-            
-            <div class="legal-notice reveal-up delay-3 io-element">
-                <div class="footer-policy-links">
-                    <a href="https://www.dropbox.com/scl/fi/um6xi0vfzj0w03kgxtrq2/privacy.html?rlkey=6ylhioa276mrynqylvxc19u7v&st=dgn3s7uz&dl=0" data-open="external">Privacy Policy</a>
-                    <a href="https://www.dropbox.com/scl/fi/kojw24oymxcuku5r2nupj/terms.html?rlkey=zlta95mcdxzqd9qjkbk38alhl&st=af3kun5i&dl=0" data-open="external">Terms of Service</a>
-                </div>
-                <span>&copy; 2026 BNDR LLC. All rights reserved.</span>
-            </div>
+            <a href="mailto:bndr.labs@gmail.com" style="opacity: 0.3;">BNDR.LABS@GMAIL.COM</a>
         </div>
-    </footer>
+
+        <!-- 02: BRAND BELT -->
+        <div class="f-belt">
+            <a href="https://www.linkedin.com/in/bndrtech/" class="li" aria-label="LinkedIn" target="_blank">
+                <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <a href="https://substack.com/@bndrllc" class="ss" aria-label="Substack" target="_blank">
+                <svg viewBox="0 0 24 24"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>
+            </a>
+            <a href="https://github.com/bndrbots" class="gh" aria-label="GitHub" target="_blank">
+                <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113-.82-.258-.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            </a>
+            <a href="https://www.instagram.com/bndrllc" class="ig" aria-label="Instagram" target="_blank">
+                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm3.98-10.98a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/BNDRLLC" class="fb" aria-label="Facebook" target="_blank">
+                <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://buymeacoffee.com/bndr" class="bc" aria-label="Coffee" target="_blank">
+                <svg viewBox="0 0 24 24"><path d="M20.216 10.372c-.08-.43-.464-.741-.9-.741h-1.576V6.155c0-1.283-1.042-2.325-2.325-2.325H4.557C3.275 3.83 2.233 4.872 2.233 6.155v7.26c0 2.41 1.957 4.367 4.367 4.367h6.634c2.25 0 4.108-1.71 4.336-3.905h1.218c1.378 0 2.502-1.124 2.502-2.502.001-1.037-.803-1.886-1.074-2.003zM15.415 15.61H6.6c-1.21 0-2.195-.985-2.195-2.195V6.155c0-.085.068-.153.153-.153h10.858c.085 0 .153.068.153.153v9.455zm2.934-2.906h-1.173V11.8h1.173c.18 0 .327.147.327.327 0 .314-.262.578-.327.578zM10.15 2.115c.29-.29.29-.757 0-1.047-.29-.29-.757-.29-1.047 0-.29.29-.29.757 0 1.047.29.29.756.29 1.047 0zm3.87 0c.29-.29.29-.757 0-1.047-.29-.29-.757-.29-1.047 0-.29.29-.29.757 0 1.047.29.29.756.29 1.047 0z"/></svg>
+            </a>
+            <a href="https://bndrllc.gumroad.com/" class="gr" aria-label="Gumroad" target="_blank">
+                <svg viewBox="0 0 24 24"><path d="M18.8 8.43c0 2.84-2.28 5.16-5.12 5.16-2.85 0-5.17-2.32-5.17-5.16 0-2.85 2.32-5.17 5.17-5.17 2.84 0 5.12 2.32 5.12 5.17zm-10.29 0c0-1.93-1.44-3.52-3.32-3.76v7.52c1.88-.24 3.32-1.83 3.32-3.76zM13.68 20.8v-5.63c-2.3-.4-4.14-2.19-4.63-4.46H3.45c.44 5.33 4.9 9.55 10.23 10.09z"/></svg>
+            </a>
+            <a href="https://promptbase.com/profile/bndrllc" class="pb" aria-label="PromptBase" target="_blank">
+                <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </a>
+        </div>
+
+        <!-- 03: ACTIONS -->
+        <div class="f-actions">
+            <a href="tel:7179197731" class="f-util">Call Direct</a>
+            <button class="f-util connect-section-trigger">Start Build</button>
+        </div>
+
+        <!-- 04: CHRONOS -->
+        <div class="f-meta">
+            <div class="f-time" id="f-clock-active">00:00:00</div>
+            <div class="f-copy">© 2026 BNDR LLC</div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    (function() {
+        // Precise Clock Sync
+        const clk = document.getElementById('f-clock-active');
+        const updateClock = () => {
+            if(clk) clk.textContent = new Date().toTimeString().split(' ')[0];
+        };
+        setInterval(updateClock, 1000); updateClock();
+    })();
+</script>
+<!-- </BNDR_PRODUCTION_CORE> -->
 
     <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contact-title">
         <div class="modal-content">
@@ -1805,7 +1919,7 @@
         document.querySelectorAll('.connect-section-trigger').forEach(btn => btn.addEventListener('click', function() { SurfaceController.open('contact-modal', this); }));
 
         const floatBtn = document.getElementById('floating-contact-btn');
-        const contactFooter = document.getElementById('contact');
+        const contactFooter = document.getElementById('bndr-core-footer');
         
         if (floatBtn && contactFooter) {
             const footerObserver = new IntersectionObserver((entries) => {
