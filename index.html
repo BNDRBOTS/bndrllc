@@ -50,7 +50,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,900;1,900&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <noscript><style>body { opacity: 1 !important; }</style></noscript>
+    <noscript><style>body { opacity: 1 !important; }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+        </style></noscript>
     <style>
         /* === RESET & TOKENS === */
         * { 
@@ -80,9 +89,11 @@
             width: 100%;
             max-width: 100%;
             position: relative;
+            overflow-x: clip;
         }
         
         body {
+            overflow-x: clip;
             background-color: var(--bone);
             background-image: radial-gradient(circle at 50% 50%, var(--bone) 0%, #D5CFC6 100%);
             color: var(--void);
@@ -129,6 +140,7 @@
         /* === 3D BACKGROUND LAYER === */
         #webgl-container {
             position: fixed;
+            overflow: hidden;
             top: 0; left: 0;
             width: 100%; height: 100vh; height: 100dvh;
             z-index: 0;
@@ -446,10 +458,12 @@
         /* === MOBILE MORPHING NAVIGATION === */
         @media (max-width: 799px) {
             .desktop-only { display: none; }
+            * { max-width: 100vw; }
+            img, video, canvas { max-width: 100%; }
             .mobile-only { display: inline; }
             .nav-pill {
                 right: auto;
-                left: 50%;
+                left: 50vw;
                 transform: translate3d(-50%, -20px, 0);
                 flex-direction: column;
                 background: var(--bone);
@@ -798,6 +812,7 @@
         .modal-close {
             position: absolute; top: 24px; right: 24px; background: rgba(0,0,0,0.05);
             border: none; font-size: 32px; color: var(--void); cursor: pointer; opacity: 0.6;
+            min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center;
             transition: all 0.3s var(--ease-premium); width: 44px; height: 44px;
             display: flex; align-items: center; justify-content: center; border-radius: 50%; z-index: 10;
         }
@@ -854,7 +869,7 @@
         .pricing-card-mini .feature-list li { font-size: 13px; margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; color: rgba(2, 2, 2, 0.85); line-height: 1.4; }
         .pricing-card-mini .feature-list li::before { content: '✓'; color: var(--void); font-family: 'Outfit', sans-serif; font-weight: 800; font-style: normal; font-size: 14px; }
         .pricing-card-mini.tier-special .feature-list li::before { color: var(--magenta); }
-        .pricing-card-mini .btn-primary { padding: 16px 20px; font-size: 11px; }
+        .pricing-card-mini .btn-primary { padding: 16px 20px; font-size: 12px; }
 
         /* === FORM INPUTS === */
         .form-group input, .form-group textarea {
@@ -908,7 +923,7 @@
         .footer-brand { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
         .footer-logo { max-width: 100px; height: auto; display: block; filter: brightness(0) invert(1); opacity: 1; transition: opacity 0.3s var(--ease-premium); }
         .footer-logo:hover { opacity: 0.8; }
-        .footer-address { font-size: 11px; font-weight: 400; letter-spacing: 0.05em; line-height: 1.6; color: var(--bone); font-style: normal; opacity: 0.6; margin: 0; }
+        .footer-address { font-size: 12px; font-weight: 400; letter-spacing: 0.05em; line-height: 1.6; color: var(--bone); font-style: normal; opacity: 0.6; margin: 0; }
         
         /* Unified Social Grid Angled Buttons */
         .connect-grid { 
@@ -938,9 +953,10 @@
         }
         
         .connect-btn {
+            min-height: 44px;
             display: inline-flex; align-items: center; justify-content: center;
             box-sizing: border-box;
-            padding: 10px 16px; font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+            padding: 10px 16px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
             text-transform: uppercase; color: var(--bone); text-decoration: none;
             min-height: 44px; /* Ensure mobile touch target */
             
@@ -1004,10 +1020,10 @@
         .footer-policy-links { display: flex; flex-wrap: wrap; gap: 24px; }
         
         /* Safely isolated styling */
-        footer .footer-policy-links a { color: var(--bone); text-decoration: none; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s; opacity: 0.6; padding: 0 8px; margin: -8px 0; min-height: 44px; display: inline-flex; align-items: center; }
+        footer .footer-policy-links a { color: var(--bone); text-decoration: none; font-size: 12px; min-height: 44px; display: inline-flex; align-items: center; padding: 8px 4px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s; opacity: 0.6; padding: 0 8px; margin: -8px 0; min-height: 44px; display: inline-flex; align-items: center; }
         footer .footer-policy-links a:hover { color: var(--plasma); opacity: 1; }
         
-        .legal-notice { font-size: 10px; font-weight: 400; color: var(--bone); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .legal-notice { font-size: 12px; font-weight: 400; color: var(--bone); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; }
         .legal-notice span { opacity: 0.5; }
         
         /* Footer Mobile Adjustments */
@@ -1063,7 +1079,7 @@
             }
         }
         @media (max-width: 768px) {
-            .float-contact-btn { top: -64px; left: 50%; right: auto; padding: 14px 20px; font-size: 10px; }
+            .float-contact-btn { top: -64px; left: 50%; right: auto; padding: 14px 20px; font-size: 12px; }
         }
 
         @keyframes float-fizzle {
@@ -1581,7 +1597,7 @@
     .f-axis-legal { display: flex; flex-direction: column; gap: 2px; }
     .f-row { display: flex; gap: 12px; }
     .f-axis-legal a { 
-        font-size: 9px; font-weight: 700; color: var(--bone); 
+        font-size: 12px; font-weight: 700; color: var(--bone); 
         text-decoration: none; opacity: 0.5; transition: 0.2s var(--f-ease);
     }
     .f-axis-legal a:hover { opacity: 1; color: var(--plasma); }
@@ -1590,7 +1606,7 @@
     .f-belt { display: flex; gap: 16px; justify-content: center; }
     .f-belt a {
         display: flex; align-items: center; justify-content: center;
-        width: 32px; height: 32px; /* Optimized hit-box */
+        width: 44px; height: 44px; /* WCAG touch target */
         transition: transform 0.2s var(--f-ease);
     }
     .f-belt svg { width: 16px; height: 16px; transition: 0.3s; opacity: 0.85; }
@@ -1610,7 +1626,7 @@
     /* Axis 3: Clinical Actions */
     .f-actions { display: flex; gap: 12px; justify-content: flex-end; }
     .f-util {
-        font-size: 10px; font-weight: 800; letter-spacing: 0.05em;
+        font-size: 12px; font-weight: 800; letter-spacing: 0.05em;
         text-decoration: none; color: var(--bone);
         border: 1px solid rgba(255, 255, 255, 0.2);
         padding: 6px 12px; border-radius: 4px;
@@ -1621,8 +1637,8 @@
 
     /* Axis 4: Metrics */
     .f-meta { text-align: right; }
-    .f-time { font-family: monospace; font-size: 10px; font-weight: 700; color: var(--bone); margin-bottom: 2px; }
-    .f-copy { font-size: 8px; font-weight: 600; opacity: 0.3; text-transform: uppercase; }
+    .f-time { font-family: monospace; font-size: 12px; font-weight: 700; color: var(--bone); margin-bottom: 2px; }
+    .f-copy { font-size: 12px; font-weight: 600; opacity: 0.3; text-transform: uppercase; }
 
     /* === 03: CROSS-PLATFORM MOBILE OVERRIDES === */
     @media (max-width: 1100px) {
@@ -1637,7 +1653,7 @@
         
         .f-axis-legal { order: 2; align-items: center; text-align: center; gap: 4px; }
         .f-actions { order: 3; justify-content: center; gap: 12px; }
-        .f-util { padding: 8px 16px; font-size: 10px; }
+        .f-util { padding: 8px 16px; font-size: 12px; }
         
         .f-meta { order: 4; text-align: center; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); }
     }
