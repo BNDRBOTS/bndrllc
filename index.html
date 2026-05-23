@@ -426,19 +426,21 @@
 
 function getRouteFromLocation() {
     const hash = window.location.hash.replace('#', '').trim();
-    if (hash) return '/' + hash.replace(/^\//, '');
 
-    const path = window.location.pathname;
-    if (path === '/' || path === '') return '/home';
+    if (hash) {
+        return '/' + hash.replace(/^\/+/, '');
+    }
 
-    return path;
+    return '/home';
 }
 
-navigateTo(getRouteFromLocation(), false);
-          window.addEventListener('hashchange', () => {
-    navigateTo(getRouteFromLocation(), false);
-});
-    }
+const loadRoute = () => navigateTo(getRouteFromLocation(), false);
+
+loadRoute();
+setTimeout(loadRoute, 50);
+
+window.addEventListener('hashchange', loadRoute);
+}
 
     function applyTextStagger(selector) {
         const el = document.querySelector(selector);
