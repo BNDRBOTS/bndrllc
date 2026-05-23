@@ -958,85 +958,112 @@ if (webgl) {
             }
         }
         animate();
-    }</script><style>*{cursor:none !important}body.is-dragging-3d,body.is-dragging-3d *{cursor:grabbing !important}body.is-dragging-3d #point-cursor-container{opacity:0 !important}#point-cursor-container{position:fixed;top:0;left:0;pointer-events:none;z-index:999999;mix-blend-mode:difference;will-change:transform;transition:transform 0.08s ease-out}.point-shape{display:block;width:14px;height:14px;transform-origin:center center;filter:url(#point-glow);transition:transform 0.25s ease}.rotating .point-shape{animation:point-spin 1.2s linear infinite}@keyframes point-spin{to{transform:rotate(360deg)}}</style><svg width="0" height="0" style="position:absolute;display:none;"><defs><filter id="point-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceGraphic" stdDeviation="1.4" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge></filter></defs>
-</svg><script>(function () {
-   const HEX_LIST = ['#E8E4DF', '#404040', '#CCFF00', '#FF0055'];  // bone, charcoal, plasma, magenta
+    }</script><style>
+@media (pointer:fine){
+  *{cursor:none !important}
 
-const pointSVG = `
-      <svg class="point-shape" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M18 18L82 48L54 57L39 84Z" fill="var(--cursor-color, white)"/></svg>`;
+  #point-cursor-container{
+    position:fixed;
+    top:0;
+    left:0;
+    width:24px;
+    height:24px;
+    pointer-events:none;
+    z-index:999999;
+    transform:translate(-100px,-100px);
+    will-change:transform;
+    mix-blend-mode:normal !important;
+    display:block !important;
+  }
 
-    const container = document.createElement('div');
-    container.id = 'point-cursor-container';
-    container.innerHTML = pointSVG;
-    document.body.appendChild(container);
+  #point-cursor-container svg{
+    width:24px;
+    height:24px;
+    display:block;
+    overflow:visible;
+    transition:transform .22s cubic-bezier(.16,1,.3,1);
+  }
 
-    function hexToRgb(hex) {
-      const bigint = parseInt(hex.slice(1), 16);
-      return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
-    }
-    function rgbToHex(r, g, b) {
-      return '#' + [r, g, b].map(c => Math.round(c).toString(16).padStart(2, '0')).join('');
-    }
-    function lerp(a, b, t) {
-      return a + (b - a) * t;
-    }
-    function interpolateHex(hex1, hex2, t) {
-      const c1 = hexToRgb(hex1);
-      const c2 = hexToRgb(hex2);
-      return rgbToHex(
-        lerp(c1.r, c2.r, t),
-        lerp(c1.g, c2.g, t),
-        lerp(c1.b, c2.b, t)
-      );
-    }
+  #point-cursor-container .cursor-outer{
+    fill:rgba(2,2,2,.88);
+    stroke:#556B2F;
+    stroke-width:5;
+    filter:url(#point-glow);
+  }
 
-    const cycleDuration = 1200; // 0.1 seconds per segment – quick, electric flow
-    let startTime = performance.now();
-    function morphColour() {
-      const now = performance.now();
-      const elapsed = now - startTime;
-      const segmentCount = HEX_LIST.length;
-      const totalTime = segmentCount * cycleDuration;
-      const scaledT = (elapsed % totalTime) / totalTime; // 0–1 over full cycle
+  #point-cursor-container .cursor-inner{
+    fill:#ff0055;
+  }
 
-      const segmentFloat = scaledT * segmentCount;
-      const idx = Math.floor(segmentFloat);
-      const t = segmentFloat - idx;
-      const from = HEX_LIST[idx % segmentCount];
-      const to = HEX_LIST[(idx + 1) % segmentCount];
-      const hex = interpolateHex(from, to, t);
-      container.style.setProperty('--cursor-color', hex);
-      requestAnimationFrame(morphColour);
-    }
-    requestAnimationFrame(morphColour);
+  #point-cursor-container .cursor-tick{
+    stroke:#CCFF00;
+    stroke-width:6;
+    stroke-linecap:round;
+  }
 
-    let mouseX = -100, mouseY = -100;
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      container.style.transform = `translate(${mouseX - 7}px, ${mouseY - 7}px)`;
+  #point-cursor-container.is-interactive svg{
+    transform:scale(1.16);
+  }
+}
 
-      const target = e.target;
-      const interactive = target.closest(
-        'a, button, input, select, textarea, [onclick], [role="button"], [tabindex]:not([tabindex="-1"])'
-      );
-      container.classList.toggle('rotating', !!interactive);
-    });
+@media (pointer:coarse){
+  #point-cursor-container{display:none !important}
+  *{cursor:auto !important}
+}
 
-    document.addEventListener('mouseover', (e) => {
-      const interactive = e.target.closest(
-        'a, button, input, select, textarea, [onclick], [role="button"], [tabindex]:not([tabindex="-1"])'
-      );
-      if (interactive) container.classList.add('rotating');
-    });
-    document.addEventListener('mouseout', (e) => {
-      const interactive = e.target.closest(
-        'a, button, input, select, textarea, [onclick], [role="button"], [tabindex]:not([tabindex="-1"])'
-      );
-      if (!interactive) container.classList.remove('rotating');
-    });
-    document.addEventListener('mouseleave', () => container.style.opacity = '0');
-    document.addEventListener('mouseenter', () => container.style.opacity = '1');
-  })();</script>
+body.is-dragging-3d,
+body.is-dragging-3d *{
+  cursor:grabbing !important;
+}
+
+body.is-dragging-3d #point-cursor-container{
+  opacity:0 !important;
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute;display:none;" aria-hidden="true">
+  <defs>
+    <filter id="point-glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+</svg>
+
+<script>
+(function(){
+  const cursor = document.createElement('div');
+  cursor.id = 'point-cursor-container';
+  cursor.innerHTML = `
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <circle class="cursor-outer" cx="50" cy="50" r="25"></circle>
+      <path class="cursor-tick" d="M50 9V22M50 78V91M9 50H22M78 50H91"></path>
+      <path class="cursor-inner" d="M50 31L59 41L69 50L59 59L50 69L41 59L31 50L41 41Z"></path>
+    </svg>
+  `;
+  document.body.appendChild(cursor);
+
+  document.addEventListener('mousemove', function(e){
+    cursor.style.transform = `translate(${e.clientX - 12}px, ${e.clientY - 12}px)`;
+
+    const interactive = e.target.closest(
+      'a, button, input, select, textarea, summary, details, [onclick], [role="button"], [tabindex]:not([tabindex="-1"])'
+    );
+
+    cursor.classList.toggle('is-interactive', !!interactive);
+  });
+
+  document.addEventListener('mouseleave', function(){
+    cursor.style.opacity = '0';
+  });
+
+  document.addEventListener('mouseenter', function(){
+    cursor.style.opacity = '1';
+  });
+})();
+</script>
 </body>
 </html>
