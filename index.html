@@ -646,11 +646,12 @@ navigateTo(getRouteFromLocation(), false);
             const mainNav = document.querySelector('#main-nav');
             if (mainNav) mainNav.classList.add('is-loaded');
         }, 800);
-        const webgl = document.getElementById('webgl-container');
-        if (webgl) {
-            webgl.style.transition = 'opacity 2.5s cubic-bezier(0.16, 1, 0.3, 1)';
-            webgl.style.opacity = '1';
-        }
+const webgl = document.getElementById('webgl-container');
+if (webgl) {
+    webgl.style.transition = 'opacity 2.5s cubic-bezier(0.16, 1, 0.3, 1)';
+    webgl.style.opacity = AppState.currentPath === '/home' ? '1' : '0.05';
+}
+
     }
 
     function setupThreeJS() {
