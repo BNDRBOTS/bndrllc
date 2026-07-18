@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>BNDR // CONSOLE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,800;0,900;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bone: #e8e4df;
+        --void: #020202;
+        --charcoal: #0a0a0b;
+        --plasma: #ccff00;
+        --magenta: #ff0055;
+        --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--void);
+        color: var(--bone);
+        font: 500 14px/1.6 "Inter", system-ui, sans-serif;
+        min-height: 100vh;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+        padding: 14px 20px;
+        background: rgba(2, 2, 2, 0.92);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(232, 228, 223, 0.12);
+      }
+      .brand {
+        font: italic 900 18px/1 "Inter", sans-serif;
+        letter-spacing: -0.02em;
+      }
+      .brand em {
+        color: var(--plasma);
+        font-style: normal;
+      }
+      #dirty {
+        font: 800 10px/1 "Inter", sans-serif;
+        letter-spacing: 0.08em;
+        color: var(--magenta);
+        border: 1px solid var(--magenta);
+        border-radius: 99px;
+        padding: 6px 10px;
+        display: none;
+      }
+      #dirty.on {
+        display: inline-block;
+      }
+      .actions {
+        margin-left: auto;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      button {
+        font: 800 11px/1 "Inter", sans-serif;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--bone);
+        background: transparent;
+        border: 1px solid rgba(232, 228, 223, 0.25);
+        border-radius: 99px;
+        padding: 10px 16px;
+        cursor: pointer;
+        transition: all 0.25s var(--ease);
+      }
+      button:hover {
+        border-color: var(--plasma);
+        color: var(--plasma);
+      }
+      button.primary {
+        background: var(--plasma);
+        color: var(--void);
+        border-color: var(--plasma);
+      }
+      button.primary:hover {
+        transform: translateY(-1px);
+        color: var(--void);
+      }
+      button.danger:hover {
+        border-color: var(--magenta);
+        color: var(--magenta);
+      }
+      .wrap {
+        display: grid;
+        grid-template-columns: minmax(380px, 560px) 1fr;
+        align-items: start;
+      }
+      @media (max-width: 1000px) {
+        .wrap {
+          grid-template-columns: 1fr;
+        }
+      }
+      #panels {
+        padding: 24px 20px 80px;
+      }
+      #status {
+        font: 700 11px/1 "Inter", sans-serif;
+        letter-spacing: 0.08em;
+        color: rgba(232, 228, 223, 0.5);
+        margin-bottom: 16px;
+        text-transform: uppercase;
+      }
+      details.sec {
+        border: 1px solid rgba(232, 228, 223, 0.12);
+        border-radius: 14px;
+        margin-bottom: 14px;
+        background: var(--charcoal);
+        overflow: hidden;
+      }
+      details.sec > summary {
+        cursor: pointer;
+        list-style: none;
+        padding: 16px 18px;
+        font: italic 900 14px/1 "Inter", sans-serif;
+        letter-spacing: 0.02em;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      details.sec > summary::-webkit-details-marker {
+        display: none;
+      }
+      details.sec > summary::after {
+        content: "+";
+        color: var(--plasma);
+        font-style: normal;
+        font-weight: 500;
+      }
+      details.sec[open] > summary::after {
+        content: "\2013";
+      }
+      .sec-body {
+        padding: 4px 18px 18px;
+        display: grid;
+        gap: 12px;
+      }
+      label.f {
+        display: grid;
+        gap: 6px;
+      }
+      label.f span {
+        font: 800 10px/1 "Inter", sans-serif;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        opacity: 0.55;
+      }
+      input[type="text"],
+      textarea {
+        width: 100%;
+        background: rgba(232, 228, 223, 0.05);
+        border: 1px solid rgba(232, 228, 223, 0.15);
+        border-radius: 8px;
+        color: var(--bone);
+        font: 500 13px/1.5 "Inter", sans-serif;
+        padding: 10px 12px;
+        outline: none;
+        transition: border-color 0.2s ease;
+      }
+      input:focus,
+      textarea:focus {
+        border-color: var(--plasma);
+      }
+      textarea {
+        resize: vertical;
+        min-height: 64px;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .row input {
+        flex: 1;
+      }
+      .mini {
+        padding: 7px 10px;
+        border-radius: 8px;
+      }
+      .hint {
+        font-size: 11px;
+        opacity: 0.45;
+        line-height: 1.5;
+      }
+      .cat {
+        border: 1px dashed rgba(232, 228, 223, 0.2);
+        border-radius: 10px;
+        padding: 12px;
+        display: grid;
+        gap: 8px;
+      }
+      #preview-pane {
+        position: sticky;
+        top: 64px;
+        height: calc(100vh - 64px);
+        border-left: 1px solid rgba(232, 228, 223, 0.12);
+        display: flex;
+        flex-direction: column;
+      }
+      @media (max-width: 1000px) {
+        #preview-pane {
+          display: none;
+        }
+      }
+      .pv-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 16px;
+        border-bottom: 1px solid rgba(232, 228, 223, 0.12);
+        font: 800 10px/1 "Inter", sans-serif;
+        letter-spacing: 0.08em;
+        color: var(--plasma);
+      }
+      #pv {
+        flex: 1;
+        border: 0;
+        width: 100%;
+        background: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">BNDR<em>//</em>CONSOLE</div>
+      <span id="dirty">UNSAVED</span>
+      <div class="actions">
+        <button class="primary" id="b-save" title="Ctrl/Cmd+S">
+          Save draft
+        </button>
+        <button id="b-open">Preview tab</button>
+        <button id="b-export">Export content.js</button>
+        <button id="b-copy">Copy JSON</button>
+        <button class="danger" id="b-reset">Reset</button>
+      </div>
+    </header>
+    <div class="wrap">
+      <main id="panels">
+        <p id="status">
+          Drafts save to this browser only. Export + replace js/content.js to
+          go live.
+        </p>
+      </main>
+      <section id="preview-pane">
+        <div class="pv-bar">
+          <span>LIVE DRAFT PREVIEW</span>
+          <button class="mini" id="b-refresh">Refresh</button>
+        </div>
+        <iframe id="pv" src="index.html?draft=1" title="Draft preview"></iframe>
+      </section>
+    </div>
+    <script src="js/content.js"></script>
+    <script>
+      (function () {
+        "use strict";
+        var KEY = "bndr:draft";
+        var DEFAULTS = window.BNDR_CONTENT || {};
+        function clone(o) {
+          return JSON.parse(JSON.stringify(o));
+        }
+        function merge(t, s) {
+          Object.keys(s || {}).forEach(function (k) {
+            var v = s[k];
+            if (
+              v &&
+              typeof v === "object" &&
+              !Array.isArray(v) &&
+              t[k] &&
+              typeof t[k] === "object" &&
+              !Array.isArray(t[k])
+            )
+              merge(t[k], v);
+            else t[k] = v;
+          });
+          return t;
+        }
+        var state = clone(DEFAULTS);
+        try {
+          var d = JSON.parse(localStorage.getItem(KEY) || "null");
+          if (d) merge(state, d);
+        } catch (e) {}
+
+        function get(path) {
+          return path.split(".").reduce(function (a, k) {
+            return a == null ? undefined : a[k];
+          }, state);
+        }
+        function set(path, val) {
+          var ks = path.split(".");
+          var o = state;
+          for (var i = 0; i < ks.length - 1; i++) {
+            if (o[ks[i]] == null) o[ks[i]] = {};
+            o = o[ks[i]];
+          }
+          o[ks[ks.length - 1]] = val;
+          dirty(true);
+        }
+        var dirtyEl = document.getElementById("dirty");
+        function dirty(v) {
+          dirtyEl.classList.toggle("on", !!v);
+        }
+
+        var panels = document.getElementById("panels");
+        var statusEl = document.getElementById("status");
+        function el(tag, cls, text) {
+          var n = document.createElement(tag);
+          if (cls) n.className = cls;
+          if (text != null) n.textContent = text;
+          return n;
+        }
+        function field(parent, label, path, multi) {
+          var w = el("label", "f");
+          w.appendChild(el("span", null, label));
+          var i = document.createElement(multi ? "textarea" : "input");
+          if (!multi) i.type = "text";
+          var v = get(path);
+          i.value = v == null ? "" : String(v);
+          i.addEventListener("input", function () {
+            set(path, i.value);
+          });
+          w.appendChild(i);
+          parent.appendChild(w);
+          return i;
+        }
+        function section(title, open) {
+          var d = el("details", "sec");
+          if (open) d.open = true;
+          d.appendChild(el("summary", null, title));
+          var b = el("div", "sec-body");
+          d.appendChild(b);
+          panels.appendChild(d);
+          return b;
+        }
+
+        function render() {
+          panels.innerHTML = "";
+          panels.appendChild(statusEl);
+
+          var hero = section("Hero", true);
+          field(hero, "Hero description", "hero.desc", true);
+
+          var facts = section("Proof — verified numbers");
+          facts.appendChild(
+            el(
+              "p",
+              "hint",
+              "Values and labels are editable. Source links are fixed in the page for citation integrity.",
+            ),
+          );
+          (state.facts || []).forEach(function (f, i) {
+            var c = el("div", "cat");
+            field(c, "Value #" + (i + 1), "facts." + i + ".value");
+            field(c, "Label #" + (i + 1), "facts." + i + ".label", true);
+            facts.appendChild(c);
+          });
+
+          var gal = section("Gallery");
+          field(gal, "Gallery lead", "gallery.lead");
+          ((state.gallery && state.gallery.categories) || []).forEach(
+            function (cat, ci) {
+              var c = el("div", "cat");
+              field(
+                c,
+                "Category title",
+                "gallery.categories." + ci + ".title",
+              );
+              (cat.items || []).forEach(function (it, ii) {
+                var r = el("div", "row");
+                var base = "gallery.categories." + ci + ".items." + ii;
+                var n = document.createElement("input");
+                n.type = "text";
+                n.value = it.name || "";
+                n.placeholder = "Name";
+                n.addEventListener("input", function () {
+                  set(base + ".name", n.value);
+                });
+                var u = document.createElement("input");
+                u.type = "text";
+                u.value = it.url || "";
+                u.placeholder = "https://…";
+                u.addEventListener("input", function () {
+                  set(base + ".url", u.value);
+                });
+                var x = el("button", "mini", "\u2715");
+                x.title = "Remove project";
+                x.addEventListener("click", function () {
+                  cat.items.splice(ii, 1);
+                  dirty(true);
+                  render();
+                });
+                r.appendChild(n);
+                r.appendChild(u);
+                r.appendChild(x);
+                c.appendChild(r);
+              });
+              var add = el("button", "mini", "+ Add project");
+              add.addEventListener("click", function () {
+                (cat.items = cat.items || []).push({
+                  name: "New Project",
+                  url: "https://",
+                });
+                dirty(true);
+                render();
+              });
+              c.appendChild(add);
+              gal.appendChild(c);
+            },
+          );
+
+          var pr = section("Pricing");
+          field(pr, "Pricing lead (<br> allowed)", "pricing.lead");
+          ((state.pricing && state.pricing.tiers) || []).forEach(
+            function (t, i) {
+              var c = el("div", "row");
+              var n = document.createElement("input");
+              n.type = "text";
+              n.value = t.title || "";
+              n.placeholder = "Tier title";
+              n.addEventListener("input", function () {
+                set("pricing.tiers." + i + ".title", n.value);
+              });
+              var p = document.createElement("input");
+              p.type = "text";
+              p.value = t.price || "";
+              p.placeholder = "$0,000";
+              p.addEventListener("input", function () {
+                set("pricing.tiers." + i + ".price", p.value);
+              });
+              c.appendChild(n);
+              c.appendChild(p);
+              pr.appendChild(c);
+            },
+          );
+
+          var mi = section("Mission");
+          ((state.mission && state.mission.p) || []).forEach(function (_, i) {
+            field(mi, "Paragraph " + (i + 1), "mission.p." + i, true);
+          });
+
+          var fq = section("FAQ");
+          (state.faq || []).forEach(function (f, i) {
+            var c = el("div", "cat");
+            field(c, "Question " + (i + 1), "faq." + i + ".q");
+            field(c, "Answer " + (i + 1), "faq." + i + ".a", true);
+            fq.appendChild(c);
+          });
+        }
+        render();
+
+        var pv = document.getElementById("pv");
+        function refresh() {
+          try {
+            pv.src = "index.html?draft=1&v=" + Date.now();
+          } catch (e) {}
+        }
+        function save() {
+          state.edited = true;
+          try {
+            localStorage.setItem(KEY, JSON.stringify(state));
+            dirty(false);
+            refresh();
+          } catch (e) {
+            alert("Could not save draft: " + e.message);
+          }
+        }
+        document.getElementById("b-save").addEventListener("click", save);
+        document
+          .getElementById("b-refresh")
+          .addEventListener("click", refresh);
+        document.getElementById("b-open").addEventListener("click", function () {
+          window.open("index.html?draft=1", "_blank");
+        });
+        document
+          .getElementById("b-export")
+          .addEventListener("click", function () {
+            state.edited = true;
+            var src =
+              "// BNDR content \u2014 generated by dashboard.html on " +
+              new Date().toISOString() +
+              "\n// Replace js/content.js with this file and redeploy.\n" +
+              "window.BNDR_CONTENT = " +
+              JSON.stringify(state, null, 2) +
+              ";\n";
+            var blob = new Blob([src], { type: "text/javascript" });
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "content.js";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+          });
+        document
+          .getElementById("b-copy")
+          .addEventListener("click", function () {
+            var s = JSON.stringify(state, null, 2);
+            if (navigator.clipboard && navigator.clipboard.writeText)
+              navigator.clipboard.writeText(s);
+            else prompt("Copy:", s);
+          });
+        document
+          .getElementById("b-reset")
+          .addEventListener("click", function () {
+            if (
+              !confirm("Discard the saved draft and reload factory content?")
+            )
+              return;
+            try {
+              localStorage.removeItem(KEY);
+            } catch (e) {}
+            location.reload();
+          });
+        window.addEventListener("keydown", function (e) {
+          if ((e.metaKey || e.ctrlKey) && e.key === "s") {
+            e.preventDefault();
+            save();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
